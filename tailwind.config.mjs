@@ -8,8 +8,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "#DEDEDE",
+        main: "#1F1F1F",
+        foreground: "#323232",
+        primary: "#EF6622",
+        secondary: "#1F4397",
+      },
+      spacing: {
+        layout: "1.0rem", // Cố định khoảng cách giữa các div
+      },
+      fontFamily: {
+        sans: ["Nunito", "sans-serif"], // Đổi font mặc định
+      },
+      fontSize: {
+        base: "16px",
+        lg: "18px",
+        xl: "20px",
       },
     },
   },
