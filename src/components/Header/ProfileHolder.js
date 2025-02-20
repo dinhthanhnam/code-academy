@@ -1,0 +1,41 @@
+"use client";
+import {BiChevronUp} from "react-icons/bi";
+import { FaUserCircle } from "react-icons/fa";
+import { useState } from "react";
+
+export default function ProfileHolder() {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <div className="relative flex flex-row-reverse items-center cursor-pointer"
+             onClick={() => setOpen(!open)}
+        >
+            {/* Chevron */}
+            <div className={`p-1 rounded-full duration-200 hover:bg-primary2 hover:text-primary`}>
+                <BiChevronUp
+                    size={24}
+                    strokeWidth={0.2}
+                    className={`transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+                />
+            </div>
+
+            {/* User Icon (Toggle Dropdown) */}
+            <div
+                className="p-1 rounded-full duration-200 hover:bg-primary2 hover:text-primary cursor-pointer group relative"
+            >
+                <FaUserCircle size={28} strokeWidth={1.2} />
+                <span className={`tooltip`}>Thông tin cá nhân</span>
+            </div>
+
+            {/* Dropdown */}
+            {open && (
+                <div className="absolute top-12 right-0 w-40 bg-white shadow-lg rounded-lg p-2 transition-all duration-300">
+                    <ul className="text-sm text-gray-800">
+                        <li className="px-4 py-2 hover:bg-gray-100 rounded-md cursor-pointer">Thông tin</li>
+                        <li className="px-4 py-2 hover:bg-gray-100 rounded-md cursor-pointer">Đăng xuất</li>
+                    </ul>
+                </div>
+            )}
+        </div>
+    );
+}

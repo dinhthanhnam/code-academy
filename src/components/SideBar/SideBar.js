@@ -17,18 +17,18 @@ export default function SideBar() {
             <SideBarHeader/>
             <div className="grid auto-rows-min gap-4 pt-8">
                 <SideBarSection sectionName={`Nền tảng`}>
-                    <DropDownButton id="1" title={`Cộng đồng`} icon={TbSocial} iconSize={22} iconStrokeWidth={1.4} parentLink={`/social`}
+                    <DropDownButton id="social" title={`Cộng đồng`} icon={TbSocial} iconSize={22} iconStrokeWidth={1.4} parentLink={`/social`}
                                     options={["Chatbot", "Chatbox - K24CNTTA", "Trà đá học viện"]}/>
-                    <DropDownButton id="2" title={`Bài tập`} icon={HiOutlineClipboardDocument} iconSize={22} parentLink={`/exercises`}
+                    <DropDownButton id="exercises" title={`Bài tập`} icon={HiOutlineClipboardDocument} iconSize={22} parentLink={`/exercises`}
                                     iconStrokeWidth={1.5} options={["Lập trình C nâng cao - ITA003", "Tự do"]}/>
-                    <DropDownButton id="3" title={`Sảnh danh vọng`} icon={SiHtmlacademy} iconSize={20}
+                    <DropDownButton id="halloffame" title={`Sảnh danh vọng`} icon={SiHtmlacademy} iconSize={20} parentLink={`/hall-of-fame`}
                                     iconStrokeWidth={0.7}/>
                 </SideBarSection>
                 <SideBarSection sectionName={`Cá nhân`}>
-                    <DropDownButton id="4" title={`Dự án`} icon={LuProjector} iconSize={24} iconStrokeWidth={1.5}/>
-                    <DropDownButton id="5" title={`Bài tập đang chờ`} icon={HiOutlineClipboardDocumentList}
+                    <DropDownButton id="project" title={`Dự án`} icon={LuProjector} iconSize={24} iconStrokeWidth={1.5} parentLink={`/project`}/>
+                    <DropDownButton id="penddingassignments" title={`Bài tập đang chờ`} icon={HiOutlineClipboardDocumentList}
                                     iconSize={22} iconStrokeWidth={1.5} chevron={false}/>
-                    <DropDownButton id="6" title={`Bài tập đã lưu`} icon={HiOutlineClipboardDocumentCheck}
+                    <DropDownButton id="archievedassignments" title={`Bài tập đã lưu`} icon={HiOutlineClipboardDocumentCheck}
                                     iconSize={22} iconStrokeWidth={1.5} chevron={false}/>
                 </SideBarSection>
 

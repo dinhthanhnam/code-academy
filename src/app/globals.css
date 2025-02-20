@@ -30,3 +30,25 @@
   @apply bg-gradient-to-br from-slate-50 to-sky-200;
 }
 
+.tooltip {
+  position: absolute;
+  bottom: -30px; /* Điều chỉnh khoảng cách tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(25, 25, 25, 0.9); /* Màu nền tối */
+  color: white;
+  padding: 5px 8px;
+  font-size: 12px;
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s;
+  pointer-events: none;
+}
+
+.group:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
