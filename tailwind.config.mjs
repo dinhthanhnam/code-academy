@@ -12,7 +12,9 @@ export default {
         main: "#1F1F1F",
         foreground: "#323232",
         primary: "#EF6622",
+        primary2: "#FFB082",
         secondary: "#1F4397",
+        secondary2: "#6D86AD",
       },
       spacing: {
         layout: "1.0rem", // Cố định khoảng cách giữa các div
