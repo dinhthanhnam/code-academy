@@ -2,16 +2,14 @@ import { SiHtmlacademy } from "react-icons/si";
 import {TbSocial} from "react-icons/tb";
 import DropDownButton from "@/components/Button/DropDownButton";
 import {LuProjector} from "react-icons/lu";
-import {CgFileDocument} from "react-icons/cg";
 import {
     HiOutlineClipboardDocument,
     HiOutlineClipboardDocumentCheck,
     HiOutlineClipboardDocumentList
 } from "react-icons/hi2";
-import {useSideBar} from "@/context/SideBarContext";
+
 
 export default function SideBar() {
-    const { activeDropdown, setActiveDropdown } = useSideBar();
     return (
         <div className="flex flex-col border-foreground border-r-2 w-60 min-h-screen outline outline-secondary">
             <div className="border-foreground border-b-4 min-h-20 flex flex-col justify-between bg-primary p-2">
@@ -22,8 +20,8 @@ export default function SideBar() {
                 <div>
                     <span className={`pl-2 text-gray-600 text-sm`}>Nền tảng</span>
                     <div className={`gap-2 flex flex-col`}>
-                        <DropDownButton id="1" title={`Giao lưu`} icon={TbSocial} iconSize={24} iconStrokeWidth={1.4}/>
-                        <DropDownButton id="2" title={`Bài tập`} icon={HiOutlineClipboardDocument} iconSize={22} iconStrokeWidth={1.5}/>
+                        <DropDownButton id="1" title={`Cộng đồng`} icon={TbSocial} iconSize={22} iconStrokeWidth={1.4} options={["Chatbot", "Chatbox - K24CNTTA", "Trà đá học viện"]}/>
+                        <DropDownButton id="2" title={`Bài tập`} icon={HiOutlineClipboardDocument} iconSize={22} iconStrokeWidth={1.5} options={["Lập trình C nâng cao - ITA003", "Tự do"]}/>
                         <DropDownButton id="3" title={`Sảnh danh vọng`} icon={SiHtmlacademy} iconSize={20} iconStrokeWidth={0.7}/>
                     </div>
                 </div>

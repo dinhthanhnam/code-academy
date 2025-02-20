@@ -1,20 +1,18 @@
 "use client";
 import "../app/globals.css";
 import SideBar from "@/components/SideBar";
-import {SideBarProvider} from "@/context/SideBarContext";
-
+import { Providers } from "@/app/providers";
 
 export default function RootLayout({ children }) {
   return (
       <html lang="en">
           <body>
-          <SideBarProvider>
+          <Providers>
               <div className="flex flex-row">
                   <SideBar/>
-
                   {children}
               </div>
-          </SideBarProvider>
+          </Providers>
           </body>
       </html>
   );
