@@ -1,12 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import dropdownReducer from "./slices/dropdownSlice"; // Import reducer
 import navigationOptionReducer from "./slices/navigationOptionSlice";
-import chevronReducer from "@/app/redux/slices/chevronSlice";
+import routerReducer from "./slices/routerSlice";
+import sidebarReducer from "./slices/sidebarSlice";
+import deviceReducer from "./slices/deviceSlice";
 
 export const store = configureStore({
     reducer: {
         dropdown: dropdownReducer,
         navigationOption: navigationOptionReducer,
-        chevron: chevronReducer,
+        router: routerReducer,
+        sidebar: sidebarReducer,
+        device: deviceReducer,
     },
 });

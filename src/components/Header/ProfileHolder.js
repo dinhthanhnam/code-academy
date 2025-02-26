@@ -1,17 +1,32 @@
 "use client";
-import {BiChevronUp} from "react-icons/bi";
+import { BiChevronUp } from "react-icons/bi";
 import { FaUserCircle } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function ProfileHolder() {
     const [open, setOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    // Đóng dropdown khi click ra ngoài
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
-        <div className="relative flex flex-row-reverse items-center cursor-pointer"
-             onClick={() => setOpen(!open)}
-        >
+        <div className="relative flex flex-row-reverse items-center cursor-pointer" ref={dropdownRef}>
             {/* Chevron */}
-            <div className={`p-1 rounded-full duration-200 hover:bg-primary2 hover:text-primary`}>
+            <div
+                className="p-1 rounded-full duration-200 hover:bg-primary2 hover:text-primary"
+                onClick={() => setOpen(!open)}
+            >
                 <BiChevronUp
                     size={24}
                     strokeWidth={0.2}
@@ -22,9 +37,10 @@ export default function ProfileHolder() {
             {/* User Icon (Toggle Dropdown) */}
             <div
                 className="p-1 rounded-full duration-200 hover:bg-primary2 hover:text-primary cursor-pointer group relative"
+                onClick={() => setOpen(!open)}
             >
                 <FaUserCircle size={28} strokeWidth={1.2} />
-                <span className={`tooltip`}>Thông tin cá nhân</span>
+                <span className="tooltip">Thông tin cá nhân</span>
             </div>
 
             {/* Dropdown */}
