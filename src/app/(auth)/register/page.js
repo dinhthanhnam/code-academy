@@ -11,7 +11,7 @@ export default function LoginPage() {
             {/* Cột chứa form */}
             <div className="w-1/2 flex items-center justify-center">
                 <div className="w-full max-w-md">
-                    <AuthenticationForm type={`login`} />
+                    <AuthenticationForm type={`register`}/>
                 </div>
             </div>
         </div>
