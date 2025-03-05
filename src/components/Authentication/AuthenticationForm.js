@@ -41,7 +41,8 @@ export default function AuthenticationForm({ type }) {
                 router.push("/");
             }, 1500);
         } catch (error) {
-            setMessage({ message: error.message || "Đăng nhập thất bại!", status: false });
+            console.log(error.message);
+            setMessage({message: "Đăng nhập thất bại!", status: false });
             dispatch(stopLoading());
         }
     };
@@ -60,19 +61,22 @@ export default function AuthenticationForm({ type }) {
 
         try {
             dispatch(startLoading());
-            await RegisterUser({
+            const registerRequest = await RegisterUser({
                 name: payload.name,
                 email: payload.email,
                 password: payload.password,
                 password_confirmation: payload.password_confirmation,
             });
+            if(registerRequest) {
+                setMessage({ message: "Đăng ký thất bại!", status: true });
+            }
             setMessage({ message: "Đăng ký thành công! Chuyển hướng...", status: true });
             setTimeout(() => {
                 dispatch(stopLoading());
                 router.push("/login"); // Redirect về /login thay vì / để người dùng đăng nhập sau khi đăng ký
             }, 1500);
         } catch (error) {
-            setMessage({ message: error.message || "Đăng ký thất bại!", status: false });
+            setMessage({ message: "Đăng ký thất bại!", status: false });
             dispatch(stopLoading());
         }
     };

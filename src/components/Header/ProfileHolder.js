@@ -2,6 +2,7 @@
 import { BiChevronUp } from "react-icons/bi";
 import { FaUserCircle } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
+import {LogoutUser} from "@/utils/service/AuthService";
 
 export default function ProfileHolder() {
     const [open, setOpen] = useState(false);
@@ -45,10 +46,14 @@ export default function ProfileHolder() {
 
             {/* Dropdown */}
             {open && (
-                <div className="absolute top-12 right-0 w-40 bg-white shadow-lg rounded-lg p-2 transition-all duration-300">
+                <div className="select-none absolute top-12 right-0 w-40 bg-white shadow-lg rounded-lg p-2 transition-all duration-300">
                     <ul className="text-sm text-gray-800">
                         <li className="px-4 py-2 hover:bg-gray-100 rounded-md cursor-pointer">Thông tin</li>
-                        <li className="px-4 py-2 hover:bg-gray-100 rounded-md cursor-pointer">Đăng xuất</li>
+                        <li className="px-4 py-2 hover:bg-gray-100 rounded-md cursor-pointer"
+                        onClick={() => LogoutUser()}
+                        >
+                            Đăng xuất
+                        </li>
                     </ul>
                 </div>
             )}

@@ -1,27 +1,25 @@
 import api from "@/utils/AxiosInstance";
 
+// // Lấy token từ cookie (client-side)
+// const getToken = () => {
+//     if (typeof window === "undefined") return null;
+//     return document.cookie
+//         .split("; ")
+//         .find(row => row.startsWith("token="))
+//         ?.split("=")[1];
+// };
+
 export const AuthenticateUser = async (payload) => {
-    try {
-        const res = await api.post("/login", payload);
-        console.log(res.data.message);
-        return res.data;
-    } catch (error) {
-        console.error("Lỗi đăng nhập:", error);
-        throw error;
-    }
+    const res = await api.post("/login", payload);
+    return res.data;
 };
 
 export const RegisterUser = async (payload) => {
-    try {
-        const res = await api.post("/register", payload);
-        console.log(res.data.message);
-        return res.data;
-    } catch (error) {
-        console.error("Lỗi đăng nhập:", error);
-        throw error;
-    }
+    const res = await api.post("/register", payload);
+    return res.data;
 };
 
-export const LogoutUser = async (payload) => {
-
-}
+export const LogoutUser = async () => {
+    const res = await api.post("/logout");
+    return res.data;
+};
