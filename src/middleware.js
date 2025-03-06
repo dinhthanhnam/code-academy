@@ -1,25 +1,33 @@
 import { NextResponse } from 'next/server';
-import api from "@/utils/AxiosInstance";
+import axios from 'axios';
 
 export async function middleware(request) {
-    const token = request.cookies.get('token')?.value;
-
-    if (!token) {
+    // Lấy cookie session từ request của client
+    const sessionCookie = request.cookies.get('codeacademy_session')?.value;
+    const XRSF = request.cookies.get('XSRF-TOKEN')?.value;
+    if (!sessionCookie || !XRSF) {
         return NextResponse.redirect(new URL('/login', request.url));
     }
 
     try {
-        const response = await api.get('/api/user', {
+        // Chuyển tiếp header 'cookie' từ request gốc
+        const cookieHeader = request.headers.get('cookie');
+        const response = await fetch('http://localhost:8000/api/user', {
             headers: {
-                Accept: 'application/json',
-                Authorization: `Bearer ${token}`,
+                "X-XSRF-HEADER": XRSF,
+                Cookie: cookieHeader,
+                "accept": "application/json"
             },
+            // 'no-store' để đảm bảo không sử dụng cache trong môi trường middleware
+            cache: 'no-store',
+            credentials: 'include',
         });
 
         if (response.status === 200) {
             return NextResponse.next();
         }
     } catch (error) {
+        console.error(error);
         return NextResponse.redirect(new URL('/login', request.url));
     }
 }

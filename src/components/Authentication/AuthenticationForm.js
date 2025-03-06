@@ -73,7 +73,7 @@ export default function AuthenticationForm({ type }) {
             setMessage({ message: "Đăng ký thành công! Chuyển hướng...", status: true });
             setTimeout(() => {
                 dispatch(stopLoading());
-                router.push("/login"); // Redirect về /login thay vì / để người dùng đăng nhập sau khi đăng ký
+                router.push("/"); // Redirect về /login thay vì / để người dùng đăng nhập sau khi đăng ký
             }, 1500);
         } catch (error) {
             setMessage({ message: "Đăng ký thất bại!", status: false });
