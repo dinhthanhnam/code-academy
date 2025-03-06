@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import axios from 'axios';
 import api from "@/utils/AxiosInstance";
 
 export async function middleware(request) {
@@ -10,7 +9,7 @@ export async function middleware(request) {
     }
 
     try {
-        const response = await api.get('/user', {
+        const response = await api.get('/api/user', {
             headers: {
                 Accept: 'application/json',
                 Authorization: `Bearer ${token}`,
