@@ -2,11 +2,26 @@
 import { BiChevronUp } from "react-icons/bi";
 import { FaUserCircle } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
-import {LogoutUser} from "@/utils/service/AuthService";
+import { LogoutUser } from "@/utils/service/AuthService";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { showMessage } from "@/app/redux/slices/messageSlice";
 
 export default function ProfileHolder() {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const router = useRouter();
+    const dispatch = useDispatch();
+
+    const handleLogout = async () => {
+        try {
+            const response = await LogoutUser();
+            dispatch(showMessage({ message: response.message || "Đăng xuất thành công!", success: true }));
+        } catch (error) {
+            dispatch(showMessage({ message: "Đăng xuất thất bại!", success: false }));
+        }
+        router.push("/login");
+    };
 
     // Đóng dropdown khi click ra ngoài
     useEffect(() => {
@@ -49,8 +64,9 @@ export default function ProfileHolder() {
                 <div className="select-none absolute top-12 right-0 w-40 bg-white shadow-lg rounded-lg p-2 transition-all duration-300">
                     <ul className="text-sm text-gray-800">
                         <li className="px-4 py-2 hover:bg-gray-100 rounded-md cursor-pointer">Thông tin</li>
-                        <li className="px-4 py-2 hover:bg-gray-100 rounded-md cursor-pointer"
-                        onClick={() => LogoutUser()}
+                        <li
+                            className="px-4 py-2 hover:bg-gray-100 rounded-md cursor-pointer"
+                            onClick={handleLogout}
                         >
                             Đăng xuất
                         </li>
