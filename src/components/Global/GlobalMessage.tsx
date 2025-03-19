@@ -1,12 +1,12 @@
 "use client";
 
-import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { hideMessage } from "@/app/redux/slices/messageSlice";
+import { useAppSelector, useAppDispatch } from "@/app/redux/hooks";
 
 const GlobalMessage = () => {
-    const dispatch = useDispatch();
-    const { message, success, visible } = useSelector((state) => state.message);
+    const dispatch = useAppDispatch();
+    const { message, success, visible } = useAppSelector((state) => state.message);
 
     useEffect(() => {
         if (visible) {

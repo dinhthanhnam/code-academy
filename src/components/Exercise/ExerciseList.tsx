@@ -20,7 +20,7 @@ const problems = [
     { id: 16, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
 ];
 
-export default function ProblemList() {
+export default function ExerciseList() {
     const [selected, setSelected] = useState(null);
 
     return (

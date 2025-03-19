@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import dropdownReducer from "./slices/dropdownSlice"; // Import reducer
+import dropdownReducer from "./slices/dropdownSlice";
 import navigationOptionReducer from "./slices/navigationOptionSlice";
 import routerReducer from "./slices/routerSlice";
 import sidebarReducer from "./slices/sidebarSlice";
@@ -18,3 +18,7 @@ export const store = configureStore({
         message: messageReducer,
     },
 });
+
+// ✅ Export TypeScript types
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

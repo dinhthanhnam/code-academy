@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface DropDownState {
+    activeDropdown?: String;
+}
+
+const initialState: DropDownState = {
     activeDropdown: null, // ID của dropdown đang mở
 };
 

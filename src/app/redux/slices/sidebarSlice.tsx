@@ -1,12 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-    isSidebarOpen: false, // Mặc định Sidebar đóng trên mobile
+type SidebarState = {
+    isSidebarOpen: boolean;
+};
+
+const initialState: SidebarState = {
+    isSidebarOpen: true, // Mặc định Sidebar đóng trên mobile
 };
 
 const sidebarSlice = createSlice({
     name: "sidebar",
-    initialState: { isSidebarOpen: true },
+    initialState,
     reducers: {
         toggleSidebar: (state) => {
             state.isSidebarOpen = !state.isSidebarOpen;

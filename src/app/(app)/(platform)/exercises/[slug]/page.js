@@ -1,12 +1,12 @@
-import ProblemList from "@/components/Problem/ProblemList";
+import ExerciseList from "@/components/Exercise/ExerciseList";
 
 export default async function ExercisesPage({ params }) {
     const { slug } = await params; // ⬅️ Phải await params
 
     return (
         <>
-            <ProblemList></ProblemList>
-            <ProblemList></ProblemList>
+            <ExerciseList></ExerciseList>
+            <ExerciseList></ExerciseList>
         </>
     );
 }

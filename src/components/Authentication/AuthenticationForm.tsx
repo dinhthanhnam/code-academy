@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import FormInput from "@/components/Form/FormInput";
 import FormContainer from "@/components/Form/FormContainer";
 import CommonButton from "@/components/Common/CommonButton";
@@ -9,24 +9,43 @@ import { useDispatch } from "react-redux";
 import { startLoading, stopLoading } from "@/app/redux/slices/loadingSlice";
 import Link from "next/link";
 
-export default function AuthenticationForm({ type }) {
+// Define the props type for the component
+interface AuthenticationFormProps {
+    type: "login" | "register";
+}
+
+// Define the payload type
+interface AuthPayload {
+    name: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+}
+
+// Define the message state type
+interface MessageState {
+    message: string;
+    status: boolean;
+}
+
+export default function AuthenticationForm({ type }: AuthenticationFormProps) {
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const [payload, setPayload] = useState({
+    const [payload, setPayload] = useState<AuthPayload>({
         name: "",
         email: "",
         password: "",
         password_confirmation: "",
     });
 
-    const [message, setMessage] = useState({
+    const [message, setMessage] = useState<MessageState>({
         message: "",
         status: false,
     });
 
     // Hàm xử lý đăng nhập
-    const handleLogin = async () => {
+    const handleLogin = async (): Promise<void> => {
         if (!payload.email || !payload.password) {
             setMessage({ message: "Vui lòng nhập email và mật khẩu!", status: false });
             return;
@@ -40,15 +59,15 @@ export default function AuthenticationForm({ type }) {
                 dispatch(stopLoading());
                 router.push("/");
             }, 1500);
-        } catch (error) {
+        } catch (error: any) {
             console.log(error.message);
-            setMessage({message: "Đăng nhập thất bại!", status: false });
+            setMessage({ message: "Đăng nhập thất bại!", status: false });
             dispatch(stopLoading());
         }
     };
 
     // Hàm xử lý đăng ký
-    const handleRegister = async () => {
+    const handleRegister = async (): Promise<void> => {
         if (!payload.name || !payload.email || !payload.password || !payload.password_confirmation) {
             setMessage({ message: "Vui lòng nhập đầy đủ thông tin!", status: false });
             return;
@@ -67,7 +86,7 @@ export default function AuthenticationForm({ type }) {
                 password: payload.password,
                 password_confirmation: payload.password_confirmation,
             });
-            if(registerRequest) {
+            if (registerRequest) {
                 setMessage({ message: "Đăng ký thất bại!", status: true });
             }
             setMessage({ message: "Đăng ký thành công! Chuyển hướng...", status: true });
@@ -75,14 +94,14 @@ export default function AuthenticationForm({ type }) {
                 dispatch(stopLoading());
                 router.push("/"); // Redirect về /login thay vì / để người dùng đăng nhập sau khi đăng ký
             }, 1500);
-        } catch (error) {
+        } catch (error: any) {
             setMessage({ message: "Đăng ký thất bại!", status: false });
             dispatch(stopLoading());
         }
     };
 
     // Hàm submit tổng quát
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLButtonElement>): void => {
         e.preventDefault();
         if (type === "login") {
             handleLogin();
@@ -150,7 +169,7 @@ export default function AuthenticationForm({ type }) {
               {type === "login" ? "Chưa có tài khoản?" : "Đã có tài khoản?"}
             </span>
                     </Link>
-                    <CommonButton label="Xác nhận" onClick={handleSubmit} />
+                    <CommonButton label="Xác nhận" onClickAction={handleSubmit} />
                 </div>
             </FormContainer>
         </div>

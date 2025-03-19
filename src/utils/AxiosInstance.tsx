@@ -1,4 +1,5 @@
 import axios from "axios";
+import AxiosXHRConfig = Axios.AxiosXHRConfig;
 
 // Hàm lấy giá trị của cookie theo tên
 const getCookie = (name) => {
@@ -11,8 +12,11 @@ const api = axios.create({
 	withCredentials: true,
 	headers: {
 		"Content-Type": "application/json",
+		"Accept": 'application/json',
 	},
-	Accept: 'application/json',
+	validateStatus: (status: number) => {
+		return status >= 200 && status < 500; // Chấp nhận mọi mã trạng thái từ 200 đến dưới 500
+	},
 });
 
 // Thêm CSRF token vào tất cả request nếu tìm thấy trong cookie

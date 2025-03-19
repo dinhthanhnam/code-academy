@@ -1,9 +1,9 @@
 "use client";
 import { LinearProgress } from "@mui/material";
-import { useSelector } from "react-redux";
+import {useAppSelector} from "@/app/redux/hooks";
 
 export default function LoadingBar() {
-    const isLoading = useSelector((state) => state.loading.isLoading);
+    const isLoading = useAppSelector((state) => state.loading.isLoading);
 
     if (!isLoading) return null;
 

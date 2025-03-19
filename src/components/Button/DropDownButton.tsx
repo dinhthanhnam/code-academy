@@ -1,20 +1,47 @@
 "use client";
+
 import { BiChevronRight } from "react-icons/bi";
 import { useRouter } from "next/navigation";
-import { useSelector, useDispatch } from "react-redux";
 import { setActiveDropdown } from "@/app/redux/slices/dropdownSlice";
 import { setActiveNavigationOption } from "@/app/redux/slices/navigationOptionSlice";
+import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
+import { IconType } from "react-icons";
 
-export default function DropDownButton({ id, icon: Icon, iconSize = 20, iconStrokeWidth = 1, options = [], chevron = true, title, parentLink }) {
-    const dispatch = useDispatch();
+type DropdownOption = {
+    id: string;
+    name: string;
+    path?: string;
+};
+
+type DropDownButtonProps = {
+    id: string;
+    icon: IconType;
+    iconSize?: number;
+    iconStrokeWidth?: number;
+    options?: DropdownOption[];
+    chevron?: boolean;
+    title: string;
+    parentLink?: string;
+};
+
+export default function DropDownButton({
+                                           id,
+                                           icon: Icon,
+                                           iconSize = 20,
+                                           iconStrokeWidth = 1,
+                                           options = [],
+                                           chevron = true,
+                                           title,
+                                           parentLink,
+                                       }: DropDownButtonProps) {
+    const dispatch = useAppDispatch();
     const router = useRouter();
-    const activeDropdown = useSelector((state) => state.dropdown.activeDropdown);
-    const activeNavigationOption = useSelector((state) => state.navigationOption.activeNavigationOption);
+    const activeDropdown = useAppSelector((state) => state.dropdown.activeDropdown);
+    const activeNavigationOption = useAppSelector((state) => state.navigationOption.activeNavigationOption);
 
     const isActive = activeDropdown === id;
 
     const handleButtonClick = () => {
-        // Toggle dropdown khi click vào chính nó
         dispatch(setActiveDropdown(isActive ? null : id));
         dispatch(setActiveNavigationOption(null));
         if (parentLink) {
@@ -22,11 +49,10 @@ export default function DropDownButton({ id, icon: Icon, iconSize = 20, iconStro
         }
     };
 
-    const handleOptionClick = (optionId, optionPath) => {
-        // Set navigation option nhưng không đóng dropdown
+    const handleOptionClick = (optionId: string, optionPath?: string) => {
         dispatch(setActiveNavigationOption(optionId));
         if (optionPath) {
-            router.push(parentLink + optionPath);
+            router.push(parentLink ? parentLink + optionPath : optionPath);
         }
     };
 
@@ -43,7 +69,9 @@ export default function DropDownButton({ id, icon: Icon, iconSize = 20, iconStro
 
                 {chevron && (
                     <div
-                        className={`p-2 duration-200 hover:bg-gray-400 rounded-full transition-all ${isActive ? "rotate-90" : ""}`}
+                        className={`p-2 duration-200 hover:bg-gray-400 rounded-full transition-all ${
+                            isActive ? "rotate-90" : ""
+                        }`}
                     >
                         <BiChevronRight size={18} strokeWidth={0.8} />
                     </div>
@@ -58,7 +86,7 @@ export default function DropDownButton({ id, icon: Icon, iconSize = 20, iconStro
                         className={`select-none px-6 py-1 rounded-md duration-200 text-sm text-gray-800 transition-all
                         ${activeNavigationOption === option.id ? "bg-primary2" : "hover:bg-gray-200"}`}
                         onClick={(e) => {
-                            e.stopPropagation(); // Ngăn việc đóng dropdown
+                            e.stopPropagation();
                             handleOptionClick(option.id, option.path);
                         }}
                     >

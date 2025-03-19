@@ -1,8 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+type MessageState = {
+    message: string;
+    success: boolean | null; // true: success, false: error
+    visible: boolean;
+};
+
+const initialState: MessageState = {
     message: "",
-    success: null, // true: success (green), false: error (red)
+    success: null,
     visible: false,
 };
 
@@ -10,7 +16,10 @@ const messageSlice = createSlice({
     name: "message",
     initialState,
     reducers: {
-        showMessage: (state, action) => {
+        showMessage: (
+            state,
+            action: PayloadAction<{ message: string; success: boolean }>
+        ) => {
             state.message = action.payload.message;
             state.success = action.payload.success;
             state.visible = true;

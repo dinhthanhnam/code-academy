@@ -1,11 +1,11 @@
 "use client"; // Đảm bảo chạy phía client vì window không tồn tại trên server
 
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { setDeviceType } from "@/app/redux/slices/deviceSlice";
+import {useAppDispatch} from "@/app/redux/hooks";
 
 export default function DeviceDetector() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const checkDevice = () => {

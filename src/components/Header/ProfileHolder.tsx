@@ -4,14 +4,14 @@ import { FaUserCircle } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
 import { LogoutUser } from "@/utils/service/AuthService";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
 import { showMessage } from "@/app/redux/slices/messageSlice";
+import {useAppDispatch} from "@/app/redux/hooks";
 
 export default function ProfileHolder() {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef(null);
     const router = useRouter();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleLogout = async () => {
         try {
