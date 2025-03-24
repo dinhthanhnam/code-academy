@@ -4,13 +4,13 @@ type SidebarState = {
     isSidebarOpen: boolean;
 };
 
-const initialState: SidebarState = {
-    isSidebarOpen: true, // Mặc định Sidebar đóng trên mobile
+const sidebarInitialState: SidebarState = {
+    isSidebarOpen: true, // Mặc định Sidebar mở (sửa comment nếu cần)
 };
 
 const sidebarSlice = createSlice({
     name: "sidebar",
-    initialState,
+    initialState: sidebarInitialState,
     reducers: {
         toggleSidebar: (state) => {
             state.isSidebarOpen = !state.isSidebarOpen;
@@ -26,3 +26,4 @@ const sidebarSlice = createSlice({
 
 export const { toggleSidebar, closeSidebar, openSidebar } = sidebarSlice.actions;
 export default sidebarSlice.reducer;
+export type { SidebarState };

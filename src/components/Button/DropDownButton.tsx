@@ -1,5 +1,3 @@
-"use client";
-
 import { BiChevronRight } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import { setActiveDropdown } from "@/app/redux/slices/dropdownSlice";

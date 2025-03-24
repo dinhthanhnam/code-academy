@@ -6,6 +6,7 @@ import sidebarReducer from "./slices/sidebarSlice";
 import deviceReducer from "./slices/deviceSlice";
 import loadingReducer from "./slices/loadingSlice";
 import messageReducer from "./slices/messageSlice";
+import personalCourseClassesReducer from "./slices/personalCourseClassesSlice";
 
 export const store = configureStore({
     reducer: {
@@ -16,9 +17,10 @@ export const store = configureStore({
         device: deviceReducer,
         loading: loadingReducer,
         message: messageReducer,
+        personalCourseClasses: personalCourseClassesReducer, // Thêm slice mới
     },
 });
 
-// ✅ Export TypeScript types
+// Export TypeScript types
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

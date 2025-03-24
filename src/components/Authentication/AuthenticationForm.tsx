@@ -5,9 +5,9 @@ import FormContainer from "@/components/Form/FormContainer";
 import CommonButton from "@/components/Common/CommonButton";
 import { AuthenticateUser, RegisterUser } from "@/utils/service/AuthService";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
 import { startLoading, stopLoading } from "@/app/redux/slices/loadingSlice";
 import Link from "next/link";
+import {useAppDispatch} from "@/app/redux/hooks";
 
 // Define the props type for the component
 interface AuthenticationFormProps {
@@ -30,7 +30,7 @@ interface MessageState {
 
 export default function AuthenticationForm({ type }: AuthenticationFormProps) {
     const router = useRouter();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [payload, setPayload] = useState<AuthPayload>({
         name: "",

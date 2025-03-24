@@ -1,22 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface DropDownState {
-    activeDropdown?: String;
+    activeDropdown: string | null; // Sửa từ String thành string
 }
 
-const initialState: DropDownState = {
-    activeDropdown: null, // ID của dropdown đang mở
+const dropdownInitialState: DropDownState = {
+    activeDropdown: null,
 };
 
 const dropdownSlice = createSlice({
     name: "dropdown",
-    initialState,
+    initialState: dropdownInitialState,
     reducers: {
-        setActiveDropdown: (state, action) => {
-            state.activeDropdown = state.activeDropdown === action.payload ? null : action.payload;
+        setActiveDropdown: (state, action: PayloadAction<string | null>) => {
+            state.activeDropdown =
+                state.activeDropdown === action.payload ? null : action.payload;
         },
     },
 });
 
 export const { setActiveDropdown } = dropdownSlice.actions;
 export default dropdownSlice.reducer;
+export type { DropDownState };

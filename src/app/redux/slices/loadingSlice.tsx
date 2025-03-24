@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface LoadingState {
-    isLoading: boolean,
+    isLoading: boolean;
 }
 
-const initialState: LoadingState = {
+const loadingInitialState: LoadingState = {
     isLoading: false, // Trạng thái mặc định
 };
 
 const loadingSlice = createSlice({
     name: "loading",
-    initialState,
+    initialState: loadingInitialState,
     reducers: {
         startLoading: (state) => {
             state.isLoading = true;
@@ -23,3 +23,4 @@ const loadingSlice = createSlice({
 
 export const { startLoading, stopLoading } = loadingSlice.actions;
 export default loadingSlice.reducer;
+export type { LoadingState };

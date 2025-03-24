@@ -6,7 +6,7 @@ type MessageState = {
     visible: boolean;
 };
 
-const initialState: MessageState = {
+const messageInitialState: MessageState = {
     message: "",
     success: null,
     visible: false,
@@ -14,7 +14,7 @@ const initialState: MessageState = {
 
 const messageSlice = createSlice({
     name: "message",
-    initialState,
+    initialState: messageInitialState,
     reducers: {
         showMessage: (
             state,
@@ -32,3 +32,4 @@ const messageSlice = createSlice({
 
 export const { showMessage, hideMessage } = messageSlice.actions;
 export default messageSlice.reducer;
+export type { MessageState };
