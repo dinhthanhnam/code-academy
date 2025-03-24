@@ -17,15 +17,13 @@ import { setActiveNavigationOption } from "@/app/redux/slices/navigationOptionSl
 import { useEffect, useRef } from "react";
 import { closeSidebar } from "@/app/redux/slices/sidebarSlice";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
-import { useLoadPersonalCourseClasses } from "@/app/hooks/useAuth";
+import {useLoadPersonalCourseClasses, useSidebarState} from "@/app/hooks/useAuth";
 
 export default function SideBar() {
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const activeNavigationOption = useAppSelector((state) => state.navigationOption.activeNavigationOption);
-    const isSidebarOpen = useAppSelector((state) => state.sidebar.isSidebarOpen);
-    const isMobile = useAppSelector((state) => state.device.isMobile);
-    const { courses: personalCourseClasses } = useLoadPersonalCourseClasses(); // Load dữ liệu từ Redux
+    const { activeNavigationOption, isSidebarOpen, isMobile } = useSidebarState();
+    const { courses: personalCourseClasses } = useLoadPersonalCourseClasses();
     const sidebarRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

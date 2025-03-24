@@ -1,5 +1,4 @@
 import axios from "axios";
-import AxiosXHRConfig = Axios.AxiosXHRConfig;
 
 // Hàm lấy giá trị của cookie theo tên
 const getCookie = (name) => {

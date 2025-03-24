@@ -31,5 +31,5 @@ const messageSlice = createSlice({
 });
 
 export const { showMessage, hideMessage } = messageSlice.actions;
-export default messageSlice.reducer;
+export const messageReducer = messageSlice.reducer;
 export type { MessageState };

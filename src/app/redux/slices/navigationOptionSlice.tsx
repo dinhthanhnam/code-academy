@@ -20,5 +20,5 @@ const navigationOptionSlice = createSlice({
 });
 
 export const { setActiveNavigationOption } = navigationOptionSlice.actions;
-export default navigationOptionSlice.reducer;
+export const navigationOptionReducer = navigationOptionSlice.reducer;
 export type { NavigationOptionState };

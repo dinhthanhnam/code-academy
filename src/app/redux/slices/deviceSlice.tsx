@@ -19,5 +19,5 @@ const deviceSlice = createSlice({
 });
 
 export const { setDeviceType } = deviceSlice.actions;
-export default deviceSlice.reducer;
+export const deviceReducer = deviceSlice.reducer;
 export type { DeviceState };

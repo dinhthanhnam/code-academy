@@ -2,27 +2,37 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { fetchPersonalCourseClasses } from "@/utils/service/StudentService";
-import { fetchCoursesSuccess, fetchCoursesFailure } from "@/app/redux/slices/personalCourseClassesSlice";
+import { personalCourseClasses } from "@/app/redux/slices/personalCourseClassesSlice";
+import {showMessage} from "@/app/redux/slices/messageSlice";
+
+export const useSidebarState = () => {
+    return {
+        activeNavigationOption: useAppSelector((state) => state.navigationOption.activeNavigationOption),
+        isSidebarOpen: useAppSelector((state) => state.sidebar.isSidebarOpen),
+        isMobile: useAppSelector((state) => state.device.isMobile),
+    };
+};
+
 
 export const useLoadPersonalCourseClasses = () => {
     const dispatch = useAppDispatch();
-    const { courses, error } = useAppSelector((state) => state.personalCourseClasses);
+    const { courses } = useAppSelector((state) => state.personalCourseClasses);
 
     useEffect(() => {
         const loadCourses = async () => {
             try {
                 const coursesData = await fetchPersonalCourseClasses();
-                dispatch(fetchCoursesSuccess(coursesData));
+                dispatch(personalCourseClasses(coursesData));
             } catch (err: any) {
-                dispatch(fetchCoursesFailure(err.message));
+                dispatch(showMessage({message: "Không lấy được khoá học cho sinh viên!", success: true}));
             }
         };
 
         // Chỉ load nếu chưa có dữ liệu và không có lỗi
-        if (!courses.length && !error) {
+        if (!courses.length) {
             loadCourses();
         }
-    }, [dispatch, courses.length, error]);
+    }, [dispatch, courses.length]);
 
-    return { courses, error }; // Bỏ loading
+    return { courses }; // Bỏ loading
 };

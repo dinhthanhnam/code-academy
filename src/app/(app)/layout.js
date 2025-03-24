@@ -2,10 +2,12 @@
 import "@/app/globals.css";
 import SideBar from "@/components/SideBar/SideBar";
 import Header from "@/components/Header/Header";
+import RoleDetector from "@/components/RoleDetector";
 
 export default function AppLayout({ children }) {
     return (
         <div className="flex h-screen overflow-hidden">
+            <RoleDetector />
             <SideBar />
             {/* Main Content */}
             <div className="flex flex-col w-full flex-grow">

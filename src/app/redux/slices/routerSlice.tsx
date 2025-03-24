@@ -19,5 +19,5 @@ const routerSlice = createSlice({
 });
 
 export const { setCurrentRoute } = routerSlice.actions;
-export default routerSlice.reducer;
+export const routerReducer = routerSlice.reducer;
 export type { RouterState };

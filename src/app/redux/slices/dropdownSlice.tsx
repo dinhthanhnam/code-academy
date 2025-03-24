@@ -20,5 +20,5 @@ const dropdownSlice = createSlice({
 });
 
 export const { setActiveDropdown } = dropdownSlice.actions;
-export default dropdownSlice.reducer;
+export const dropdownReducer = dropdownSlice.reducer;
 export type { DropDownState };

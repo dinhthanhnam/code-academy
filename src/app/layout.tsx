@@ -2,7 +2,8 @@ import "@/app/globals.css";
 import { Providers } from "@/app/providers";
 import DeviceDetector from "@/components/DeviceDetector";
 import LoadingBar from "@/components/Loading/LoadingBar";
-import GlobalMessage from "@/components/Global/GlobalMessage"; // Import component mới
+import GlobalMessage from "@/components/Global/GlobalMessage";
+import RoleDetector from "@/components/RoleDetector"; // Import component mới
 
 export default function RootLayout({ children }) {
     return (
@@ -10,7 +11,7 @@ export default function RootLayout({ children }) {
         <body>
         <Providers>
             <DeviceDetector />
-            <LoadingBar /> {/* Hiển thị loading bar nếu cần */}
+            <LoadingBar /> {/* Hiển thị loading bar khi cần */}
             <GlobalMessage />
             {children}
         </Providers>
