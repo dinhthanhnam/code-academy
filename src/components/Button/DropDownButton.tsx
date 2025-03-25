@@ -4,6 +4,7 @@ import { setActiveDropdown } from "@/app/redux/slices/dropdownSlice";
 import { setActiveNavigationOption } from "@/app/redux/slices/navigationOptionSlice";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { IconType } from "react-icons";
+import {useState} from "react";
 
 type DropdownOption = {
     id: string;
@@ -16,6 +17,7 @@ type DropDownButtonProps = {
     icon: IconType;
     iconSize?: number;
     iconStrokeWidth?: number;
+    defaultOptions?: DropdownOption[];
     options?: DropdownOption[];
     chevron?: boolean;
     title: string;
@@ -27,6 +29,7 @@ export default function DropDownButton({
                                            icon: Icon,
                                            iconSize = 20,
                                            iconStrokeWidth = 1,
+                                           defaultOptions = [],
                                            options = [],
                                            chevron = true,
                                            title,
@@ -38,6 +41,7 @@ export default function DropDownButton({
     const activeNavigationOption = useAppSelector((state) => state.navigationOption.activeNavigationOption);
 
     const isActive = activeDropdown === id;
+    const [showAll, setShowAll] = useState<boolean>(false);
 
     const handleButtonClick = () => {
         dispatch(setActiveDropdown(isActive ? null : id));
@@ -53,6 +57,11 @@ export default function DropDownButton({
             router.push(parentLink ? parentLink + optionPath : optionPath);
         }
     };
+
+    // Số lượng option tối đa hiển thị trước khi ấn "Xem thêm"
+    const maxVisibleOptions = 4;
+    const combinedOptions = [...defaultOptions, ...options];
+    const visibleOptions = showAll ? combinedOptions : combinedOptions.slice(0, maxVisibleOptions);
 
     return (
         <div
@@ -77,8 +86,8 @@ export default function DropDownButton({
             </div>
 
             {/* Danh sách các options bên trong dropdown */}
-            <div className={`overflow-hidden transition-[max-height] duration-300 ease-in-out ${isActive ? "max-h-40" : "max-h-0"}`}>
-                {options.map((option) => (
+            <div className={`overflow-hidden transition-[max-height] duration-300 ease-in-out ${isActive ? "max-h-50" : "max-h-0"}`}>
+                {visibleOptions.map((option) => (
                     <div
                         key={option.id}
                         className={`select-none px-6 py-1 rounded-md duration-200 text-sm text-gray-800 transition-all
@@ -91,6 +100,19 @@ export default function DropDownButton({
                         {option.name}
                     </div>
                 ))}
+
+                {/* Nút "Xem thêm" */}
+                {combinedOptions.length > maxVisibleOptions && (
+                    <div
+                        className="select-none px-6 py-1 rounded-md duration-200 text-sm text-blue-500 cursor-pointer hover:bg-gray-200"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setShowAll(!showAll);
+                        }}
+                    >
+                        {showAll ? "Thu gọn" : "Xem thêm"}
+                    </div>
+                )}
             </div>
         </div>
     );

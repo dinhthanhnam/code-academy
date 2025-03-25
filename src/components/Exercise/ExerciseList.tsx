@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-const problems = [
+const exercises = [
     { id: 1, title: "Two Sum", difficulty: "Easy", tags: ["Array", "HashMap"], status: "✅" },
     { id: 2, title: "Add Two Numbers", difficulty: "Medium", tags: ["Linked List", "Math"], status: "🔲" },
     { id: 3, title: "Longest Substring Without Repeating Characters", difficulty: "Medium", tags: ["String", "Sliding Window"], status: "🔲" },
@@ -24,32 +24,32 @@ export default function ExerciseList() {
     const [selected, setSelected] = useState(null);
 
     return (
-        <div className="problem-container p-6 flex-grow overflow-auto">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Problem List</h2>
+        <div className="exercise-container p-6 flex-grow overflow-auto">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">exercise List</h2>
             <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                     <thead>
-                    <tr className="problem-header">
-                        <th className="problem-cell text-left">Status</th>
-                        <th className="problem-cell text-left">Title</th>
-                        <th className="problem-cell text-left">Difficulty</th>
-                        <th className="problem-cell text-left">Tags</th>
+                    <tr className="exercise-header">
+                        <th className="exercise-cell text-left">Status</th>
+                        <th className="exercise-cell text-left">Title</th>
+                        <th className="exercise-cell text-left">Difficulty</th>
+                        <th className="exercise-cell text-left">Tags</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {problems.map((problem) => (
+                    {exercises.map((exercise) => (
                         <tr
-                            key={problem.id}
-                            className={`problem-row ${selected === problem.id ? "bg-primary2" : "hover:bg-gray-50"}`}
-                            onClick={() => setSelected(problem.id)}
+                            key={exercise.id}
+                            className={`exercise-row ${selected === exercise.id ? "bg-primary2" : "hover:bg-gray-50"}`}
+                            onClick={() => setSelected(exercise.id)}
                         >
-                            <td className="problem-cell text-lg">{problem.status}</td>
-                            <td className="problem-cell font-medium text-blue-600 hover:underline">{problem.title}</td>
-                            <td className={`problem-cell ${problem.difficulty === "Easy" ? "text-green-600" : problem.difficulty === "Medium" ? "text-yellow-600" : "text-red-600"}`}>
-                                {problem.difficulty}
+                            <td className="exercise-cell text-lg">{exercise.status}</td>
+                            <td className="exercise-cell font-medium text-blue-600 hover:underline">{exercise.title}</td>
+                            <td className={`exercise-cell ${exercise.difficulty === "Easy" ? "text-green-600" : exercise.difficulty === "Medium" ? "text-yellow-600" : "text-red-600"}`}>
+                                {exercise.difficulty}
                             </td>
-                            <td className="problem-cell">
-                                {problem.tags.map((tag, index) => (
+                            <td className="exercise-cell">
+                                {exercise.tags.map((tag, index) => (
                                     <span key={index} className="inline-block bg-gray-200 text-xs px-2 py-1 rounded-full mr-1">
                       {tag}
                     </span>

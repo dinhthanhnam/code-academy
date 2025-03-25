@@ -17,14 +17,16 @@ import { setActiveNavigationOption } from "@/app/redux/slices/navigationOptionSl
 import { useEffect, useRef } from "react";
 import { closeSidebar } from "@/app/redux/slices/sidebarSlice";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
-import {useLoadPersonalCourseClasses, useSidebarState} from "@/app/hooks/useAuth";
+import {useLoadPersonalCourseClasses, useRole, useSidebarState} from "@/app/hooks/useAuth";
+import StudentSideBarContent from "@/components/SideBar/StudentSideBarContent";
+import AdminSideBarContent from "@/components/SideBar/AdminSideBarContent";
 
 export default function SideBar() {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { activeNavigationOption, isSidebarOpen, isMobile } = useSidebarState();
-    const { courses: personalCourseClasses } = useLoadPersonalCourseClasses();
     const sidebarRef = useRef<HTMLDivElement>(null);
+    const {isStudent, isAdmin, isLecturer} = useRole();
 
     useEffect(() => {
         if (isMobile && isSidebarOpen) {
@@ -38,13 +40,7 @@ export default function SideBar() {
         }
     }, [isMobile, isSidebarOpen, dispatch]);
 
-    const staticOptionsData = {
-        social: [
-            { id: "chatbotai", name: "Chatbox AI", path: "/chatbot" },
-            { id: "chatboxk24cntta", name: "Chatbox - K24CNTTA", path: "/chatbox-k24cntta" },
-            { id: "icedteaupontheacademy", name: "Trà đá học viện", path: "/iced-tea-upon-the-academy" },
-        ],
-    };
+
 
     return (
         <div
@@ -63,61 +59,15 @@ export default function SideBar() {
                 <SideBarHeader />
 
                 <div className="flex flex-col flex-grow gap-4 pt-8">
-                    <SideBarSection sectionName="Nền tảng">
-                        <DropDownButton
-                            id="social"
-                            title="Cộng đồng"
-                            icon={TbSocial}
-                            iconSize={22}
-                            iconStrokeWidth={1.4}
-                            parentLink="/social"
-                            options={staticOptionsData.social}
-                        />
-                        <DropDownButton
-                            id="courses"
-                            title="Khoá học"
-                            icon={HiOutlineClipboardDocument}
-                            iconSize={22}
-                            parentLink="/exercises"
-                            iconStrokeWidth={1.5}
-                            options={personalCourseClasses} // Dùng dữ liệu động từ Redux
-                        />
-                        <DropDownButton
-                            id="halloffame"
-                            title="Sảnh danh vọng"
-                            icon={SiHtmlacademy}
-                            iconSize={20}
-                            parentLink="/hall-of-fame"
-                            iconStrokeWidth={0.7}
-                        />
-                    </SideBarSection>
-
-                    <SideBarSection sectionName="Cá nhân">
-                        <DropDownButton
-                            id="project"
-                            title="Dự án"
-                            icon={LuProjector}
-                            iconSize={24}
-                            iconStrokeWidth={1.5}
-                            parentLink="/project"
-                        />
-                        <DropDownButton
-                            id="pendingexercises"
-                            title="Bài tập đang chờ"
-                            icon={HiOutlineClipboardDocumentList}
-                            iconSize={22}
-                            iconStrokeWidth={1.5}
-                            parentLink="/pending-exercises"
-                        />
-                        <DropDownButton
-                            id="archivedexercises"
-                            title="Bài tập đã lưu"
-                            icon={HiOutlineClipboardDocumentCheck}
-                            iconSize={22}
-                            iconStrokeWidth={1.5}
-                            parentLink="/archived-exercises"
-                        />
-                    </SideBarSection>
+                    {isStudent && (
+                        <StudentSideBarContent />
+                    )}
+                    {isLecturer && (
+                        <></>
+                    )}
+                    {isAdmin && (
+                        <AdminSideBarContent />
+                    )}
 
                     <div className="mt-auto flex flex-col items-center gap-2 pb-4">
                         <div

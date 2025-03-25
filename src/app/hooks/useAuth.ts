@@ -13,6 +13,13 @@ export const useSidebarState = () => {
     };
 };
 
+export const useRole = () => {
+    return {
+        isStudent: useAppSelector((state) => state.role.isStudent),
+        isAdmin: useAppSelector((state) => state.role.isAdmin),
+        isLecturer: useAppSelector((state) => state.role.isLecturer),
+    };
+};
 
 export const useLoadPersonalCourseClasses = () => {
     const dispatch = useAppDispatch();
