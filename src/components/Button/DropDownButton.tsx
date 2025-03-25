@@ -104,13 +104,13 @@ export default function DropDownButton({
                 {/* Nút "Xem thêm" */}
                 {combinedOptions.length > maxVisibleOptions && (
                     <div
-                        className="select-none px-6 py-1 rounded-md duration-200 text-sm text-blue-500 cursor-pointer hover:bg-gray-200"
+                        className="select-none px-6 py-1 rounded-md duration-200 text-sm text-blue-700 cursor-pointer hover:bg-gray-200"
                         onClick={(e) => {
                             e.stopPropagation();
                             setShowAll(!showAll);
                         }}
                     >
-                        {showAll ? "Thu gọn" : "Xem thêm"}
+                        {showAll ? "Thu gọn" : "Xem thêm..."}
                     </div>
                 )}
             </div>

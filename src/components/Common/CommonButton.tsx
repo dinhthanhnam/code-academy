@@ -1,4 +1,3 @@
-"use client";
 import {FormEvent} from "react";
 
 interface CommonButtonProps {
@@ -10,7 +9,7 @@ export default function CommonButton({ label, onClickAction }: CommonButtonProps
     return (
         <button
             onClick={onClickAction} // Cập nhật tên prop ở đây
-            className="bg-gray-50 rounded-md border border-secondary px-4 py-2 inline-flex items-center hover:bg-background duration-200"
+            className="bg-gray-50 rounded-md border border-secondary px-4 py-2 inline-flex items-center hover:bg-primary2 duration-200"
         >
             {label}
         </button>

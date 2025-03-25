@@ -53,8 +53,9 @@ export default function AuthenticationForm({ type }: AuthenticationFormProps) {
 
         try {
             dispatch(startLoading());
-            await AuthenticateUser({ email: payload.email, password: payload.password });
-            setMessage({ message: "Đăng nhập thành công!", status: true });
+            const res = await AuthenticateUser({ email: payload.email, password: payload.password });
+
+            setMessage({ message: res.message, status: res.success });
             setTimeout(() => {
                 dispatch(stopLoading());
                 router.push("/");
@@ -80,16 +81,13 @@ export default function AuthenticationForm({ type }: AuthenticationFormProps) {
 
         try {
             dispatch(startLoading());
-            const registerRequest = await RegisterUser({
+            const res = await RegisterUser({
                 name: payload.name,
                 email: payload.email,
                 password: payload.password,
                 password_confirmation: payload.password_confirmation,
             });
-            if (registerRequest) {
-                setMessage({ message: "Đăng ký thất bại!", status: true });
-            }
-            setMessage({ message: "Đăng ký thành công! Chuyển hướng...", status: true });
+            setMessage({ message: res.message, status: res.success });
             setTimeout(() => {
                 dispatch(stopLoading());
                 router.push("/"); // Redirect về /login thay vì / để người dùng đăng nhập sau khi đăng ký

@@ -2,7 +2,7 @@ import SideBarSection from "@/components/SideBar/SideBarSection";
 import DropDownButton from "@/components/Button/DropDownButton";
 import {TbSocial} from "react-icons/tb";
 
-export default function AdminSideBarContent() {
+export default function LecturerSideBarContent() {
 
     const staticOptionsData = {
         management: [

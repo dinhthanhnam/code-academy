@@ -3,7 +3,7 @@ import { ChangeEvent } from "react";
 // Define the props interface for FormInput
 interface FormInputProps {
     type: "text" | "email" | "password" | "number" | "tel" | "url"; // Add more input types as needed
-    label: string;
+    label?: string;
     value?: string; // Optional, since it might not always be controlled
     name: string;
     placeholder?: string; // Optional
@@ -20,7 +20,9 @@ export default function FormInput({
                                   }: FormInputProps) {
     return (
         <div className="flex flex-col p-2">
-            <label className="block font-bold justify-self-start">{label}</label>
+            {label && (
+                <label className="block font-bold justify-self-start">{label}</label>
+            )}
             <input
                 title={`auth-form-input-${label}`}
                 name={name}

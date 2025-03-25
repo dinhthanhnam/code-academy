@@ -1,25 +1,18 @@
-// @/components/SideBar/SideBar.tsx
-import { SiHtmlacademy } from "react-icons/si";
-import { TbHelp, TbSocial } from "react-icons/tb";
-import DropDownButton from "@/components/Button/DropDownButton";
-import { LuProjector } from "react-icons/lu";
+import { TbHelp } from "react-icons/tb";
 import SideBarHeader from "@/components/SideBar/SideBarHeader";
-import {
-    HiOutlineClipboardDocument,
-    HiOutlineClipboardDocumentCheck,
-    HiOutlineClipboardDocumentList,
-} from "react-icons/hi2";
-import SideBarSection from "@/components/SideBar/SideBarSection";
 import { IoSettingsOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { setActiveDropdown } from "@/app/redux/slices/dropdownSlice";
 import { setActiveNavigationOption } from "@/app/redux/slices/navigationOptionSlice";
-import { useEffect, useRef } from "react";
+import {useEffect, useRef } from "react";
 import { closeSidebar } from "@/app/redux/slices/sidebarSlice";
-import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
-import {useLoadPersonalCourseClasses, useRole, useSidebarState} from "@/app/hooks/useAuth";
-import StudentSideBarContent from "@/components/SideBar/StudentSideBarContent";
-import AdminSideBarContent from "@/components/SideBar/AdminSideBarContent";
+import { useAppDispatch } from "@/app/redux/hooks";
+import { useRole, useSidebarState} from "@/app/hooks/useAuth";
+import dynamic from "next/dynamic";
+
+const StudentSideBarContent = dynamic(() => import("@/components/SideBar/StudentSideBarContent"));
+const AdminSideBarContent = dynamic(() => import("@/components/SideBar/AdminSideBarContent"));
+const LecturerSideBarContent = dynamic(() => import("@/components/SideBar/LecturerSideBarContent"));
 
 export default function SideBar() {
     const dispatch = useAppDispatch();
@@ -27,6 +20,7 @@ export default function SideBar() {
     const { activeNavigationOption, isSidebarOpen, isMobile } = useSidebarState();
     const sidebarRef = useRef<HTMLDivElement>(null);
     const {isStudent, isAdmin, isLecturer} = useRole();
+
 
     useEffect(() => {
         if (isMobile && isSidebarOpen) {
@@ -40,7 +34,7 @@ export default function SideBar() {
         }
     }, [isMobile, isSidebarOpen, dispatch]);
 
-
+    const SidebarContent = isStudent ? <StudentSideBarContent /> : isAdmin ? <AdminSideBarContent /> : isLecturer ? <LecturerSideBarContent /> : null;
 
     return (
         <div
@@ -59,15 +53,8 @@ export default function SideBar() {
                 <SideBarHeader />
 
                 <div className="flex flex-col flex-grow gap-4 pt-8">
-                    {isStudent && (
-                        <StudentSideBarContent />
-                    )}
-                    {isLecturer && (
-                        <></>
-                    )}
-                    {isAdmin && (
-                        <AdminSideBarContent />
-                    )}
+
+                    {SidebarContent}
 
                     <div className="mt-auto flex flex-col items-center gap-2 pb-4">
                         <div
