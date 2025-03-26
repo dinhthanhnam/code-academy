@@ -9,7 +9,6 @@ export const useSidebarState = () => {
     return {
         activeNavigationOption: useAppSelector((state) => state.navigationOption.activeNavigationOption),
         isSidebarOpen: useAppSelector((state) => state.sidebar.isSidebarOpen),
-        isMobile: useAppSelector((state) => state.device.isMobile),
     };
 };
 
@@ -31,7 +30,7 @@ export const useLoadPersonalCourseClasses = () => {
                 const coursesData = await fetchPersonalCourseClasses();
                 dispatch(personalCourseClasses(coursesData));
             } catch (err: any) {
-                dispatch(showMessage({message: "Không lấy được khoá học cho sinh viên!", success: true}));
+                dispatch(showMessage({message: "Không lấy được khoá học cho sinh viên!", success: false}));
             }
         };
 

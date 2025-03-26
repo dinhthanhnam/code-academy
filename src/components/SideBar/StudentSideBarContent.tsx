@@ -16,10 +16,6 @@ export default function StudentSideBarContent() {
         social: [
             { id: "chatbotai", name: "Chatbox AI", path: "/chatbot" },
             { id: "icedteaupontheacademy", name: "Trà đá học viện", path: "/iced-tea-upon-the-academy" },
-            { id: "abc", name: "Chatbox AI", path: "/chatbot1" },
-            { id: "abcd", name: "Trà đá học viện", path: "/iced-tea-upon-the-academy1" },
-            { id: "abcde", name: "Chatbox AI", path: "/chatbot2" },
-            { id: "abcede", name: "Trà đá học viện", path: "/iced-tea-upon-the-academy2" },
         ],
         exercise: [
             { id: "irregular", name: "Bài tập tự do", path: "/irregular" },

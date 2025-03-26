@@ -6,15 +6,17 @@ import RoleDetector from "@/components/RoleDetector";
 
 export default function AppLayout({ children }) {
     return (
-        <div className="flex h-screen overflow-hidden">
+        <div>
             <RoleDetector />
-            <SideBar />
-            {/* Main Content */}
-            <div className="flex flex-col w-full flex-grow">
-                <Header />
-                {/* Container chứa children */}
-                <div className="flex-grow overflow-auto bg-gray-100 p-2 pt-4 flex flex-col md:flex-row gap-2">
-                    {children}
+            <div className="flex h-screen overflow-hidden">
+                <SideBar />
+                {/* Main Content */}
+                <div className="flex flex-col w-full flex-grow">
+                    <Header />
+                    {/* Container chứa children */}
+                    <div className="flex-grow overflow-auto bg-gray-100 p-2 pt-4 flex flex-col md:flex-row gap-2">
+                        {children}
+                    </div>
                 </div>
             </div>
         </div>

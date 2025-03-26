@@ -9,6 +9,7 @@ import { closeSidebar } from "@/app/redux/slices/sidebarSlice";
 import { useAppDispatch } from "@/app/redux/hooks";
 import { useRole, useSidebarState} from "@/app/hooks/useAuth";
 import dynamic from "next/dynamic";
+import {useDevice} from "@/app/hooks/useDevice";
 
 const StudentSideBarContent = dynamic(() => import("@/components/SideBar/StudentSideBarContent"));
 const AdminSideBarContent = dynamic(() => import("@/components/SideBar/AdminSideBarContent"));
@@ -17,7 +18,8 @@ const LecturerSideBarContent = dynamic(() => import("@/components/SideBar/Lectur
 export default function SideBar() {
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const { activeNavigationOption, isSidebarOpen, isMobile } = useSidebarState();
+    const { activeNavigationOption, isSidebarOpen } = useSidebarState();
+    const { isMobile } = useDevice();
     const sidebarRef = useRef<HTMLDivElement>(null);
     const {isStudent, isAdmin, isLecturer} = useRole();
 
