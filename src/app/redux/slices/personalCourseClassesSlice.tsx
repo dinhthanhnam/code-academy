@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface CourseClass {
+interface PersonalCourseClass {
     id: string;
     name: string;
     path: string;
 }
 
 interface PersonalCourseClassesState {
-    courses: CourseClass[];
+    courses: PersonalCourseClass[];
 }
 
 const personalCourseClassesInitialState: PersonalCourseClassesState = {
@@ -18,7 +18,7 @@ const personalCourseClassesSlice = createSlice({
     name: "personalCourseClasses",
     initialState: personalCourseClassesInitialState,
     reducers: {
-        personalCourseClasses(state, action: PayloadAction<CourseClass[]>) {
+        personalCourseClasses(state, action: PayloadAction<PersonalCourseClass[]>) {
             state.courses = action.payload;
         },
     },
@@ -26,4 +26,4 @@ const personalCourseClassesSlice = createSlice({
 
 export const { personalCourseClasses } = personalCourseClassesSlice.actions;
 export const personalCourseClassesReducer = personalCourseClassesSlice.reducer;
-export type { PersonalCourseClassesState, CourseClass };
+export type { PersonalCourseClassesState, PersonalCourseClass };

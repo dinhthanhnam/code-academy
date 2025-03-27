@@ -4,13 +4,14 @@ import { Plus } from "lucide-react";
 import { useDevice } from "@/app/hooks/useDevice";
 import { Course } from "@/types/Course";
 import CommonButton2 from "@/components/Common/CommonButton2";
-import CommonRow from "@/components/Common/CommonRow";
+import CourseRow from "@/components/Row/CourseRow";
 import CommonSearch from "@/components/Common/CommonSearch";
 import {fetchCourseClassesByCourse, getCourses} from "@/utils/service/CourseService";
 import { PaginatedCourse } from "@/types/PaginatedCourse";
 import {SyncLoader} from "react-spinners";
 import CourseClassContainer from "@/components/Admin/Course/CourseClassContainer";
 import {PaginatedCourseClass} from "@/types/PaginatedCourseClass";
+import CommonPagination from "@/components/Pagination/CommonPagination";
 
 export default function AdminManagementCoursePage() {
     const [courses, setCourses] = useState<PaginatedCourse | null>(null);
@@ -26,14 +27,14 @@ export default function AdminManagementCoursePage() {
         setLoading(false);
     };
 
-    useEffect(() => {
-        const fetchCourses = async () => {
-            setLoading(true);
-            const data = await getCourses();
-            setCourses(data);
-            setLoading(false);
-        };
+    const fetchCourses = async (page = 1) => {
+        setLoading(true);
+        const data = await getCourses(page);
+        setCourses(data);
+        setLoading(false);
+    };
 
+    useEffect(() => {
         fetchCourses();
     }, []);
 
@@ -58,15 +59,21 @@ export default function AdminManagementCoursePage() {
                                 <SyncLoader color={`gray`} size={8} margin={4} speedMultiplier={0.6} />
                             </div>
                         ) : courses?.data ? (
-                            courses.data.map((course) => (
-                                <div key={course.id} className={`py-1`}>
-                                    <CommonRow
-                                        course={course}
-                                        selected={selectedCourse?.id === course.id}
-                                        onSelect={() => setSelectedCourse(course)}
-                                    />
-                                </div>
-                            ))
+                            <div>
+                                {
+                                    courses.data.map((course) => (
+                                        <div key={course.id} className={`py-1`}>
+                                            <CourseRow
+                                                course={course}
+                                                selected={selectedCourse?.id === course.id}
+                                                onSelect={() => setSelectedCourse(course)}
+                                            />
+                                        </div>
+                                    ))
+                                }
+                                <CommonPagination meta={courses.meta} onPageChange={fetchCourses} />
+                            </div>
+
                         ) : (
                             <p className="text-center text-gray-500">Không có dữ liệu.</p> // 🔹 Thông báo khi không có dữ liệu
                         )}
@@ -76,11 +83,7 @@ export default function AdminManagementCoursePage() {
 
             {/* Course Class List */}
             <div className={`bg-white p-2 rounded-lg shadow flex border border-secondary ${isMobile ? "w-full" : "flex-grow"}`}>
-                {selectedCourse ? (
-                    <CourseClassContainer parentCourse={selectedCourse} />
-                ) : (
-                    <p className="text-gray-500 text-lg">Chọn một học phần để xem danh sách lớp học phần</p>
-                )}
+                <CourseClassContainer parentCourse={selectedCourse ? selectedCourse : null} />
             </div>
         </div>
     );

@@ -12,9 +12,9 @@ export const getCourses = async (page = 1) => {
     }
 };
 
-export const fetchCourseClassesByCourse = async  (course_id: any) => {
+export const fetchCourseClassesByCourse = async  (course_id: any, page = 1) => {
     try {
-        const res = await api.get<PaginatedCourseClass>(`/course/course-classes/${course_id}`)
+        const res = await api.get<PaginatedCourseClass>(`/course/course-classes/${course_id}?page=${page}`)
         return res.data;
     } catch (error) {
         console.log(error);

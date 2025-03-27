@@ -9,12 +9,12 @@ export interface PaginatedCourseClass {
         next: string | null;
     };
     meta: {
-        current_page: string;
-        from: string;
-        last_page: string;
+        current_page: number;
+        from: number;
+        last_page: number;
         links: object[];
         path: string;
-        per_page: string;
+        per_page: number;
         to: string;
         total: string;
     };

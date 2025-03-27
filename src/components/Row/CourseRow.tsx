@@ -1,13 +1,13 @@
 import {Edit, Trash2} from "lucide-react";
 import {Course} from "@/types/Course";
 
-interface CommonRowProps {
+interface CourseRowProps {
     course: Course;
     onSelect: () => void;
     selected?: boolean;
 }
 
-export default function CommonRow({course, onSelect, selected}: CommonRowProps ) {
+export default function CourseRow({course, onSelect, selected}: CourseRowProps ) {
     return (
         <div
             onClick={onSelect}
