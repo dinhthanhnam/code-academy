@@ -13,8 +13,8 @@ export default function CourseRow({course, onSelect, selected}: CourseRowProps )
             onClick={onSelect}
             className={`p-2 flex justify-between items-center bg-gray-100 rounded cursor-pointer ${selected ? `bg-primary2` :`hover:bg-primary2`}`}
         >
-            <div>
-                <p className="font-bold text-sm">{course.name}</p>
+            <div className={`flex-1 min-w-0 p-1`}>
+                <p className="font-bold text-sm truncate">{course.name}</p>
                 <p className="text-sm text-gray-500">{course.course_code}</p>
             </div>
             <div className="flex gap-2">

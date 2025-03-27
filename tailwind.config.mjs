@@ -23,6 +23,7 @@ export default {
         sans: ["Nunito", "sans-serif"], // Đổi font mặc định
       },
       fontSize: {
+        ssm: "13px",
         base: "16px",
         lg: "18px",
         xl: "20px",

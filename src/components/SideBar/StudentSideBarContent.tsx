@@ -45,7 +45,7 @@ export default function StudentSideBarContent() {
                 />
                 <DropDownButton
                     id="courses"
-                    title="Khoá học"
+                    title="Bài tập"
                     icon={HiOutlineClipboardDocument}
                     iconSize={22}
                     activePath="/exercises"

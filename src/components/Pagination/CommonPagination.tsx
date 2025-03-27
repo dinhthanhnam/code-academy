@@ -39,26 +39,26 @@ export default function CommonPagination ({ meta, onPageChange } : PaginationPro
             </button>
 
             {/* Hiển thị số trang (Chỉ hiển thị 5 trang gần kề) */}
-            {Array.from(
-                { length: Math.min(5, last_page) },
-                (_, index) => {
-                    let page = current_page - 2 + index;
-                    if (page < 1) page = index + 1;
-                    if (page > last_page) return null;
+            {Array.from({ length: Math.min(5, last_page) }, (_, index) => {
+                let startPage = Math.max(1, current_page - 2);
+                let endPage = Math.min(last_page, startPage + 4); // Đảm bảo không vượt quá last_page
+                startPage = Math.max(1, endPage - 4); // Đảm bảo hiển thị đủ 5 trang nếu có thể
 
-                    return (
-                        <button
-                            key={page}
-                            onClick={() => onPageChange(page)}
-                            className={`text-sm px-3 py-1.5 border rounded ${
-                                page === current_page ? "bg-primary text-white" : "hover:bg-primary2"
-                            }`}
-                        >
-                            {page}
-                        </button>
-                    );
-                }
-            )}
+                let page = startPage + index;
+                if (page > last_page) return null; // Tránh tạo ra trang không hợp lệ
+
+                return (
+                    <button
+                        key={page}
+                        onClick={() => onPageChange(page)}
+                        className={`text-sm px-3 py-1.5 border rounded ${
+                            page === current_page ? "bg-primary text-white" : "hover:bg-primary2"
+                        }`}
+                    >
+                        {page}
+                    </button>
+                );
+            })}
 
             {/* Nút "Tiếp" */}
             <button

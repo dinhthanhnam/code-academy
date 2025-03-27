@@ -2,7 +2,7 @@
 import { useState, FormEvent } from "react";
 import FormInput from "@/components/Form/FormInput";
 import FormContainer from "@/components/Form/FormContainer";
-import CommonButton from "@/components/Common/CommonButton";
+import AuthenticationFormButton from "@/components/Common/AuthenticationFormButton";
 import { AuthenticateUser, RegisterUser } from "@/utils/service/AuthService";
 import { useRouter } from "next/navigation";
 import { startLoading, stopLoading } from "@/app/redux/slices/loadingSlice";
@@ -167,7 +167,7 @@ export default function AuthenticationForm({ type }: AuthenticationFormProps) {
               {type === "login" ? "Chưa có tài khoản?" : "Đã có tài khoản?"}
             </span>
                     </Link>
-                    <CommonButton label="Xác nhận" onClickAction={handleSubmit} />
+                    <AuthenticationFormButton label="Xác nhận" onClickAction={handleSubmit} />
                 </div>
             </FormContainer>
         </div>

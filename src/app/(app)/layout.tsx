@@ -3,13 +3,18 @@ import "@/app/globals.css";
 import SideBar from "@/components/SideBar/SideBar";
 import Header from "@/components/Header/Header";
 import RoleDetector from "@/components/RoleDetector";
+import {useState} from "react";
 
 export default function AppLayout({ children }) {
+    const [roleLoaded, setRoleLoaded] = useState<boolean | null>(false);
     return (
         <div>
-            <RoleDetector />
+            <RoleDetector loaded={() => setRoleLoaded(true)}/>
+            {}
             <div className="flex h-screen overflow-hidden">
-                <SideBar />
+                {roleLoaded && (
+                    <SideBar />
+                )}
                 {/* Main Content */}
                 <div className="flex flex-col w-full flex-grow">
                     <Header />

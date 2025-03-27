@@ -1,9 +1,10 @@
 // @/app/hooks/useAuth.ts
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
-import { fetchPersonalCourseClasses } from "@/utils/service/StudentService";
+import {fetchLecturerCourseClasses, fetchPersonalCourseClasses} from "@/utils/service/StudentService";
 import { personalCourseClasses } from "@/app/redux/slices/personalCourseClassesSlice";
 import {showMessage} from "@/app/redux/slices/messageSlice";
+import {lecturerCourseClasses} from "@/app/redux/slices/lecturerCourseClassesSlice";
 
 export const useSidebarState = () => {
     return {
@@ -29,6 +30,29 @@ export const useLoadPersonalCourseClasses = () => {
             try {
                 const coursesData = await fetchPersonalCourseClasses();
                 dispatch(personalCourseClasses(coursesData));
+            } catch (err: any) {
+                dispatch(showMessage({message: "Không lấy được khoá học cho sinh viên!", success: false}));
+            }
+        };
+
+        // Chỉ load nếu chưa có dữ liệu và không có lỗi
+        if (!courses.length) {
+            loadCourses();
+        }
+    }, [dispatch, courses.length]);
+
+    return { courses }; // Bỏ loading
+};
+
+export const useLoadLecturerCourseClasses = () => {
+    const dispatch = useAppDispatch();
+    const { courses } = useAppSelector((state) => state.lecturerCourseClasses);
+
+    useEffect(() => {
+        const loadCourses = async () => {
+            try {
+                const coursesData = await fetchLecturerCourseClasses();
+                dispatch(lecturerCourseClasses(coursesData));
             } catch (err: any) {
                 dispatch(showMessage({message: "Không lấy được khoá học cho sinh viên!", success: false}));
             }

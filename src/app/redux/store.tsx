@@ -8,6 +8,7 @@ import { roleReducer } from "./slices/roleSlice";
 import { loadingReducer } from "./slices/loadingSlice";
 import { messageReducer } from "./slices/messageSlice";
 import { personalCourseClassesReducer } from "./slices/personalCourseClassesSlice";
+import {lecturerCourseClassesReducer} from "@/app/redux/slices/lecturerCourseClassesSlice";
 
 export const store = configureStore({
     reducer: {
@@ -19,7 +20,8 @@ export const store = configureStore({
         role: roleReducer,
         loading: loadingReducer,
         message: messageReducer,
-        personalCourseClasses: personalCourseClassesReducer, // Thêm slice mới
+        personalCourseClasses: personalCourseClassesReducer,
+        lecturerCourseClasses: lecturerCourseClassesReducer,
     },
 });
 
