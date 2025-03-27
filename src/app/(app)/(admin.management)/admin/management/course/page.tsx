@@ -1,71 +1,87 @@
 "use client";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import { useDevice } from "@/app/hooks/useDevice";
 import { Course } from "@/types/Course";
 import CommonButton2 from "@/components/Common/CommonButton2";
 import CommonRow from "@/components/Common/CommonRow";
 import CommonSearch from "@/components/Common/CommonSearch";
-import { getCourses} from "@/utils/service/CourseService";
-import {CourseResponse} from "@/types/CourseResponse";
+import {fetchCourseClassesByCourse, getCourses} from "@/utils/service/CourseService";
+import { PaginatedCourse } from "@/types/PaginatedCourse";
+import {SyncLoader} from "react-spinners";
+import CourseClassContainer from "@/components/Admin/Course/CourseClassContainer";
+import {PaginatedCourseClass} from "@/types/PaginatedCourseClass";
 
 export default function AdminManagementCoursePage() {
-    const [courses, setCourses] = useState<CourseResponse | null>(null);
+    const [courses, setCourses] = useState<PaginatedCourse | null>(null);
     const [search, setSearch] = useState<string | null>(null);
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+    const [loading, setLoading] = useState<boolean>(true); // 🔹 Thêm state loading
     const { isMobile } = useDevice();
+
     const handleSubmit = async () => {
-       const res = await getCourses();
-       setCourses(res.data);
-    }
+        setLoading(true);
+        const data = await getCourses();
+        setCourses(data);
+        setLoading(false);
+    };
 
     useEffect(() => {
         const fetchCourses = async () => {
-            const res = await getCourses(); // Gọi API
-            setCourses(res.data); // Cập nhật state
+            setLoading(true);
+            const data = await getCourses();
+            setCourses(data);
+            setLoading(false);
         };
 
         fetchCourses();
-    }, []); // Dependency array rỗng để chỉ chạy một lần khi component mount
-
-
+    }, []);
 
     return (
         <div className={`flex ${isMobile ? "flex-col" : "flex-grow"} gap-2`}>
             {/* Course List */}
-            <div className={`bg-white p-2 rounded-lg shadow border border-secondary ${isMobile ? "w-full" : "w-1/3"}`}>
+            <div className={`bg-white p-2 rounded-lg shadow border min-w-max border-secondary ${isMobile ? "w-full" : "w-1/3"}`}>
                 <div className={`flex flex-row gap-2 p-2 justify-between items-center`}>
                     <CommonSearch
+                        key={'search_course'}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onSubmit={handleSubmit}
                     />
                     <CommonButton2 onClick={() => console.log("Thêm học phần")} icon={Plus} label="Thêm học phần" />
                 </div>
-                <div>
-                    {courses?.courses?.map((course) => (
-                        <CommonRow
-                            key={course.id}
-                            course={course}
-                            onSelect={() => setSelectedCourse(course)}
-                        />
-                    ))}
+
+                <div className={`p-2`}>
+                    <div className={`border border-secondary p-2 rounded-md gap-2`}>
+                        {loading ? (
+                            <div className={`items-center justify-items-center`}>
+                                <SyncLoader color={`gray`} size={8} margin={4} speedMultiplier={0.6} />
+                            </div>
+                        ) : courses?.data ? (
+                            courses.data.map((course) => (
+                                <div key={course.id} className={`py-1`}>
+                                    <CommonRow
+                                        course={course}
+                                        selected={selectedCourse?.id === course.id}
+                                        onSelect={() => setSelectedCourse(course)}
+                                    />
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-center text-gray-500">Không có dữ liệu.</p> // 🔹 Thông báo khi không có dữ liệu
+                        )}
+                    </div>
                 </div>
             </div>
 
             {/* Course Class List */}
-            <div className={`bg-white p-4 rounded-lg shadow flex items-center justify-center border border-secondary ${isMobile ? "w-full" : "w-2/3"}`}>
+            <div className={`bg-white p-2 rounded-lg shadow flex border border-secondary ${isMobile ? "w-full" : "flex-grow"}`}>
                 {selectedCourse ? (
-                    <CourseClassContainer course={selectedCourse} />
+                    <CourseClassContainer parentCourse={selectedCourse} />
                 ) : (
                     <p className="text-gray-500 text-lg">Chọn một học phần để xem danh sách lớp học phần</p>
                 )}
             </div>
         </div>
     );
-}
-
-// Component CourseClass (placeholder)
-function CourseClassContainer({ course }: { course: Course }) {
-    return <p className="text-lg font-medium">Danh sách lớp của {course.name} sẽ hiển thị ở đây.</p>;
 }

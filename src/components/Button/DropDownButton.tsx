@@ -1,9 +1,9 @@
-import { BiChevronRight } from "react-icons/bi";
-import { useRouter } from "next/navigation";
-import { setActiveDropdown } from "@/app/redux/slices/dropdownSlice";
-import { setActiveNavigationOption } from "@/app/redux/slices/navigationOptionSlice";
-import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
-import { IconType } from "react-icons";
+import {BiChevronRight} from "react-icons/bi";
+import {useRouter} from "next/navigation";
+import {setActiveDropdown} from "@/app/redux/slices/dropdownSlice";
+import {setActiveNavigationOption} from "@/app/redux/slices/navigationOptionSlice";
+import {useAppDispatch, useAppSelector} from "@/app/redux/hooks";
+import {IconType} from "react-icons";
 import {useState} from "react";
 
 type DropdownOption = {
@@ -21,7 +21,8 @@ type DropDownButtonProps = {
     options?: DropdownOption[];
     chevron?: boolean;
     title: string;
-    parentLink?: string;
+    activePath?: string;
+    referencePath?: string;
 };
 
 export default function DropDownButton({
@@ -33,7 +34,8 @@ export default function DropDownButton({
                                            options = [],
                                            chevron = true,
                                            title,
-                                           parentLink,
+                                           activePath,
+                                           referencePath,
                                        }: DropDownButtonProps) {
     const dispatch = useAppDispatch();
     const router = useRouter();
@@ -46,15 +48,15 @@ export default function DropDownButton({
     const handleButtonClick = () => {
         dispatch(setActiveDropdown(isActive ? null : id));
         dispatch(setActiveNavigationOption(null));
-        if (parentLink) {
-            router.push(parentLink);
+        if (activePath) {
+            router.push(activePath);
         }
     };
 
     const handleOptionClick = (optionId: string, optionPath?: string) => {
         dispatch(setActiveNavigationOption(optionId));
         if (optionPath) {
-            router.push(parentLink ? parentLink + optionPath : optionPath);
+            router.push(activePath ? activePath + optionPath : referencePath + optionPath);
         }
     };
 
@@ -70,7 +72,7 @@ export default function DropDownButton({
         >
             <div className="w-full flex items-center justify-between text-foreground" onClick={handleButtonClick}>
                 <div className="flex items-center gap-3">
-                    <Icon size={iconSize} strokeWidth={iconStrokeWidth} />
+                    <Icon size={iconSize} strokeWidth={iconStrokeWidth}/>
                     <span className="select-none">{title}</span>
                 </div>
 
@@ -80,13 +82,14 @@ export default function DropDownButton({
                             isActive ? "rotate-90" : ""
                         }`}
                     >
-                        <BiChevronRight size={18} strokeWidth={0.8} />
+                        <BiChevronRight size={18} strokeWidth={0.8}/>
                     </div>
                 )}
             </div>
 
             {/* Danh sách các options bên trong dropdown */}
-            <div className={`overflow-hidden transition-[max-height] duration-300 ease-in-out ${isActive ? "max-h-50" : "max-h-0"}`}>
+            <div
+                className={`overflow-hidden transition-[max-height] duration-300 ease-in-out ${isActive ? "max-h-50" : "max-h-0"}`}>
                 {visibleOptions.map((option) => (
                     <div
                         key={option.id}

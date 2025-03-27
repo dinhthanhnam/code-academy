@@ -1,14 +1,20 @@
 import {Edit, Trash2} from "lucide-react";
 import {Course} from "@/types/Course";
 
-export default function CommonRow({course, onSelect}: { course: Course; onSelect: () => void }) {
+interface CommonRowProps {
+    course: Course;
+    onSelect: () => void;
+    selected?: boolean;
+}
+
+export default function CommonRow({course, onSelect, selected}: CommonRowProps ) {
     return (
         <div
             onClick={onSelect}
-            className="p-3 flex justify-between items-center bg-gray-100 rounded cursor-pointer hover:bg-gray-200"
+            className={`p-2 flex justify-between items-center bg-gray-100 rounded cursor-pointer ${selected ? `bg-primary2` :`hover:bg-primary2`}`}
         >
             <div>
-                <p className="font-medium">{course.name}</p>
+                <p className="font-bold text-sm">{course.name}</p>
                 <p className="text-sm text-gray-500">{course.course_code}</p>
             </div>
             <div className="flex gap-2">

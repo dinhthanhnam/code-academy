@@ -39,7 +39,7 @@ export default function StudentSideBarContent() {
                     icon={TbSocial}
                     iconSize={22}
                     iconStrokeWidth={1.4}
-                    parentLink="/social"
+                    activePath="/social"
                     defaultOptions={staticOptionsData1.social}
                     options={staticOptionsData2.social}
                 />
@@ -48,7 +48,7 @@ export default function StudentSideBarContent() {
                     title="Khoá học"
                     icon={HiOutlineClipboardDocument}
                     iconSize={22}
-                    parentLink="/exercises"
+                    activePath="/exercises"
                     iconStrokeWidth={1.5}
                     defaultOptions={staticOptionsData1.exercise}
                     options={personalCourseClasses} // Dùng dữ liệu động từ Redux
@@ -58,7 +58,7 @@ export default function StudentSideBarContent() {
                     title="Bảng xếp hạng"
                     icon={SiHtmlacademy}
                     iconSize={20}
-                    parentLink="/exercises"
+                    activePath="/exercises"
                     iconStrokeWidth={0.7}
                     defaultOptions={staticOptionsData1.hall_of_fame}
                 />
@@ -71,7 +71,7 @@ export default function StudentSideBarContent() {
                     icon={LuProjector}
                     iconSize={24}
                     iconStrokeWidth={1.5}
-                    parentLink="/project"
+                    activePath="/project"
                 />
                 <DropDownButton
                     id="pendingexercises"
@@ -79,7 +79,7 @@ export default function StudentSideBarContent() {
                     icon={HiOutlineClipboardDocumentList}
                     iconSize={22}
                     iconStrokeWidth={1.5}
-                    parentLink="/pending-exercises"
+                    activePath="/pending-exercises"
                 />
                 <DropDownButton
                     id="archivedexercises"
@@ -87,7 +87,7 @@ export default function StudentSideBarContent() {
                     icon={HiOutlineClipboardDocumentCheck}
                     iconSize={22}
                     iconStrokeWidth={1.5}
-                    parentLink="/archived-exercises"
+                    activePath="/archived-exercises"
                 />
             </SideBarSection>
         </>

@@ -19,7 +19,7 @@ export async function middleware(req: NextRequest) {
     }
 
     // Gửi session và xsrfToken đến Laravel để kiểm tra tính hợp lệ
-    const laravelResponse = await fetch(`http:/127.0.0.1:8000/auth/check`, {
+    const laravelResponse = await fetch(`http://localhost:8000/auth/check`, {
         headers: {
             Cookie: `codeacademy_session=${sessionCookie.value}; XSRF-TOKEN=${xsrfToken.value}`,
             "X-XSRF-HEADER": xsrfToken.value,
@@ -56,5 +56,6 @@ export const config = {
         "/hall-of-fame/:path*",
         "/pending-exercises/:path*",
         "/archived-exercises/:path*",
+        "/admin/:path*"
     ],
 };

@@ -11,11 +11,11 @@ interface CommonButton2Props {
 export default function CommonButton2({ label, onClick, children, icon: Icon }: CommonButton2Props) {
     return (
         <button
-            onClick={onClick} // Cập nhật tên prop ở đây
-            className="bg-primary rounded-md border border-secondary px-4 py-2 inline-flex items-center hover:bg-primary2 duration-200 text-white"
+            onClick={onClick}
+            className="bg-primary rounded-md border border-secondary p-2 inline-flex items-center gap-2 hover:bg-primary2 duration-200 text-white"
         >
-            <Icon size={20} strokeWidth={1} />
-            {label}
+            {Icon && <Icon size={20} strokeWidth={2} />}
+            {label && <span className="text-sm whitespace-nowrap">{label}</span>}
         </button>
     );
 }

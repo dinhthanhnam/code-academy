@@ -3,4 +3,5 @@ export interface Course {
     name: string;
     course_code: string;
     created_at?: Date;
+    updated_at?: Date;
 }

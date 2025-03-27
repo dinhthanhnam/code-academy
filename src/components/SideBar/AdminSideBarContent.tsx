@@ -26,7 +26,7 @@ export default function AdminSideBarContent() {
                     icon={TbSocial}
                     iconSize={22}
                     iconStrokeWidth={1.4}
-                    parentLink="/admin/management"
+                    referencePath="/admin/management"
                     defaultOptions={staticOptionsData.management}
                 />
             </SideBarSection>
@@ -38,7 +38,7 @@ export default function AdminSideBarContent() {
                     icon={TbSocial}
                     iconSize={22}
                     iconStrokeWidth={1.4}
-                    parentLink="/admin/database"
+                    referencePath="/admin/database"
                     defaultOptions={staticOptionsData.database}
                 />
             </SideBarSection>
