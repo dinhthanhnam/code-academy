@@ -1,4 +1,4 @@
-import { TbHelp } from "react-icons/tb";
+import { TbHelp, TbHome } from "react-icons/tb";
 import SideBarHeader from "@/components/SideBar/SideBarHeader";
 import { IoSettingsOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
@@ -10,6 +10,8 @@ import { useAppDispatch } from "@/app/redux/hooks";
 import { useRole, useSidebarState} from "@/app/hooks/useAuth";
 import dynamic from "next/dynamic";
 import {useDevice} from "@/app/hooks/useDevice";
+import NormalButton from "../Button/NormalButton";
+import {TbSocial} from "react-icons/tb";
 
 const StudentSideBarContent = dynamic(() => import("@/components/SideBar/StudentSideBarContent"));
 const AdminSideBarContent = dynamic(() => import("@/components/SideBar/AdminSideBarContent"));
@@ -53,9 +55,19 @@ export default function SideBar() {
                 >
             <div className="rounded-md flex flex-col border-foreground border-r-2 min-h-screen shadow-secondary shadow-lg">
                 <SideBarHeader />
+                <div className = "pt-2 pb-2">
+                    <NormalButton
+                        id="home"
+                        title="Trang chủ"
+                        icon={TbHome}
+                        iconSize={22}
+                        iconStrokeWidth={1.4}
+                        activePath="/"
+                    />
+                </div>
 
-                <div className="flex flex-col flex-grow gap-4 pt-8">
-
+                <div className="flex flex-col flex-grow gap-4">
+                    
                     {SidebarContent}
 
                     <div className="mt-auto flex flex-col items-center gap-2 pb-4">
