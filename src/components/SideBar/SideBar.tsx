@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 import {useDevice} from "@/app/hooks/useDevice";
 import NormalButton from "../Button/NormalButton";
 import {TbSocial} from "react-icons/tb";
+import DropDownButton from "@/components/Button/DropDownButton";
 
 const StudentSideBarContent = dynamic(() => import("@/components/SideBar/StudentSideBarContent"));
 const AdminSideBarContent = dynamic(() => import("@/components/SideBar/AdminSideBarContent"));
@@ -56,13 +57,14 @@ export default function SideBar() {
             <div className="rounded-md flex flex-col border-foreground border-r-2 min-h-screen shadow-secondary shadow-lg">
                 <SideBarHeader />
                 <div className = "pt-2 pb-2">
-                    <NormalButton
+                    <DropDownButton
                         id="home"
                         title="Trang chủ"
                         icon={TbHome}
                         iconSize={22}
-                        iconStrokeWidth={1.4}
+                        iconStrokeWidth={2}
                         activePath="/"
+                        chevron={false}
                     />
                 </div>
 

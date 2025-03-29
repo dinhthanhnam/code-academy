@@ -1,19 +1,24 @@
+"use client";
 import CourseList from "@/components/CourseList/CourseList";
 import PendingExerciseList from "@/components/Exercise/PendingExerciseList";
 import RankingBoard from "@/components/Ranking/RankingBoard";
-import Image from "next/image";
+import { useDevice } from "@/app/hooks/useDevice";
+import { useRole } from "@/app/hooks/useAuth";
 
 export default function Home() {
-    return (
-        <div className="flex justify-center min-h-screen p-5">
-            <div className="flex gap-8 w-full">
+    const { isMobile } = useDevice();
+    const { isStudent } = useRole();
+
+    return isStudent ? (
+        <div className="flex justify-center min-h-screen p-2">
+            <div className={`flex ${isMobile ? "flex-col" : "flex-row"} gap-2 w-full`}>
                 {/* Cột bên trái */}
                 <div className="flex-1">
                     <PendingExerciseList />
                 </div>
-                
+
                 {/* Cột bên phải */}
-                <div className="flex-1 flex flex-col gap-5">
+                <div className="flex-1 flex flex-col gap-2">
                     <div className="h-100 overflow-auto">
                         <RankingBoard />
                     </div>
@@ -23,5 +28,5 @@ export default function Home() {
                 </div>
             </div>
         </div>
-    );
+    ) : null;
 }
