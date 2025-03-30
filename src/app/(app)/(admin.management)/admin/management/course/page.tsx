@@ -11,9 +11,11 @@ import { PaginatedCourse } from "@/types/PaginatedCourse";
 import { SyncLoader } from "react-spinners";
 import CourseClassContainer from "@/components/Admin/Course/CourseClassContainer";
 import CommonPagination from "@/components/Pagination/CommonPagination";
+import {CourseModal} from "@/components/Modal/CourseModal";
 
 export default function AdminManagementCoursePage() {
     const [courses, setCourses] = useState<PaginatedCourse | null>(null);
+    const [createCourseModal, setCreateCourseModal] = useState<boolean>(null);
     const [search, setSearch] = useState<string | null>(null);
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -54,7 +56,10 @@ export default function AdminManagementCoursePage() {
                         onChange={(e) => setSearch(e.target.value)}
                         onSubmit={handleSearch}
                     />
-                    <CommonButton onClick={() => console.log("Thêm học phần")} icon={Plus} label="Thêm học phần" />
+                    <CommonButton onClick={() => setCreateCourseModal(true)}
+                                  icon={Plus}
+                                  label="Thêm học phần"
+                    />
                 </div>
 
                 <div className="p-2">
@@ -90,6 +95,10 @@ export default function AdminManagementCoursePage() {
             <div className={`bg-white p-2 rounded-lg shadow flex border border-secondary ${isMobile ? "w-full" : "flex-grow"}`}>
                 <CourseClassContainer parentCourse={selectedCourse} deselectCourse={() => setSelectedCourse(null)}/>
             </div>
+
+            {createCourseModal && (
+                <CourseModal onClose={() => setCreateCourseModal(false)} type={"create"}></CourseModal>
+            )}
         </div>
     );
 }

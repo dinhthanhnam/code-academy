@@ -10,7 +10,7 @@ interface FormInputProps {
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function FormInput({
+export default function AuthFormInput({
                                       type,
                                       label,
                                       value,
@@ -21,15 +21,16 @@ export default function FormInput({
     return (
         <div className="flex flex-col p-2">
             {label && (
-                <label className="block font-bold justify-self-start text-md">{label}</label>
+                <label className="block font-bold justify-self-start">{label}</label>
             )}
             <input
+                title={`auth-form-input-${label}`}
                 name={name}
                 value={value}
                 type={type}
                 placeholder={placeholder}
                 onChange={onChange}
-                className="p-2 rounded focus:ring focus:ring-primary border text-sm border-secondary outline-secondary"
+                className="p-2 rounded focus:ring focus:ring-primary border border-secondary outline-secondary"
             />
         </div>
     );

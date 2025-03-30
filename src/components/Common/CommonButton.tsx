@@ -3,7 +3,7 @@ import {IconType} from "react-icons";
 
 interface CommonButtonProps {
     label?: string;
-    onClick: () => void; // Đổi tên từ "onClick" -> "onClickAction"
+    onClick: (() => void) | ((e: React.MouseEvent) => void);
     children?: React.ReactNode;
     icon?: IconType;
 }

@@ -1,6 +1,6 @@
 "use client";
 import { useState, FormEvent } from "react";
-import FormInput from "@/components/Form/FormInput";
+import AuthFormInput from "@/components/Form/AuthFormInput";
 import FormContainer from "@/components/Form/FormContainer";
 import AuthenticationFormButton from "@/components/Common/AuthenticationFormButton";
 import { AuthenticateUser, RegisterUser } from "@/utils/service/AuthService";
@@ -130,7 +130,7 @@ export default function AuthenticationForm({ type }: AuthenticationFormProps) {
 
                 {/* Trường nhập tên (Chỉ hiển thị khi đăng ký) */}
                 {type === "register" && (
-                    <FormInput
+                    <AuthFormInput
                         type="text"
                         label="Tên của bạn"
                         name="name"
@@ -138,13 +138,13 @@ export default function AuthenticationForm({ type }: AuthenticationFormProps) {
                     />
                 )}
 
-                <FormInput
+                <AuthFormInput
                     type="email"
                     label="Email"
                     name="email"
                     onChange={(e) => setPayload({ ...payload, email: e.target.value })}
                 />
-                <FormInput
+                <AuthFormInput
                     type="password"
                     label="Mật khẩu"
                     name="password"
@@ -153,7 +153,7 @@ export default function AuthenticationForm({ type }: AuthenticationFormProps) {
 
                 {/* Trường nhập lại mật khẩu (Chỉ hiển thị khi đăng ký) */}
                 {type === "register" && (
-                    <FormInput
+                    <AuthFormInput
                         type="password"
                         label="Xác nhận mật khẩu"
                         name="password_confirmation"

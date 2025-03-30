@@ -2,6 +2,16 @@ import api from "@/utils/AxiosInstance";
 import {PaginatedCourse} from "@/types/PaginatedCourse";
 import {CourseClass} from "@/types/CourseClass";
 import {PaginatedCourseClass} from "@/types/PaginatedCourseClass";
+import {Course} from "@/types/Course";
+
+export const getCourse = async (id: number) => {
+    try {
+        const res = await api.get<Course>(`/admin/course/${id}`);
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export const getCourses = async (page: number, search?: string) => {
     try {
@@ -16,6 +26,24 @@ export const getCourses = async (page: number, search?: string) => {
         console.log(error);
     }
 };
+
+export const createCourse = async (payload: Course) => {
+    try {
+        const res = await api.post<Course>("admin/course", payload)
+        return res.data;
+    }  catch (error) {
+        console.log(error);
+    }
+}
+
+export const editCourse = async (id: number , payload: Course) => {
+    try {
+        const res = await api.put<Course>(`admin/course/${id}`, payload)
+        return res.data;
+    }  catch (error) {
+        console.log(error);
+    }
+}
 
 export const getCourseClasses = async (page: number, search?: string) => {
     try {
@@ -45,3 +73,4 @@ export const getCourseClassesByCourse = async  (page: number, course_id?: number
         console.log(error);
     }
 }
+
