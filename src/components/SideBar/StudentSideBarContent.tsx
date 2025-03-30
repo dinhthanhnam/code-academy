@@ -27,7 +27,7 @@ export default function StudentSideBarContent() {
 
     const staticOptionsData2 = {
         social: [
-            { id: "chatboxk24cntta", name: "Chatbox - K24CNTTA", path: "/chatbox-k24cntta" },
+            { id: "chatbox", name: "Chatbox", path: "/chatbox" },
         ],
     };
     return (
@@ -58,21 +58,13 @@ export default function StudentSideBarContent() {
                     title="Bảng xếp hạng"
                     icon={SiHtmlacademy}
                     iconSize={20}
-                    activePath="/exercises"
+                    activePath="/hall-of-fame"
                     iconStrokeWidth={0.7}
                     defaultOptions={staticOptionsData1.hall_of_fame}
                 />
             </SideBarSection>
 
             <SideBarSection sectionName="Cá nhân">
-                <DropDownButton
-                    id="project"
-                    title="Dự án"
-                    icon={LuProjector}
-                    iconSize={24}
-                    iconStrokeWidth={1.5}
-                    activePath="/project"
-                />
                 <DropDownButton
                     id="pendingexercises"
                     title="Bài tập đang chờ"

@@ -26,17 +26,17 @@ type DropDownButtonProps = {
 };
 
 export default function DropDownButton({
-                                           id,
-                                           icon: Icon,
-                                           iconSize = 20,
-                                           iconStrokeWidth = 1,
-                                           defaultOptions = [],
-                                           options = [],
-                                           chevron = true,
-                                           title,
-                                           activePath,
-                                           referencePath,
-                                       }: DropDownButtonProps) {
+        id,
+        icon: Icon,
+        iconSize = 20,
+        iconStrokeWidth = 1,
+        defaultOptions = [],
+        options = [],
+        chevron = true,
+        title,
+        activePath,
+        referencePath,
+}: DropDownButtonProps) {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const activeDropdown = useAppSelector((state) => state.dropdown.activeDropdown);
@@ -46,18 +46,24 @@ export default function DropDownButton({
     const [showAll, setShowAll] = useState<boolean>(false);
 
     const handleButtonClick = () => {
-        dispatch(setActiveDropdown(isActive ? null : id));
-        dispatch(setActiveNavigationOption(null));
-        if (activePath) {
-            router.push(activePath);
+        if (!isActive) {
+            // Khi nhấp vào một nút mới, reset activeNavigationOption
+            dispatch(setActiveNavigationOption(null));
+            dispatch(setActiveDropdown(id));
+            if (activePath) {
+                router.push(activePath);
+            }
         }
     };
 
     const handleOptionClick = (optionId: string, optionPath?: string) => {
-        dispatch(setActiveNavigationOption(optionId));
-        if (optionPath) {
-            router.push(activePath ? activePath + optionPath : referencePath + optionPath);
+        if (activeNavigationOption !== optionId) { // Chỉ thực hiện nếu option chưa active
+            dispatch(setActiveNavigationOption(optionId));
+            if (optionPath) {
+                router.push(activePath ? activePath + optionPath : referencePath + optionPath);
+            }
         }
+        // Không đóng dropdown, giữ nó mở
     };
 
     // Số lượng option tối đa hiển thị trước khi ấn "Xem thêm"

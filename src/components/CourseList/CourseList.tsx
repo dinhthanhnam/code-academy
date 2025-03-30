@@ -1,5 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { BiChevronRight } from "react-icons/bi";
+
 export default function CourseList() {
   const courses = [
     { 
@@ -25,11 +28,18 @@ export default function CourseList() {
     },
   ];
 
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push('/hall-of-fame');
+  };
+
   return (
     <div className="exercise-container p-6 flex-grow overflow-auto">
       {/* Tiêu đề */}
-      <h2 className="text-lg font-semibold text-gray-800 mb-6">
+      <h2 className="flex items-center text-lg font-semibold text-gray-800 mb-6 cursor-pointer" onClick={handleClick}>
         Khóa học của tôi
+        <BiChevronRight size={18} strokeWidth={0.8}/>
       </h2>
 
       {/* Danh sách khóa học */}
