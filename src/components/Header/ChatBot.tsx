@@ -1,49 +1,37 @@
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
+import { LuMessageCircleMore } from "react-icons/lu";
 
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<string[]>([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
       setMessages([...messages, input]);
-      setInput('');
+      setInput("");
     }
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
-      {/* Nút mở chatbox */}
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="bg-orange-400 text-white p-4 rounded-full shadow-lg hover:bg-orange-5500 transition"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-            />
-          </svg>
-        </button>
-      )}
+    <>
+      {/* Icon dấu cộng */}
+      <div
+        className="p-1 rounded-full hover:bg-primary2 duration-200 group relative cursor-pointer"
+        onClick={() => setIsOpen(true)}
+      >
+        <LuMessageCircleMore  size={28} />
+        <span className="tooltip">Chat</span>
+      </div>
 
-      {/* Chatbox */}
+      {/* Chatbox dropdown */}
       {isOpen && (
-        <div className="bg-white w-80 h-[500px] rounded-lg shadow-xl flex flex-col">
-          {/* Header */}
+        <div className="fixed top-16 right-4 bg-white w-80 h-[400px] rounded-lg shadow-xl flex flex-col z-40">
+          {/* Header của chat */}
           <div className="bg-orange-400 text-white p-3 rounded-t-lg flex justify-between items-center">
-            <h3 className="font-semibold">Của sổ Chat</h3>
+            <h3 className="font-semibold">Cửa sổ Chat</h3>
             <button
               onClick={() => setIsOpen(false)}
               className="text-white hover:text-gray-200"
@@ -114,7 +102,7 @@ const Chatbot: React.FC = () => {
           </form>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

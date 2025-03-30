@@ -59,7 +59,7 @@ export default function Chatbox() {
       {/* Danh sách nhóm chat */}
       <div className="w-96 flex flex-col bg-gradient-to-b from-orange-200 to-orange-300 rounded-xl shadow-xl overflow-hidden">
         <div className="p-6">
-          <h2 className="text-2xl font-semibold text-gray-800">
+          <h2 className="text-xl font-semibold text-gray-800">
             Tin nhắn
           </h2>
           <p className="text-sm text-gray-600 font-medium">Stay connected</p>
@@ -82,7 +82,7 @@ export default function Chatbox() {
               </div>
               <div className="flex-1">
                 <div className="flex justify-between items-center">
-                <p className="font-semibold text-gray-800 text-lg break-words whitespace-normal">
+                <p className="font-semibold text-gray-800 text-base break-words whitespace-normal">
                     {contact.name}
                 </p>
                   <span className="text-xs text-gray-600">{contact.time}</span>
