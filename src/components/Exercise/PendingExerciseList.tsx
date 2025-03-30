@@ -1,5 +1,7 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { BiChevronRight } from "react-icons/bi";
 
 const exercises = [
     { id: 1, title: "Two Sum", difficulty: "Easy", tags: ["Array", "HashMap"], status: "✅" },
@@ -20,12 +22,22 @@ const exercises = [
     { id: 16, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
 ];
 
+
+
 export default function PendingExerciseList() {
     const [selected, setSelected] = useState(null);
+    const router = useRouter();
+    
+      const handleClick = () => {
+        router.push('/pending-exercises');
+      };
 
     return (
         <div className="exercise-container p-6 flex-grow overflow-auto">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Bài tập chưa hoàn thành</h2>
+            <h2 className="flex items-center text-lg font-semibold text-gray-800 mb-4 cursor-pointer" onClick={handleClick}>
+                Bài tập chưa hoàn thành 
+                <BiChevronRight size={18} strokeWidth={0.8}/>
+            </h2>
             <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                     <thead>

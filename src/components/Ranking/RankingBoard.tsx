@@ -1,7 +1,14 @@
 "use client";
 import Image from "next/image";
+import {useRouter} from "next/navigation";
+import {BiChevronRight} from "react-icons/bi";
 
 export default function RankingBoard() {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push('/hall-of-fame');
+  };
   const topThree = [
     { name: "Tú Sena", score: 252, correct: 265 }, // Top 1
     { name: "Anh Độ xum xuê", score: 200, correct: 205 }, // Top 2
@@ -9,15 +16,14 @@ export default function RankingBoard() {
   ];
 
   return (
-    <div className="exercise-container p-6 flex-grow overflow-auto">
-      {/* Tiêu đề */}
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">
+    <div className="exercise-container p-6 flex-grow overflow-auto ">
+      <h2 className="flex items-center text-lg font-semibold text-gray-800 mb-4 cursor-pointer " onClick={handleClick}>
         Bảng xếp hạng sinh viên
+        <BiChevronRight size={18} strokeWidth={0.8}/>
       </h2>
+      
 
-      {/* Top 3 */}
       <div className="flex justify-center items-end mb-8 gap-6">
-        {/* Top 2 (bên trái) */}
         <div className="w-1/4 flex flex-col items-center transform transition-all hover:scale-105 bg-gradient-to-b from-gray-200 to-gray-300 p-6 rounded-xl shadow-lg h-64">
           <div className="w-16 h-16 mb-4 flex-shrink-0 relative">
             <Image
@@ -36,7 +42,6 @@ export default function RankingBoard() {
           </div>
         </div>
 
-        {/* Top 1 (giữa, cao hơn) */}
         <div className="w-1/4 flex flex-col items-center transform -translate-y-8 transition-all hover:scale-105 bg-gradient-to-b from-yellow-300 to-yellow-400 p-6 rounded-xl shadow-xl h-72">
           <div className="w-20 h-20 mb-4 flex-shrink-0 relative">
             <Image
@@ -55,7 +60,6 @@ export default function RankingBoard() {
           </div>
         </div>
 
-        {/* Top 3 (bên phải) */}
         <div className="w-1/4 flex flex-col items-center transform transition-all hover:scale-105 bg-gradient-to-b from-amber-400 to-amber-500 p-6 rounded-xl shadow-lg h-64">
           <div className="w-16 h-16 mb-4 flex-shrink-0 relative">
             <Image
