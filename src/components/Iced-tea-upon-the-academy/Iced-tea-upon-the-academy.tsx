@@ -96,7 +96,7 @@ export default function IcedTeaUponTheAcademy() {
             Trà đá học viện
           </h2>
           <p className="text-sm text-orange-600 font-medium">
-            Share your thoughts over a cup of iced tea!
+            Trà đá đê!
           </p>
         </div>
 
@@ -109,14 +109,14 @@ export default function IcedTeaUponTheAcademy() {
             <input
               value={newPost}
               onChange={(e) => setNewPost(e.target.value)}
-              placeholder="What's on your mind?"
+              placeholder="Bạn đang nghĩ gì?"
               className="flex-1 p-3 bg-white bg-opacity-70 border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-gray-800"
             />
             <button
               type="submit"
               className="px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg shadow-md hover:from-orange-600 hover:to-orange-700 transition-all duration-200 transform hover:scale-105"
             >
-              Post
+              Đăng
             </button>
           </div>
         </form>
@@ -154,7 +154,7 @@ export default function IcedTeaUponTheAcademy() {
                   <span>😂 {post.reactions.haha}</span>
                 </div>
                 <div className="text-sm text-gray-600">
-                  {post.comments.length} comments
+                  {post.comments.length} Bình luận
                 </div>
               </div>
               <div className="flex gap-4 mb-4">
@@ -162,13 +162,13 @@ export default function IcedTeaUponTheAcademy() {
                   onClick={() => handleReaction(post.id, "like")}
                   className="px-4 py-2 bg-orange-100 rounded-lg hover:bg-orange-200 transition-all duration-200"
                 >
-                  👍 Like
+                  👍 Thích
                 </button>
                 <button
                   onClick={() => handleReaction(post.id, "love")}
                   className="px-4 py-2 bg-orange-100 rounded-lg hover:bg-orange-200 transition-all duration-200"
                 >
-                  ❤️ Love
+                  ❤️ Yêu thích
                 </button>
                 <button
                   onClick={() => handleReaction(post.id, "haha")}
@@ -214,14 +214,14 @@ export default function IcedTeaUponTheAcademy() {
                       [post.id]: e.target.value,
                     })
                   }
-                  placeholder="Write a comment..."
+                  placeholder="Hãy viết gì đó..."
                   className="flex-1 p-2 bg-white bg-opacity-70 border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-gray-800"
                 />
                 <button
                   type="submit"
                   className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg shadow-md hover:from-orange-600 hover:to-orange-700 transition-all duration-200"
                 >
-                  Comment
+                  Bình luận
                 </button>
               </form>
             </div>
