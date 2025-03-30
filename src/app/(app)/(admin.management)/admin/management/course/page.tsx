@@ -13,9 +13,14 @@ import CourseClassContainer from "@/components/Admin/Course/CourseClassContainer
 import CommonPagination from "@/components/Pagination/CommonPagination";
 import {CourseModal} from "@/components/Modal/CourseModal";
 
+interface CourseModal {
+    active: boolean | null;
+    type: "create" | "edit";
+}
+
 export default function AdminManagementCoursePage() {
     const [courses, setCourses] = useState<PaginatedCourse | null>(null);
-    const [createCourseModal, setCreateCourseModal] = useState<boolean>(null);
+    const [courseModal, setCourseModal] = useState<CourseModal>({active: null, type: "create"});
     const [search, setSearch] = useState<string | null>(null);
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -45,59 +50,110 @@ export default function AdminManagementCoursePage() {
         fetchCourses();
     }, []);
 
+    const handleNewCourse = (course: Course) => {
+        if (courses && courses.data) {
+            setCourses({
+                ...courses,
+                data: [course, ...courses.data]
+            });
+        } else {
+            fetchCourses();
+        }
+    };
+
+    const handleCourseUpdated = (updatedCourse: Course) => {
+        if (courses && courses.data) {
+            setCourses({
+                ...courses,
+                data: courses.data.map((c) => (c.id === updatedCourse.id ? updatedCourse : c)),
+            });
+        }
+    };
+
+    // Xử lý khi khóa học bị xóa từ con
+    const handleCourseDeleted = (courseId: number) => {
+        if (courses && courses.data) {
+            setCourses({
+                ...courses,
+                data: courses.data.filter((c) => c.id !== courseId),
+            });
+        }
+    };
+
     return (
         <div className={`flex ${isMobile ? "flex-col" : "flex-grow"} gap-2`}>
             {/* Course List */}
-            <div className={`bg-white p-2 rounded-lg shadow border border-secondary ${isMobile ? "w-full" : "w-1/3"}`}>
-                <div className="flex flex-row gap-2 p-2 justify-between items-center">
+            <div className={`bg-white p-2 rounded-lg shadow border border-secondary flex flex-col flex-grow ${isMobile ? "w-full" : "w-1/3"}`}>
+                <div className="flex flex-row gap-2 p-2 justify-between items-center flex-shrink-0">
                     <CommonSearch
                         key="search_course"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onSubmit={handleSearch}
                     />
-                    <CommonButton onClick={() => setCreateCourseModal(true)}
+                    <CommonButton onClick={() => setCourseModal({ active: true, type: "create" })}
                                   icon={Plus}
                                   label="Thêm học phần"
                     />
                 </div>
 
-                <div className="p-2">
-                    <div className="border border-secondary p-2 rounded-md gap-2">
+                <div className="flex flex-col flex-grow overflow-hidden p-2">
+                    <div className="border border-secondary p-2 rounded-md flex flex-col flex-grow overflow-hidden">
                         {loading ? (
-                            <div className="items-center justify-items-center">
+                            <div className="flex-1 flex items-center justify-center">
                                 <SyncLoader color="gray" size={8} margin={4} speedMultiplier={0.6} />
                             </div>
                         ) : courses?.data ? (
-                            <div>
-                                {courses.data.map((course) => (
-                                    <div key={course.id} className="py-1">
-                                        <CourseRow
-                                            course={course}
-                                            selected={selectedCourse?.id === course.id}
-                                            onSelect={() => setSelectedCourse(course)}
-                                        />
-                                    </div>
-                                ))}
-                                <CommonPagination
-                                    meta={courses.meta}
-                                    onPageChange={(page) => fetchCourses(page, search)} // Giữ search param khi chuyển trang
-                                />
+                            <div className="flex flex-col h-full">
+                                {/* Phần chứa CourseRow */}
+                                <div className="overflow-y-auto flex-grow min-h-0">
+                                    {courses.data.map((course) => (
+                                        <div key={course.id} className="py-1">
+                                            <CourseRow
+                                                course={course}
+                                                selected={selectedCourse?.id === course.id}
+                                                onSelect={() => setSelectedCourse(course)}
+                                                onDelete={handleCourseDeleted}
+                                                onEdit={() =>
+                                                {
+                                                    setCourseModal({active: true, type: "edit"});
+                                                    setSelectedCourse(course);
+                                                }
+                                            }
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                                {/* Pagination */}
+                                <div className="mt-2 flex-shrink-0">
+                                    <CommonPagination
+                                        meta={courses.meta}
+                                        onPageChange={(page) => fetchCourses(page, search)}
+                                    />
+                                </div>
                             </div>
                         ) : (
-                            <p className="text-center text-gray-500">Không có dữ liệu.</p>
+                            <div className="flex-1 flex items-center justify-center">
+                                <p className="text-center text-gray-500">Không có dữ liệu.</p>
+                            </div>
                         )}
                     </div>
                 </div>
             </div>
 
             {/* Course Class List */}
-            <div className={`bg-white p-2 rounded-lg shadow flex border border-secondary ${isMobile ? "w-full" : "flex-grow"}`}>
+            <div className={`bg-white p-2 rounded-lg shadow flex border flex-grow border-secondary ${isMobile ? "w-full" : "w-2/3"}`}>
                 <CourseClassContainer parentCourse={selectedCourse} deselectCourse={() => setSelectedCourse(null)}/>
             </div>
 
-            {createCourseModal && (
-                <CourseModal onClose={() => setCreateCourseModal(false)} type={"create"}></CourseModal>
+            {courseModal.active && (
+                <CourseModal
+                    onClose={() => setCourseModal({...courseModal, active: false})}
+                    type={courseModal.type}
+                    newCourse={handleNewCourse}
+                    updatedCourse={handleCourseUpdated}
+                    selectedCourse={selectedCourse}
+                />
             )}
         </div>
     );

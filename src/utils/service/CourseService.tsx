@@ -6,7 +6,7 @@ import {Course} from "@/types/Course";
 
 export const getCourse = async (id: number) => {
     try {
-        const res = await api.get<Course>(`/admin/course/${id}`);
+        const res = await api.get(`/admin/course/${id}`);
         return res.data;
     } catch (error) {
         console.log(error);
@@ -29,21 +29,31 @@ export const getCourses = async (page: number, search?: string) => {
 
 export const createCourse = async (payload: Course) => {
     try {
-        const res = await api.post<Course>("admin/course", payload)
+        const res = await api.post("admin/course", payload)
         return res.data;
     }  catch (error) {
         console.log(error);
     }
 }
 
-export const editCourse = async (id: number , payload: Course) => {
+export const updateCourse = async (id: number , payload: Course) => {
     try {
-        const res = await api.put<Course>(`admin/course/${id}`, payload)
+        const res = await api.put(`admin/course/${id}`, payload)
         return res.data;
     }  catch (error) {
         console.log(error);
     }
 }
+
+export const deleteCourse = async (id: number ) => {
+    try {
+        const res = await api.delete(`admin/course/${id}`)
+        return res.data;
+    }  catch (error) {
+        console.log(error);
+    }
+}
+
 
 export const getCourseClasses = async (page: number, search?: string) => {
     try {

@@ -3,42 +3,70 @@ import FormInput from "@/components/Form/FormInput";
 import { X } from "lucide-react";
 import CommonButton from "@/components/Common/CommonButton";
 import {Course} from "@/types/Course";
-import {createCourse, editCourse} from "@/utils/service/CourseService";
+import {createCourse, updateCourse} from "@/utils/service/CourseService";
 
 interface CourseModalProps {
     onClose: () => void;
     selectedCourse?: Course;
-    newCourse?: Course;
+    newCourse?: (course: Course) => void;
+    updatedCourse?: (course: Course) => void;
     type: "create" | "edit";
 }
 
-export function CourseModal({ onClose, newCourse, selectedCourse, type = "create" } : CourseModalProps) {
+interface Message {
+    message: string | null;
+    success: boolean | null;
+}
+
+export function CourseModal({ onClose, newCourse, updatedCourse, selectedCourse, type = "create" } : CourseModalProps) {
     const [payload, setPayload] = useState<Course>({
-            course_code: "",
-            name: ""
+            course_code: selectedCourse?.course_code || "",
+            name: selectedCourse?.name || ""
         },
     );
+
+    const [message, setMessage] = useState<Message>({ message: null, success: null });
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
         }
     };
+
     const handleChange = (id: keyof Course, value: string) => {
         setPayload((prev) => ({
             ...prev,
             [id]: value
         }));
     };
+
     const handleSubmit = async (payload: Course) => {
-        let res;
-        if(type === "create") {
-            res = await createCourse(payload);
-            return res.data;
-        } else {
-            res = await editCourse(selectedCourse.id, payload);
-            return res.data;
+        setIsSubmitting(true);
+        try {
+            let data;
+            if (type === "create") {
+                data = await createCourse(payload);
+                // Nếu tạo mới thành công và có callback newCourse
+                if (data.success && newCourse && data.data) {
+                    newCourse(data.data);
+                }
+            } else {
+                data = await updateCourse(selectedCourse!.id, payload);
+                // Nếu update thành công và có callback
+                if (data.success && newCourse && data.data) {
+                    updatedCourse(data.data);
+                }
+            }
+
+            setMessage({message: data.message, success: data.success});
+        } catch (error) {
+            console.log(error);
+            setMessage({message: "Đã xảy ra lỗi, vui lòng thử lại", success: false});
+        } finally {
+            setIsSubmitting(false);
         }
-    }
+    };
 
     return (
         <div
@@ -57,12 +85,24 @@ export function CourseModal({ onClose, newCourse, selectedCourse, type = "create
                 {/* Heading */}
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold text-gray-800">
-                        Tạo học phần mới
+                        {type === "create" ? "Tạo học phần mới" : "Chỉnh sửa học phần"}
                     </h2>
                     <p className="text-sm text-gray-500 mt-1">
-                        Điền thông tin để tạo một học phần mới
+                        Điền thông tin để {type === "create" ? "tạo" : "chỉnh sửa"} một học phần
                     </p>
                 </div>
+
+                {message.message && (
+                    <div className={`p-2`}>
+                        <div
+                            className={`p-2 rounded border text-sm ${
+                                message.success ? "bg-green-100 text-green-700 border-green-500" : "bg-red-100 text-red-700 border-red-500"
+                            }`}
+                        >
+                            {message.message}
+                        </div>
+                    </div>
+                )}
 
                 {/* Form content */}
                 <div className="grid grid-cols-2 gap-2">
@@ -86,7 +126,7 @@ export function CourseModal({ onClose, newCourse, selectedCourse, type = "create
                 {/* Button */}
                 <div className="flex justify-end mt-4 p-2">
                     <CommonButton
-                        label="Xác nhận"
+                        label={isSubmitting ? "Đang xử lý..." : "Xác nhận"}
                         onClick={async () => await handleSubmit(payload)}
                     />
                 </div>

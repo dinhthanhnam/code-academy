@@ -46,8 +46,9 @@ export default function CourseClassContainer({parentCourse = null, deselectCours
     }, [parentCourse?.id]);
 
     return (
-        <div className="flex flex-col w-full">
-            <div className="flex gap-2 p-2 justify-between items-center">
+        <div className="flex flex-col w-full h-full">
+            {/* Phần header - Search và Button */}
+            <div className="flex gap-2 p-2 justify-between items-center flex-shrink-0">
                 <CommonSearch
                     key="search_course_classes"
                     value={search}
@@ -56,45 +57,59 @@ export default function CourseClassContainer({parentCourse = null, deselectCours
                 />
                 <CommonButton onClick={() => console.log("Thêm học phần")} icon={Plus} label="Thêm lớp học phần" />
             </div>
+
+            {/* Selected Item - nếu có */}
             {parentCourse && deselectCourse && (
-                <div className={`px-2`}>
+                <div className="px-2 flex-shrink-0">
                     <SelectedItem onClick={deselectCourse} icon={X} label={`Hủy chọn ${parentCourse.course_code}`} />
                 </div>
             )}
-            {courseClasses ? (
-                <div className="p-2">
-                    <div className="border border-secondary p-2 rounded-md gap-2">
-                        {loading ? (
-                            <div className="items-center justify-items-center">
-                                <SyncLoader color="gray" size={8} margin={4} speedMultiplier={0.6} />
-                            </div>
-                        ) : courseClasses.data ? (
-                            <div>
-                                {courseClasses.data.map((courseClass) => (
-                                    <div key={courseClass.id} className="py-1">
-                                        <CourseClassRow
-                                            courseClass={courseClass}
-                                            selected={selectedCourseClass?.id === courseClass.id}
-                                            onSelect={() => setSelectedCourseClass(courseClass)}
-                                        />
+
+            {/* Phần nội dung chính */}
+            <div className="flex-grow flex flex-col overflow-hidden">
+                {courseClasses ? (
+                    <div className="p-2 flex-grow flex flex-col overflow-hidden">
+                        <div className="border border-secondary p-2 rounded-md flex flex-col flex-grow overflow-hidden">
+                            {loading ? (
+                                <div className="flex-1 flex items-center justify-center">
+                                    <SyncLoader color="gray" size={8} margin={4} speedMultiplier={0.6} />
+                                </div>
+                            ) : courseClasses.data && courseClasses.data.length > 0 ? (
+                                <div className="flex flex-col h-full">
+                                    {/* Phần danh sách CourseClassRow với thanh cuộn */}
+                                    <div className="overflow-y-auto flex-grow" style={{ minHeight: 0 }}>
+                                        {courseClasses.data.map((courseClass) => (
+                                            <div key={courseClass.id} className="py-1">
+                                                <CourseClassRow
+                                                    courseClass={courseClass}
+                                                    selected={selectedCourseClass?.id === courseClass.id}
+                                                    onSelect={() => setSelectedCourseClass(courseClass)}
+                                                />
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                                <CommonPagination meta={courseClasses.meta} onPageChange={fetchCourseClasses} />
-                            </div>
-                        ) : (
-                            <p className="text-center text-gray-500">Không có dữ liệu.</p>
-                        )}
+                                    {/* Pagination ở dưới cùng */}
+                                    <div className="mt-2 flex-shrink-0">
+                                        <CommonPagination meta={courseClasses.meta} onPageChange={fetchCourseClasses} />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex-1 flex items-center justify-center">
+                                    <p className="text-center text-gray-500">Không có dữ liệu.</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
-            ) : (
-                <div className="w-full h-full text-sm font-bold flex justify-items-center items-center">
-                    <span className="mx-auto">
-                        {parentCourse
-                            ? `Không có lớp học phần nào cho học phần ${parentCourse.name} - ${parentCourse.course_code}`
-                            : "Chọn một lớp học phần hoặc tìm kiếm"}
-                    </span>
-                </div>
-            )}
+                ) : (
+                    <div className="flex-grow flex items-center justify-center">
+                        <span className="text-sm font-bold text-center">
+                            {parentCourse
+                                ? `Không có lớp học phần nào cho học phần ${parentCourse.name} - ${parentCourse.course_code}`
+                                : "Chọn một lớp học phần hoặc tìm kiếm"}
+                        </span>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
