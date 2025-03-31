@@ -1,7 +1,7 @@
 import api from "@/utils/AxiosInstance";
-import {PaginatedCourse} from "@/types/PaginatedCourse";
+import {PaginatedCourse} from "@/types/paginated/PaginatedCourse";
 import {CourseClass} from "@/types/CourseClass";
-import {PaginatedCourseClass} from "@/types/PaginatedCourseClass";
+import {PaginatedCourseClass} from "@/types/paginated/PaginatedCourseClass";
 import {Course} from "@/types/Course";
 
 export const getCourse = async (id: number) => {
@@ -9,7 +9,7 @@ export const getCourse = async (id: number) => {
         const res = await api.get(`/admin/course/${id}`);
         return res.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -23,7 +23,7 @@ export const getCourses = async (page: number, search?: string) => {
         });
         return res.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -32,7 +32,7 @@ export const createCourse = async (payload: Course) => {
         const res = await api.post("admin/course", payload)
         return res.data;
     }  catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
@@ -41,7 +41,7 @@ export const updateCourse = async (id: number , payload: Course) => {
         const res = await api.put(`admin/course/${id}`, payload)
         return res.data;
     }  catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
@@ -50,24 +50,10 @@ export const deleteCourse = async (id: number ) => {
         const res = await api.delete(`admin/course/${id}`)
         return res.data;
     }  catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
-
-export const getCourseClasses = async (page: number, search?: string) => {
-    try {
-        const res = await api.get<PaginatedCourseClass>("/admin/course-class", {
-            params: {
-                page,
-                ...(search ? { search } : {}),
-            },
-        })
-        return res.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 export const getCourseClassesByCourse = async  (page: number, course_id?: number, search?: string) => {
     try {
@@ -80,7 +66,7 @@ export const getCourseClassesByCourse = async  (page: number, course_id?: number
         })
         return res.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 

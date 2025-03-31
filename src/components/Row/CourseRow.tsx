@@ -1,31 +1,43 @@
-import {Edit, Trash2} from "lucide-react";
+import {Edit, PlusCircle, Trash2} from "lucide-react";
 import {Course} from "@/types/Course";
-import {deleteCourse} from "@/utils/service/CourseService";
+import {deleteCourse} from "@/utils/service/crud/CourseService";
+import {useAppDispatch} from "@/app/redux/hooks";
+import {showMessage} from "@/app/redux/slices/messageSlice";
 
 interface CourseRowProps {
     course: Course;
     onSelect: () => void;
     selected?: boolean;
     onEdit: () => void;
+    onAdd: () => void;
     onDelete: (courseId: number) => void;
 }
 
-export default function CourseRow({course, onSelect, selected, onEdit, onDelete}: CourseRowProps ) {
+export default function CourseRow({course, onSelect, selected, onEdit, onAdd, onDelete}: CourseRowProps ) {
+    const dispatch = useAppDispatch();
+
 
     const handleDelete = async (e) => {
         e.stopPropagation(); // Ngăn click lan lên cha
-        if (window.confirm(`Bạn có chắc muốn xóa khóa học "${course.name}"?`)) {
+        if (window.confirm(`Bạn có chắc muốn xóa học phần  "${course.name}"?`)) {
             try {
-                await deleteCourse(course.id); // Gọi API
-                onDelete(course.id); // Truyền ID về cha để xóa
+                const data: any = await deleteCourse(course.id); // Gọi API
+                if(data.success) {
+                    onDelete(course.id);
+                }
+                dispatch(showMessage({message: data.message, success: data.success}))
             } catch (error) {
-                console.error("Error deleting course:", error);
-                // Có thể thêm thông báo lỗi ở đây
+                console.error(error);
             }
         }
     };
     const handleEdit = (e) => {
         onEdit();
+        e.stopPropagation();
+    };
+
+    const handleAdd = (e) => {
+        onAdd();
         e.stopPropagation();
     };
 
@@ -38,17 +50,27 @@ export default function CourseRow({course, onSelect, selected, onEdit, onDelete}
                 <p className="font-bold text-sm truncate">{course.name}</p>
                 <p className="text-sm text-gray-500">{course.course_code}</p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 pr-1">
                 <button
-                    className="text-blue-500 hover:text-blue-700"
+                    className="text-green-500 hover:text-green-700 group relative"
+                    onClick={handleAdd}
+                >
+                    <PlusCircle size={18}/>
+                    <span className={`tooltip`}>Thêm lớp học phần</span>
+                </button>
+
+                <button
+                    className="text-blue-500 hover:text-blue-700 group relative"
                     onClick={handleEdit}
                 >
                     <Edit size={18}/>
+                    <span className={`tooltip`}>Sửa học phần</span>
                 </button>
-                <button className="text-red-500 hover:text-red-700"
+                <button className="text-red-500 hover:text-red-700 group relative"
                     onClick={handleDelete}
                 >
                     <Trash2 size={18}/>
+                    <span className={`tooltip z-50`}>Xoá</span>
                 </button>
             </div>
         </div>

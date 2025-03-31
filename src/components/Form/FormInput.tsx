@@ -1,4 +1,5 @@
 import { ChangeEvent } from "react";
+import {IconType} from "react-icons";
 
 // Define the props interface for AuthFormInput
 interface FormInputProps {
@@ -7,7 +8,9 @@ interface FormInputProps {
     value?: string; // Optional, since it might not always be controlled
     name: string;
     placeholder?: string; // Optional
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+    disable?: boolean;
+    className?: string;
 }
 
 export default function FormInput({
@@ -17,9 +20,11 @@ export default function FormInput({
                                       name,
                                       placeholder,
                                       onChange,
+                                      disable,
+                                      className,
                                   }: FormInputProps) {
     return (
-        <div className="flex flex-col p-2">
+        <div className={`${className} flex flex-col p-2`}>
             {label && (
                 <label className="block font-bold justify-self-start text-md">{label}</label>
             )}
@@ -29,6 +34,7 @@ export default function FormInput({
                 type={type}
                 placeholder={placeholder}
                 onChange={onChange}
+                disabled={disable}
                 className="p-2 rounded focus:ring focus:ring-primary border text-sm border-secondary outline-secondary"
             />
         </div>

@@ -3,7 +3,7 @@ import FormInput from "@/components/Form/FormInput";
 import { X } from "lucide-react";
 import CommonButton from "@/components/Common/CommonButton";
 import {Course} from "@/types/Course";
-import {createCourse, updateCourse} from "@/utils/service/CourseService";
+import {createCourse, updateCourse} from "@/utils/service/crud/CourseService";
 
 interface CourseModalProps {
     onClose: () => void;
@@ -73,7 +73,7 @@ export function CourseModal({ onClose, newCourse, updatedCourse, selectedCourse,
             className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
             onClick={handleOverlayClick}
         >
-            <div className="bg-white rounded-lg p-6 w-full max-w-2xl relative border border-gray-200 shadow-lg border border-secondary">
+            <div className="bg-white rounded-lg p-6 w-full max-w-2xl relative shadow-lg border border-secondary">
                 {/* Nút X */}
                 <button
                     onClick={onClose}
@@ -85,7 +85,7 @@ export function CourseModal({ onClose, newCourse, updatedCourse, selectedCourse,
                 {/* Heading */}
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold text-gray-800">
-                        {type === "create" ? "Tạo học phần mới" : "Chỉnh sửa học phần"}
+                        {type === "create" ? "Tạo học phần mới" : `Chỉnh sửa học phần ${selectedCourse.name}`}
                     </h2>
                     <p className="text-sm text-gray-500 mt-1">
                         Điền thông tin để {type === "create" ? "tạo" : "chỉnh sửa"} một học phần

@@ -6,27 +6,34 @@ import { Course } from "@/types/Course";
 import CommonButton from "@/components/Common/CommonButton";
 import CourseRow from "@/components/Row/CourseRow";
 import CommonSearch from "@/components/Common/CommonSearch";
-import { getCourses } from "@/utils/service/CourseService";
-import { PaginatedCourse } from "@/types/PaginatedCourse";
+import { getCourses } from "@/utils/service/crud/CourseService";
+import { PaginatedCourse } from "@/types/paginated/PaginatedCourse";
 import { SyncLoader } from "react-spinners";
 import CourseClassContainer from "@/components/Admin/Course/CourseClassContainer";
 import CommonPagination from "@/components/Pagination/CommonPagination";
 import {CourseModal} from "@/components/Modal/CourseModal";
+import {CreateCourseClassModal} from "@/components/Modal/CreateCourseClassModal";
 
 interface CourseModal {
     active: boolean | null;
     type: "create" | "edit";
 }
 
+
+interface SelectedCourseProps {
+    payload: Course | null;
+    action: "modal" | "relation" | null;
+}
+
 export default function AdminManagementCoursePage() {
     const [courses, setCourses] = useState<PaginatedCourse | null>(null);
     const [courseModal, setCourseModal] = useState<CourseModal>({active: null, type: "create"});
+    const [createCourseClassModal, setCreateCourseClassModal] = useState<boolean | null>();
     const [search, setSearch] = useState<string | null>(null);
-    const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+    const [selectedCourse, setSelectedCourse] = useState<SelectedCourseProps>({payload: null, action: null});
     const [loading, setLoading] = useState<boolean>(true);
     const { isMobile } = useDevice();
 
-    // Hàm lấy danh sách khóa học (có hỗ trợ search + pagination)
     const fetchCourses = async (page = 1, query?: string | null) => {
         setLoading(true);
         const data = await getCourses(page, query);
@@ -34,12 +41,10 @@ export default function AdminManagementCoursePage() {
         setLoading(false);
     };
 
-    // Hàm tìm kiếm
     const handleSearch = () => {
-        fetchCourses(1, search); // Reset về trang 1 khi tìm kiếm
+        fetchCourses(1, search);
     };
 
-    // Khi xóa hết search input, tự động load lại danh sách không có query
     useEffect(() => {
         if (search === "") {
             fetchCourses(1, null);
@@ -70,7 +75,6 @@ export default function AdminManagementCoursePage() {
         }
     };
 
-    // Xử lý khi khóa học bị xóa từ con
     const handleCourseDeleted = (courseId: number) => {
         if (courses && courses.data) {
             setCourses({
@@ -111,15 +115,19 @@ export default function AdminManagementCoursePage() {
                                         <div key={course.id} className="py-1">
                                             <CourseRow
                                                 course={course}
-                                                selected={selectedCourse?.id === course.id}
-                                                onSelect={() => setSelectedCourse(course)}
+                                                selected={selectedCourse?.payload?.id === course.id}
+                                                onSelect={() => setSelectedCourse({payload: course, action: "relation"})}
                                                 onDelete={handleCourseDeleted}
+                                                onAdd={() =>
+                                                {
+                                                    setCreateCourseClassModal(true);
+                                                    setSelectedCourse({payload: course, action: "modal"});
+                                                }}
                                                 onEdit={() =>
                                                 {
                                                     setCourseModal({active: true, type: "edit"});
-                                                    setSelectedCourse(course);
-                                                }
-                                            }
+                                                    setSelectedCourse({payload: course, action: "modal"});
+                                                }}
                                             />
                                         </div>
                                     ))}
@@ -143,16 +151,24 @@ export default function AdminManagementCoursePage() {
 
             {/* Course Class List */}
             <div className={`bg-white p-2 rounded-lg shadow flex border flex-grow border-secondary ${isMobile ? "w-full" : "w-2/3"}`}>
-                <CourseClassContainer parentCourse={selectedCourse} deselectCourse={() => setSelectedCourse(null)}/>
+                <CourseClassContainer parentCourse={ selectedCourse.action === "relation" ? selectedCourse.payload : null} deselectCourse={() => setSelectedCourse(null)}/>
             </div>
 
+            {/* Edit/Create Course Modal*/}
             {courseModal.active && (
                 <CourseModal
                     onClose={() => setCourseModal({...courseModal, active: false})}
                     type={courseModal.type}
                     newCourse={handleNewCourse}
                     updatedCourse={handleCourseUpdated}
-                    selectedCourse={selectedCourse}
+                    selectedCourse={selectedCourse.payload}
+                />
+            )}
+
+            {createCourseClassModal && (
+                <CreateCourseClassModal
+                    onClose={() => setCreateCourseClassModal(false)}
+                    parentCourse={selectedCourse.payload}
                 />
             )}
         </div>

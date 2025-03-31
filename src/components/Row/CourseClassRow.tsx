@@ -2,14 +2,36 @@ import {Edit, Trash2} from "lucide-react";
 import {CourseClass} from "@/types/CourseClass";
 import {format} from "date-fns";
 import {vi} from "date-fns/locale";
+import {useAppDispatch} from "@/app/redux/hooks";
+import {showMessage} from "@/app/redux/slices/messageSlice";
+import {deleteCourseClass} from "@/utils/service/crud/CourseClassService";
 
 interface CourseClassProps {
     courseClass: CourseClass;
     onSelect: () => void;
     selected?: boolean;
+    onEdit?: () => void;
+    onDelete?: (courseId: number) => void;
 }
 
-export default function CourseClassRow({courseClass, onSelect, selected}: CourseClassProps ) {
+export default function CourseClassRow({courseClass, onSelect, selected, onDelete, onEdit}: CourseClassProps ) {
+    const dispatch = useAppDispatch();
+
+    const handleDelete = async (e) => {
+        e.stopPropagation(); // Ngăn click lan lên cha
+        if (window.confirm(`Bạn có chắc muốn xóa lớp học phần "${courseClass.name}"?`)) {
+            try {
+                const data: any = await deleteCourseClass(courseClass.id); // Gọi API
+                dispatch(showMessage({message: data.message, success: data.success}))
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    };
+    const handleEdit = (e) => {
+        onEdit();
+        e.stopPropagation();
+    };
 
     return (
         <div
@@ -31,10 +53,16 @@ export default function CourseClassRow({courseClass, onSelect, selected}: Course
                     </p>
                 </div>
                 <div className="flex gap-2">
-                    <button className="text-blue-500 hover:text-blue-700">
+                    <button
+                        className="text-blue-500 hover:text-blue-700"
+                        onClick={handleEdit}
+                    >
                         <Edit size={18}/>
                     </button>
-                    <button className="text-red-500 hover:text-red-700">
+                    <button
+                        className="text-red-500 hover:text-red-700"
+                        onClick={handleDelete}
+                    >
                         <Trash2 size={18}/>
                     </button>
                 </div>
