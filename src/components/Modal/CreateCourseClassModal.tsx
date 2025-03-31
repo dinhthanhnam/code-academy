@@ -5,16 +5,17 @@ import CommonButton from "@/components/Common/CommonButton";
 import { CourseClass } from "@/types/CourseClass";
 import { createCourseClass } from "@/utils/service/crud/CourseClassService";
 import { BiRefresh } from "react-icons/bi";
-import { nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
 import FormSelect from "@/components/Form/FormSelect";
 import { Course } from "@/types/Course";
+import slugify from "slugify";
 
 interface CourseClassModalProps {
     onClose: () => void;
     parentCourse?: Course;
     selectedCourseClass?: CourseClass;
     newCourseClass?: (course: CourseClass) => void;
-    updatedCourseClass?: (course: CourseClass) => void;
+    // updatedCourseClass?: (course: CourseClass) => void;
 }
 
 interface Message {
@@ -28,12 +29,13 @@ interface ClassForm {
     course_class_code: string;
     name: string;
     course_class_join_code: string;
+    description: string;
+    slug: string;
 }
 
 export function CreateCourseClassModal({
                                            onClose,
                                            newCourseClass,
-                                           updatedCourseClass,
                                            selectedCourseClass,
                                            parentCourse
                                        }: CourseClassModalProps) {
@@ -47,6 +49,8 @@ export function CreateCourseClassModal({
         assigned_regular_class_id: null,
         name: selectedCourseClass?.name || ""
     });
+
+    const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 8)
 
     const [bulkAdd, setBulkAdd] = useState<boolean>(false);
     const [selectedOption, setSelectedOption] = useState<string>('single');
@@ -67,7 +71,7 @@ export function CreateCourseClassModal({
         }));
     };
 
-    const generateJoinCode = () => nanoid(8);
+    const generateJoinCode = () => nanoid();
 
     const handleRefreshJoinCode = (formId?: string) => {
         const newJoinCode = generateJoinCode();
@@ -97,10 +101,12 @@ export function CreateCourseClassModal({
         setClassForms((prev) => [
             ...prev,
             {
-                id: nanoid(8),
+                id: nanoid(),
                 course_class_code: "",
                 name: "",
                 course_class_join_code: generateJoinCode(),
+                description: "",
+                slug: nanoid()
             },
         ]);
     };
@@ -120,6 +126,9 @@ export function CreateCourseClassModal({
                         course_class_code: form.course_class_code,
                         name: form.name,
                         course_class_join_code: form.course_class_join_code,
+                        description: form.description,
+                        slug: form.slug,
+                        start_date: new Date("2025-03-15"),
                     })
                 );
                 const results = await Promise.all(promises);
@@ -266,8 +275,8 @@ export function CreateCourseClassModal({
                                         type="text"
                                         name="description"
                                         label="Mô tả"
-                                        value={payload.description}
-                                        onChange={(e) => handleChange("description", e.target.value)}
+                                        value={form.description}
+                                        onChange={(e) => handleClassFormChange(form.id, "description", e.target.value)}
                                     />
                                 </div>
                             </div>

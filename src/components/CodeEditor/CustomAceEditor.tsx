@@ -66,7 +66,7 @@ export default function CustomAceEditor({
                         tabSize: 2,
                         enableBasicAutocompletion: true,
                         enableLiveAutocompletion: true,
-                        enableSnippets: true,
+                        // enableSnippets: true,
                     }}
                 />
             </div>

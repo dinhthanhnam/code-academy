@@ -73,6 +73,104 @@ const exercises = [
             },
         ]
     },
+    {
+        id: 10,
+        title: "Merge K Sorted Lists",
+        difficulty: "Hard",
+        tags: ["Linked List", "Heap"],
+        status: "🔲",
+        problems: [
+            {
+                description: "Merge k sorted linked lists and return it as one sorted list.",
+                input: "lists = [[1,4,5],[1,3,4],[2,6]]",
+                output: "[1,1,2,3,4,4,5,6]"
+            },
+        ]
+    },
+    {
+        id: 6,
+        title: "Merge K Sorted Lists",
+        difficulty: "Hard",
+        tags: ["Linked List", "Heap"],
+        status: "🔲",
+        problems: [
+            {
+                description: "Merge k sorted linked lists and return it as one sorted list.",
+                input: "lists = [[1,4,5],[1,3,4],[2,6]]",
+                output: "[1,1,2,3,4,4,5,6]"
+            },
+        ]
+    },
+    {
+        id: 7,
+        title: "Merge K Sorted Lists",
+        difficulty: "Hard",
+        tags: ["Linked List", "Heap"],
+        status: "🔲",
+        problems: [
+            {
+                description: "Merge k sorted linked lists and return it as one sorted list.",
+                input: "lists = [[1,4,5],[1,3,4],[2,6]]",
+                output: "[1,1,2,3,4,4,5,6]"
+            },
+        ]
+    },
+    {
+        id: 11,
+        title: "Merge K Sorted Lists",
+        difficulty: "Hard",
+        tags: ["Linked List", "Heap"],
+        status: "🔲",
+        problems: [
+            {
+                description: "Merge k sorted linked lists and return it as one sorted list.",
+                input: "lists = [[1,4,5],[1,3,4],[2,6]]",
+                output: "[1,1,2,3,4,4,5,6]"
+            },
+        ]
+    },
+    {
+        id: 12,
+        title: "Merge K Sorted Lists",
+        difficulty: "Hard",
+        tags: ["Linked List", "Heap"],
+        status: "🔲",
+        problems: [
+            {
+                description: "Merge k sorted linked lists and return it as one sorted list.",
+                input: "lists = [[1,4,5],[1,3,4],[2,6]]",
+                output: "[1,1,2,3,4,4,5,6]"
+            },
+        ]
+    },
+    {
+        id: 15,
+        title: "Merge K Sorted Lists",
+        difficulty: "Hard",
+        tags: ["Linked List", "Heap"],
+        status: "🔲",
+        problems: [
+            {
+                description: "Merge k sorted linked lists and return it as one sorted list.",
+                input: "lists = [[1,4,5],[1,3,4],[2,6]]",
+                output: "[1,1,2,3,4,4,5,6]"
+            },
+        ]
+    },
+    {
+        id: 13,
+        title: "Merge K Sorted Lists",
+        difficulty: "Hard",
+        tags: ["Linked List", "Heap"],
+        status: "🔲",
+        problems: [
+            {
+                description: "Merge k sorted linked lists and return it as one sorted list.",
+                input: "lists = [[1,4,5],[1,3,4],[2,6]]",
+                output: "[1,1,2,3,4,4,5,6]"
+            },
+        ]
+    },
 ];
 
 export default function ExerciseList() {
