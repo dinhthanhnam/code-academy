@@ -39,7 +39,6 @@ export default function CourseList() {
       {/* Tiêu đề */}
       <h2 className="flex items-center text-lg font-semibold text-gray-800 mb-6 cursor-pointer" onClick={handleClick}>
         Khóa học của tôi
-        <BiChevronRight size={18} strokeWidth={0.8}/>
       </h2>
 
       {/* Danh sách khóa học */}

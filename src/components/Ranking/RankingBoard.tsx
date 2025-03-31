@@ -16,13 +16,11 @@ export default function RankingBoard() {
   ];
 
   return (
-    <div className="exercise-container p-6 flex-grow overflow-auto ">
-      <h2 className="flex items-center text-lg font-semibold text-gray-800 mb-4 cursor-pointer " onClick={handleClick}>
+    <div className="exercise-container p-6 flex-grow overflow-auto bg-gradient-to-t from-[#F4C430] to-gray-100">
+      <h2 className="flex items-center text-lg font-semibold text-gray-800 mb-4 cursor-pointer" onClick={handleClick}>
         Bảng xếp hạng sinh viên
-        <BiChevronRight size={18} strokeWidth={0.8}/>
       </h2>
       
-
       <div className="flex justify-center items-end mb-8 gap-6">
         <div className="w-1/4 flex flex-col items-center transform transition-all hover:scale-105 bg-gradient-to-b from-gray-200 to-gray-300 p-6 rounded-xl shadow-lg h-64">
           <div className="w-16 h-16 mb-4 flex-shrink-0 relative">

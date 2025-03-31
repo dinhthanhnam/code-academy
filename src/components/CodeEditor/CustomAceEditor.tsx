@@ -83,12 +83,21 @@ export default function CustomAceEditor({
             )}
 
             {/* Nút Submit */}
-            <button
-                className="mt-4 bg-[#75715E] hover:bg-[#A6E22E] text-white font-bold py-2 px-4 rounded-md transition-all"
-                onClick={handleSubmit}
-            >
-                Submit Code
-            </button>
+            <div className='flex flex-row gap-5 justify-center'>
+                <button
+                    className="w-1/2 mt-4 bg-orange-600 hover:bg-[#75715E] text-white font-bold py-2 px-4 rounded-md transition-all"
+                    //onClick={handleSubmit}
+                >
+                    Compile Code
+                </button>
+                <button
+                    className="w-1/2 mt-4 bg-[#75715E] hover:bg-[#A6E22E] text-white font-bold py-2 px-4 rounded-md transition-all"
+                    onClick={handleSubmit}
+                >
+                    Submit Code
+                </button>
+            </div>
+            
         </div>
     );
 }

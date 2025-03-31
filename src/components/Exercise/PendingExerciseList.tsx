@@ -36,7 +36,6 @@ export default function PendingExerciseList() {
         <div className="exercise-container p-6 flex-grow overflow-auto">
             <h2 className="flex items-center text-lg font-semibold text-gray-800 mb-4 cursor-pointer" onClick={handleClick}>
                 Bài tập chưa hoàn thành 
-                <BiChevronRight size={18} strokeWidth={0.8}/>
             </h2>
             <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
