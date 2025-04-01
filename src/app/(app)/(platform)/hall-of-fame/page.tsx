@@ -4,7 +4,7 @@ import RankingList from "@/components/Ranking/RankingList";
 
 export default function HallOfFamePage() {
     return (
-        <div className="w-full max-h-screen flex flex-col min-h-screen bg-gray-50">
+        <div className="w-full max-h-screen flex flex-col min-h-screen">
             <div className="ranking-board-wrapper">
                 <RankingBoard />
             </div>

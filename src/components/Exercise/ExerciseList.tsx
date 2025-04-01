@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { HiOutlineSaveAs } from "react-icons/hi";
+import ExerciseRow from "../Row/ExerciseRow";
 
 const exercises = [
     {
@@ -171,135 +172,101 @@ const exercises = [
             },
         ]
     },
+    {
+        id: 14,
+        title: "Bài kiểm tra số 1",
+        difficulty: "Exam",
+        tags: ["Linked List", "Heap"],
+        status: "🔲",
+        problems: [
+            {
+                description: "Viết một chương trình nhận vào một số nguyên n (1 ≤ n ≤ 10⁶) và kiểm tra xem nó có phải là số nguyên tố hay không.",
+                input: "7",
+                output: "YES"
+            },
+        ],
+        deadline: "15:00 02/04/2025",
+    },
 ];
 
 export default function ExerciseList() {
     const [selected, setSelected] = useState(null);
-    const [filter, setFilter] = useState("All"); 
-
+    const [filter, setFilter] = useState("All");
+  
     // Lọc danh sách bài tập dựa trên độ khó
-    const filteredExercises = filter === "All"
+    const filteredExercises =
+      filter === "All"
         ? exercises
-        : exercises.filter(exercise => exercise.difficulty === filter);
-
+        : exercises.filter((exercise) => exercise.difficulty === filter);
+  
     return (
-        <div className="exercise-container p-6 flex-grow overflow-auto">
-            <div className="flex flex-row justify-between">
-                <h2 className="text-xl font-bold text-gray-800 mb-6">Exercise List</h2>
-                
-                <div className="flex gap-3 mb-6">
-                    <button
-                        className={`px-4 py-2 rounded-full font-bold text-sm transition-all duration-200 transform hover:scale-105 shadow-md ${
-                            filter === "All" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-100"
-                        }`}
-                        onClick={() => setFilter("All")}
-                    >
-                        All
-                    </button>
-                    <button
-                        className={`px-4 py-2 rounded-full font-bold text-sm transition-all duration-200 transform hover:scale-105 shadow-md ${
-                            filter === "Easy" ? "bg-green-600 text-white" : "bg-white text-gray-700 hover:bg-gray-100"
-                        }`}
-                        onClick={() => setFilter("Easy")}
-                    >
-                        Easy
-                    </button>
-                    <button
-                        className={`px-4 py-2 rounded-full font-bold text-sm transition-all duration-200 transform hover:scale-105 shadow-md ${
-                            filter === "Medium" ? "bg-yellow-600 text-white" : "bg-white text-gray-700 hover:bg-gray-100"
-                        }`}
-                        onClick={() => setFilter("Medium")}
-                    >
-                        Medium
-                    </button>
-                    <button
-                        className={`px-4 py-2 rounded-full font-bold text-sm transition-all duration-200 transform hover:scale-105 shadow-md ${
-                            filter === "Hard" ? "bg-red-600 text-white" : "bg-white text-gray-700 hover:bg-gray-100"
-                        }`}
-                        onClick={() => setFilter("Hard")}
-                    >
-                        Hard
-                    </button>
-                </div>
-            </div>
-            
-
-            <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                    <thead>
-                        <tr className="exercise-header">
-                            <th className="exercise-cell text-left">Status</th>
-                            <th className="exercise-cell text-left">Title</th>
-                            <th className="exercise-cell text-left">Difficulty</th>
-                            <th className="exercise-cell text-left">Tags</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredExercises.map((exercise) => (
-                            <React.Fragment key={exercise.id}>
-                                <tr
-                                    className={`exercise-row ${
-                                        selected === exercise.id ? "bg-primary2" : "hover:bg-gray-50"
-                                    }`}
-                                    onClick={() => setSelected(selected === exercise.id ? null : exercise.id)}
-                                >
-                                    <td className="exercise-cell text-lg">{exercise.status}</td>
-                                    <td className="exercise-cell font-medium text-blue-600 hover:underline">
-                                        {exercise.title}
-                                    </td>
-                                    <td
-                                        className={`exercise-cell ${
-                                            exercise.difficulty === "Easy"
-                                                ? "text-green-600"
-                                                : exercise.difficulty === "Medium"
-                                                ? "text-yellow-600"
-                                                : "text-red-600"
-                                        }`}
-                                    >
-                                        {exercise.difficulty}
-                                    </td>
-                                    <td className="exercise-cell">
-                                        {exercise.tags.map((tag, index) => (
-                                            <span
-                                                key={index}
-                                                className="inline-block bg-gray-200 text-xs px-2 py-1 rounded-full mr-1"
-                                            >
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </td>
-                                </tr>
-                                {selected === exercise.id && (
-                                    <tr className="transition-all duration-300 ease-in-out max-h-[24rem] opacity-100">
-                                        <td colSpan={4} className="p-4 bg-gray-100">
-                                            <div className="exercise-details relative">
-                                                <h3 className="font-semibold mb-2">Problems:</h3>
-                                                {exercise.problems.map((problem, index) => (
-                                                    <div key={index} className="mb-4 relative">
-                                                        <p className="text-gray-700">{problem.description}</p>
-                                                        <p className="mt-1">
-                                                            <span className="font-medium">Input:</span> {problem.input}
-                                                        </p>
-                                                        <p>
-                                                            <span className="font-medium">Output:</span> {problem.output}
-                                                        </p>
-                                                        <div className="absolute bottom-0 right-0">
-                                                            <button 
-                                                            className="p-1 rounded-full bg-gray-200 text-black transition-all duration-200 hover:scale-110 hover:bg-gray-300 hover:text-black">
-                                                                <HiOutlineSaveAs size={22}/>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )}
-                            </React.Fragment>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+      <div className="exercise-container p-6 flex-grow overflow-auto">
+        <div className="flex flex-row justify-between">
+          <h2 className="text-xl font-bold text-gray-800 mb-6">Danh sách bài tập</h2>
+          <div className="flex gap-3 mb-6">
+            <button
+              className={`px-4 py-2 rounded-full font-bold text-sm transition-all duration-200 transform hover:scale-105 shadow-md ${
+                filter === "All" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-100"
+              }`}
+              onClick={() => setFilter("All")}
+            >
+              Tất cả
+            </button>
+            <button
+              className={`px-4 py-2 rounded-full font-bold text-sm transition-all duration-200 transform hover:scale-105 shadow-md ${
+                filter === "Easy" ? "bg-green-600 text-white" : "bg-white text-gray-700 hover:bg-gray-100"
+              }`}
+              onClick={() => setFilter("Easy")}
+            >
+              Dễ
+            </button>
+            <button
+              className={`px-4 py-2 rounded-full font-bold text-sm transition-all duration-200 transform hover:scale-105 shadow-md ${
+                filter === "Medium" ? "bg-yellow-600 text-white" : "bg-white text-gray-700 hover:bg-gray-100"
+              }`}
+              onClick={() => setFilter("Medium")}
+            >
+              Trung bình
+            </button>
+            <button
+              className={`px-4 py-2 rounded-full font-bold text-sm transition-all duration-200 transform hover:scale-105 shadow-md ${
+                filter === "Hard" ? "bg-red-600 text-white" : "bg-white text-gray-700 hover:bg-gray-100"
+              }`}
+              onClick={() => setFilter("Hard")}
+            >
+              Khó
+            </button>
+            <button
+              className={`px-4 py-2 rounded-full font-bold text-sm transition-all duration-200 transform hover:scale-105 shadow-md ${
+                filter === "Exam" ? "bg-orange-600 text-white" : "bg-white text-gray-700 hover:bg-gray-100"
+              }`}
+              onClick={() => setFilter("Exam")}
+            >
+              Bài kiểm tra
+            </button>
+          </div>
         </div>
+  
+        {/* Tiêu đề cột */}
+        <div className="flex flex-row p-4 bg-gray-200 font-bold text-gray-800 border-b">
+          <div className="w-1/12 text-center">Trạng thái</div>
+          <div className="w-4/12 text-center">Tiêu đề</div>
+          <div className="w-2/12 text-center">Độ khó</div>
+          <div className="w-3/12 text-center">Dạng bài</div>
+          <div className="w-2/12 text-center">Hạn nộp</div>
+        </div>
+  
+        {/* Danh sách các hàng */}
+        <div className="overflow-x-auto">
+          {filteredExercises.map((exercise) => (
+            <ExerciseRow
+              key={exercise.id}
+              exercise={exercise}
+              isSelected={selected === exercise.id}
+              onClick={() => setSelected(selected === exercise.id ? null : exercise.id)}
+            />
+          ))}
+        </div>
+      </div>
     );
-}
+  }
