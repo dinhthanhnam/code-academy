@@ -3,7 +3,7 @@ import ProfileHolder from "@/components/Header/ProfileHolder";
 import { BiDockLeft } from "react-icons/bi";
 import { toggleSidebar } from "@/app/redux/slices/sidebarSlice";
 import { useAppDispatch } from "@/app/redux/hooks";
-import Chatbot from "./ChatBot";
+import Notifications from "./Notification";
 import JoinClass from "./JoinClass";
 
 export default function Header() {
@@ -22,7 +22,7 @@ export default function Header() {
       {/* ProfileHolder, JoinClass, và Chatbox */}
       <div className="flex items-center space-x-4">
         <JoinClass />
-        <Chatbot />
+        <Notifications />
         <ProfileHolder />
        
         
