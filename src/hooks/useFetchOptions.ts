@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {getCourseOptions, getRegularClassOptions} from "@/utils/service/OptionService";
+import {getCourseOptions, getLecturerOptions, getRegularClassOptions} from "@/utils/service/OptionService";
 import {CustomOption} from "@/utils/service/OptionService";
 
 export function useFetchRegularClassOptions() {
@@ -36,4 +36,22 @@ export function useFetchCourseOptions() {
     }, []);
 
     return { courseOptions };
+}
+
+export function useFetchLecturerOptions() {
+    const [lecturerOptions, setLecturerOptions] = useState<CustomOption[]>([]);
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const data = await getLecturerOptions();
+                setLecturerOptions(data);
+            } catch (err: any) {
+                console.error("Error fetching lecturers:", err);
+            }
+        };
+        fetchCourses();
+    }, []);
+
+    return { lecturerOptions };
 }

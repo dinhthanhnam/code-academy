@@ -30,3 +30,16 @@ export const getCourseOptions = async (search?: string) => {
         console.error(error);
     }
 };
+
+export const getLecturerOptions = async (search?: string) => {
+    try {
+        const res = await api.get<CustomOption[]>("/option/lecturer",  {
+            params: {
+                ...(search ? { search } : {})
+            },
+        });
+        return res.data;
+    } catch (error) {
+        console.error(error);
+    }
+};

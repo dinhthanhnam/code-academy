@@ -9,7 +9,7 @@ import FormSelect from "@/components/Form/FormSelect";
 import { Course } from "@/types/Course";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, parseISO } from "date-fns";
-import {useFetchCourseOptions, useFetchRegularClassOptions} from "@/hooks/useFetchOptions";
+import {useFetchCourseOptions, useFetchLecturerOptions, useFetchRegularClassOptions} from "@/hooks/useFetchOptions";
 import CustomDatePicker from "@/components/Form/CustomDatePicker";
 import RefreshJoinCodeForm from "@/components/Admin/Course/RefreshJoinCodeForm";
 import {CustomOption} from "@/utils/service/OptionService";
@@ -39,14 +39,16 @@ export function CourseClassModal({
     const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 8);
     const { regularClassOptions } = useFetchRegularClassOptions();
     const { courseOptions } = useFetchCourseOptions();
+    const { lecturerOptions } = useFetchLecturerOptions();
 
     const [payload, setPayload] = useState<CourseClass>({
         active: true,
         course_id: parentCourse?.id || null,
         course_class_code: selectedCourseClass?.course_class_code || "",
         course_class_join_code: selectedCourseClass?.course_class_join_code || generateJoinCode(),
+        lecturer_id: selectedCourseClass?.lecturer_id || null,
         description: selectedCourseClass?.description || "",
-        assigned_regular_class_id: selectedCourseClass?.assigned_regular_class_id,
+        assigned_regular_class_id: selectedCourseClass?.assigned_regular_class_id || null,
         name: selectedCourseClass?.name || "",
         start_date: selectedCourseClass?.start_date || null, // e.g., "2025-03-31T14:55:28+07:00" or null
     });
@@ -189,29 +191,20 @@ export function CourseClassModal({
                     />
                     {type === 'update' && (
                         <>
-                            <FormInput
-                                type="text"
+                            <FormSelect
                                 name="lecturer"
                                 label="Giảng viên"
+                                value={payload.lecturer_id?.toString() || ""}
+                                options={renderOptions(lecturerOptions)}
+                                onChange={(e) => handleChange("lecturer_id", e.target.value)}
+                            />
+                            <FormInput
+                                type="text"
+                                name="name"
+                                label="Tên học phần"
                                 value={payload.name}
                                 onChange={(e) => handleChange("name", e.target.value)}
                             />
-                            <div className={`grid grid-cols-2`}>
-                                <FormInput
-                                    type="text"
-                                    name="name"
-                                    label="Tên học phần"
-                                    value={payload.name}
-                                    onChange={(e) => handleChange("name", e.target.value)}
-                                />
-                                <FormInput
-                                    type="text"
-                                    name="course_class_code"
-                                    label="Mã lớp học phần"
-                                    value={selectedCourseClass?.course_class_code}
-                                    onChange={(e) => handleChange("course_class_code", e.target.value)}
-                                />
-                            </div>
                             <div className={`grid grid-cols-5`}>
                                 <FormInput
                                     type="text"

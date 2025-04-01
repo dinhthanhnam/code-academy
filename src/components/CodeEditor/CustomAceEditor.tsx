@@ -42,7 +42,6 @@ export default function CustomAceEditor({
                     value={selectedLanguage}
                     onChange={(e) => setSelectedLanguage(e.target.value)}
                 >
-                    <option value="javascript">JavaScript</option>
                     <option value="java">Java</option>
                     <option value="c_cpp">C/C++</option>
                     <option value="python">Python</option>
