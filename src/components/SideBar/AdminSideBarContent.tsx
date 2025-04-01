@@ -10,7 +10,7 @@ export default function AdminSideBarContent() {
             { id: "exercise", name: "Bài tập", path: "/exercise" },
             { id: "lecturer", name: "Giảng viên", path: "/lecturer" },
             { id: "student", name: "Sinh viên", path: "/student" },
-            { id: "admin", name: "Quản trị viên", path: "/admin" },
+            { id: "admin", name: "Quản trị viên", path: "/administrator" },
         ],
         database: [
             { id: "course", name: "Course", path: "/course" },
