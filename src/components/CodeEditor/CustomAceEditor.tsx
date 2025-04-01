@@ -14,7 +14,7 @@ interface AceEditorProps {
 }
 
 export default function CustomAceEditor({
-                                            language = 'javascript',
+                                            language = 'java',
                                         }: AceEditorProps) {
     const [value, setValue] = useState<string | null>(null);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -65,8 +65,7 @@ export default function CustomAceEditor({
                         showLineNumbers: true,
                         tabSize: 2,
                         enableBasicAutocompletion: true,
-                        enableLiveAutocompletion: true,
-                        // enableSnippets: true,
+                        // enableLiveAutocompletion: true,
                     }}
                 />
             </div>

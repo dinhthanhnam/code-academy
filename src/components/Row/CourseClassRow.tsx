@@ -21,7 +21,10 @@ export default function CourseClassRow({courseClass, onSelect, selected, onDelet
         e.stopPropagation(); // Ngăn click lan lên cha
         if (window.confirm(`Bạn có chắc muốn xóa lớp học phần "${courseClass.name}"?`)) {
             try {
-                const data: any = await deleteCourseClass(courseClass.id); // Gọi API
+                const data: any = await deleteCourseClass(courseClass.id);
+                if(data.success) {
+                    onDelete(courseClass.id);
+                }
                 dispatch(showMessage({message: data.message, success: data.success}))
             } catch (error) {
                 console.error(error);
@@ -54,16 +57,18 @@ export default function CourseClassRow({courseClass, onSelect, selected, onDelet
                 </div>
                 <div className="flex gap-2">
                     <button
-                        className="text-blue-500 hover:text-blue-700"
+                        className="text-blue-500 hover:text-blue-700 group relative"
                         onClick={handleEdit}
                     >
                         <Edit size={18}/>
+                        <span className={`tooltip`}>Chỉnh sửa</span>
                     </button>
                     <button
-                        className="text-red-500 hover:text-red-700"
+                        className="text-red-500 hover:text-red-700  group relative"
                         onClick={handleDelete}
                     >
                         <Trash2 size={18}/>
+                        <span className={`tooltip`}>Xoá</span>
                     </button>
                 </div>
             </div>

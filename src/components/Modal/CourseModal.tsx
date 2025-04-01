@@ -10,7 +10,7 @@ interface CourseModalProps {
     selectedCourse?: Course;
     newCourse?: (course: Course) => void;
     updatedCourse?: (course: Course) => void;
-    type: "create" | "edit";
+    type: "create" | "update";
 }
 
 interface Message {
@@ -53,8 +53,7 @@ export function CourseModal({ onClose, newCourse, updatedCourse, selectedCourse,
                 }
             } else {
                 data = await updateCourse(selectedCourse!.id, payload);
-                // Nếu update thành công và có callback
-                if (data.success && newCourse && data.data) {
+                if (data.success && updatedCourse && data.data) {
                     updatedCourse(data.data);
                 }
             }

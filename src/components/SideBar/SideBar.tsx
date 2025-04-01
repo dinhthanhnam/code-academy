@@ -7,9 +7,9 @@ import { setActiveNavigationOption } from "@/app/redux/slices/navigationOptionSl
 import {useEffect, useRef } from "react";
 import { closeSidebar } from "@/app/redux/slices/sidebarSlice";
 import { useAppDispatch } from "@/app/redux/hooks";
-import { useRole, useSidebarState} from "@/app/hooks/useAuth";
+import { useRole, useSidebarState} from "@/hooks/useAuth";
 import dynamic from "next/dynamic";
-import {useDevice} from "@/app/hooks/useDevice";
+import {useDevice} from "@/hooks/useDevice";
 import NormalButton from "../Button/NormalButton";
 import {TbSocial} from "react-icons/tb";
 import DropDownButton from "@/components/Button/DropDownButton";

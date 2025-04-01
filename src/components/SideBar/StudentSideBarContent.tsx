@@ -8,7 +8,7 @@ import {
 } from "react-icons/hi2";
 import {SiHtmlacademy} from "react-icons/si";
 import {LuProjector} from "react-icons/lu";
-import {useLoadPersonalCourseClasses} from "@/app/hooks/useAuth";
+import {useLoadPersonalCourseClasses} from "@/hooks/useAuth";
 
 export default function StudentSideBarContent() {
     const { courses: personalCourseClasses } = useLoadPersonalCourseClasses();

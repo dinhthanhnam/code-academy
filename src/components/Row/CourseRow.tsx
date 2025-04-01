@@ -64,7 +64,7 @@ export default function CourseRow({course, onSelect, selected, onEdit, onAdd, on
                     onClick={handleEdit}
                 >
                     <Edit size={18}/>
-                    <span className={`tooltip`}>Sửa học phần</span>
+                    <span className={`tooltip`}>Chỉnh sửa</span>
                 </button>
                 <button className="text-red-500 hover:text-red-700 group relative"
                     onClick={handleDelete}

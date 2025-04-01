@@ -8,7 +8,7 @@ export default async function PendingExercisesPage({ params }) {
             <ExerciseList></ExerciseList>
 
             <CustomAceEditor
-                language="javascript"
+                language="java"
             />
         </>
     );

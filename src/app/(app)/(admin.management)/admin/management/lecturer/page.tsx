@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-import { useDevice } from "@/app/hooks/useDevice";
+import { useDevice } from "@/hooks/useDevice";
 import { Lecturer } from "@/types/Lecturer";
 import { PaginatedLecturer } from "@/types/paginated/PaginatedLecturer";
 import CommonButton from "@/components/Common/CommonButton";

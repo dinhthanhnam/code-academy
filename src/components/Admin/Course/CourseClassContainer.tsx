@@ -11,25 +11,29 @@ import CourseClassRow from "@/components/Row/CourseClassRow";
 import CommonPagination from "@/components/Pagination/CommonPagination";
 import SelectedItem from "@/components/List/SelectedItem";
 import {getCourseClasses} from "@/utils/service/crud/CourseClassService";
-import {CreateCourseClassModal} from "@/components/Modal/CreateCourseClassModal";
+import {CourseClassModal} from "@/components/Modal/CourseClassModal";
 
-interface CreateCourseClassModal {
-    active: boolean | null;
-    parentCourse: Course | null;
-}
+
 
 interface CourseClassContainerProps {
     parentCourse?: Course;
     deselectCourse?: () => void;
 }
 
+interface CourseClassModal {
+    active: boolean | null;
+    type: "create" | "update";
+    parentCourse: Course | null;
+}
 interface SelectedCourseClassProps {
+    payload: CourseClass | null;
+    action: "modal" | "relation" | null;
 }
 
 export default function CourseClassContainer({parentCourse = null, deselectCourse}: CourseClassContainerProps) {
     const [courseClasses, setCourseClasses] = useState<PaginatedCourseClass | null>(null);
-    const [selectedCourseClass, setSelectedCourseClass] = useState<CourseClass | null>(null);
-    const [createCourseClassModal, setCreateCourseClassModal] = useState<CreateCourseClassModal>({active: null, parentCourse: null});
+    const [selectedCourseClass, setSelectedCourseClass] = useState<SelectedCourseClassProps>({payload: null, action: 'modal'});
+    const [courseClassModal, setCourseClassModal] = useState<CourseClassModal>({active: null, type: null, parentCourse: parentCourse});
     const [search, setSearch] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -96,7 +100,10 @@ export default function CourseClassContainer({parentCourse = null, deselectCours
                     onChange={(e) => setSearch(e.target.value)}
                     onSubmit={handleSearch}
                 />
-                <CommonButton onClick={() => setCreateCourseClassModal({...createCourseClassModal, active: true})} icon={Plus} label="Thêm lớp học phần" />
+                <CommonButton onClick={() => {
+                    setCourseClassModal({...courseClassModal, type: 'create', active: true});
+                    setSelectedCourseClass({payload: null, action: "modal"});
+                }} icon={Plus} label="Thêm lớp học phần" />
             </div>
 
             {/* Selected Item - nếu có */}
@@ -123,9 +130,12 @@ export default function CourseClassContainer({parentCourse = null, deselectCours
                                             <div key={courseClass.id} className="py-1">
                                                 <CourseClassRow
                                                     courseClass={courseClass}
-                                                    selected={selectedCourseClass?.id === courseClass.id}
-                                                    onSelect={() => setSelectedCourseClass(courseClass)}
-                                                    onEdit={() => {}}
+                                                    selected={selectedCourseClass?.payload?.id === courseClass.id}
+                                                    onSelect={() => setSelectedCourseClass({payload: courseClass, action: "relation"})}
+                                                    onEdit={() => {
+                                                        setSelectedCourseClass({payload: courseClass, action: "modal"});
+                                                        setCourseClassModal({...courseClassModal, type: 'update', active: true});
+                                                    }}
                                                     onDelete={handleCourseClassDeleted}
                                                 />
                                             </div>
@@ -153,12 +163,14 @@ export default function CourseClassContainer({parentCourse = null, deselectCours
                     </div>
                 )}
             </div>
-            {createCourseClassModal.active && (
-                <CreateCourseClassModal
-                    onClose={() => setCreateCourseClassModal({...createCourseClassModal, active: false})}
+            {courseClassModal.active && (
+                <CourseClassModal
+                    type={courseClassModal.type}
+                    onClose={() => setCourseClassModal({...courseClassModal, active: false})}
                     newCourseClass={handleNewCourseClass}
                     updatedCourseClass={handleCourseClassUpdated}
-                    selectedCourseClass={selectedCourseClass}
+                    selectedCourseClass={selectedCourseClass.payload}
+                    parentCourse={parentCourse}
                 />
             )}
         </div>

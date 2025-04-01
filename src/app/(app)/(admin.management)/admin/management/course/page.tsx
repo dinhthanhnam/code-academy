@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-import { useDevice } from "@/app/hooks/useDevice";
+import { useDevice } from "@/hooks/useDevice";
 import { Course } from "@/types/Course";
 import CommonButton from "@/components/Common/CommonButton";
 import CourseRow from "@/components/Row/CourseRow";
@@ -12,11 +12,11 @@ import { SyncLoader } from "react-spinners";
 import CourseClassContainer from "@/components/Admin/Course/CourseClassContainer";
 import CommonPagination from "@/components/Pagination/CommonPagination";
 import {CourseModal} from "@/components/Modal/CourseModal";
-import {CreateCourseClassModal} from "@/components/Modal/CreateCourseClassModal";
+import {CourseClassModal} from "@/components/Modal/CourseClassModal";
 
 interface CourseModal {
     active: boolean | null;
-    type: "create" | "edit";
+    type: "create" | "update";
 }
 
 
@@ -125,7 +125,7 @@ export default function AdminManagementCoursePage() {
                                                 }}
                                                 onEdit={() =>
                                                 {
-                                                    setCourseModal({active: true, type: "edit"});
+                                                    setCourseModal({active: true, type: "update"});
                                                     setSelectedCourse({payload: course, action: "modal"});
                                                 }}
                                             />
@@ -151,7 +151,7 @@ export default function AdminManagementCoursePage() {
 
             {/* Course Class List */}
             <div className={`bg-white p-2 rounded-lg shadow flex border flex-grow border-secondary ${isMobile ? "w-full" : "w-2/3"}`}>
-                <CourseClassContainer parentCourse={ selectedCourse.action === "relation" ? selectedCourse.payload : null} deselectCourse={() => setSelectedCourse(null)}/>
+                <CourseClassContainer parentCourse={selectedCourse?.payload || null } deselectCourse={() => setSelectedCourse(null)}/>
             </div>
 
             {/* Edit/Create Course Modal*/}
@@ -166,9 +166,10 @@ export default function AdminManagementCoursePage() {
             )}
 
             {createCourseClassModal && (
-                <CreateCourseClassModal
+                <CourseClassModal
+                    type={'create'}
                     onClose={() => setCreateCourseClassModal(false)}
-                    parentCourse={selectedCourse.payload}
+                    parentCourse={ selectedCourse?.action === "modal" ? selectedCourse.payload : null }
                 />
             )}
         </div>

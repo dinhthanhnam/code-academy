@@ -2,8 +2,8 @@
 import CourseList from "@/components/CourseList/CourseList";
 import PendingExerciseList from "@/components/Exercise/PendingExerciseList";
 import RankingBoard from "@/components/Ranking/RankingBoard";
-import { useDevice } from "@/app/hooks/useDevice";
-import { useRole } from "@/app/hooks/useAuth";
+import { useDevice } from "@/hooks/useDevice";
+import { useRole } from "@/hooks/useAuth";
 
 export default function Home() {
     const { isMobile } = useDevice();
