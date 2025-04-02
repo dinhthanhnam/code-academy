@@ -2,7 +2,7 @@ import {Lecturer} from "@/types/Lecturer";
 import {deleteLecturer} from "@/utils/service/crud/LecturerService";
 import {Edit, PlusCircle, Trash2} from "lucide-react";
 
-interface LecturerRowProps {
+interface StudentRowProps {
     lecturer: Lecturer;
     onSelect: () => void;
     selected?: boolean;
@@ -11,17 +11,16 @@ interface LecturerRowProps {
     onDelete: (courseId: number) => void;
 }
 
-export default function LecturerRow({lecturer, onSelect, selected, onEdit, onDelete, onAdd}: LecturerRowProps ) {
+export default function StudentRow({lecturer, onSelect, selected, onEdit, onDelete, onAdd}: StudentRowProps ) {
 
     const handleDelete = async (e) => {
-        e.stopPropagation(); // Ngăn click lan lên cha
+        e.stopPropagation();
         if (window.confirm(`Bạn có chắc muốn xóa giảng viên "${lecturer.name}"?`)) {
             try {
-                await deleteLecturer(lecturer.id); // Gọi API
-                onDelete(lecturer.id); // Truyền ID về cha để xóa
+                await deleteLecturer(lecturer.id);
+                onDelete(lecturer.id);
             } catch (error) {
                 console.error("Error deleting course:", error);
-                // Có thể thêm thông báo lỗi ở đây
             }
         }
     };

@@ -5,22 +5,30 @@ import CommonButton from "@/components/Common/CommonButton";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState} from "react";
 import {PaginatedCourseClass} from "@/types/paginated/PaginatedCourseClass";
-// import {getCourseClasses, getCourseClassesByLecturer} from "@/utils/service/crud/LecturerService";
 import {SyncLoader} from "react-spinners";
 import CourseClassRow from "@/components/Row/CourseClassRow";
 import CommonPagination from "@/components/Pagination/CommonPagination";
 import SelectedItem from "@/components/List/SelectedItem";
 import {getCourseClassesByLecturer} from "@/utils/service/crud/LecturerService";
 import {getCourseClasses} from "@/utils/service/crud/CourseClassService";
+import {detachClass, LecturerClass} from "@/utils/service/crud/LecturerCourseClassService";
+import {showMessage} from "@/app/redux/slices/messageSlice";
+import {useAppDispatch} from "@/app/redux/hooks";
 
 interface LecturerCourseClassContainerProps {
     parentLecturer?: Lecturer;
     deselectLecturer?: () => void;
 }
 
+interface SelectedCourseClassProps {
+    payload: CourseClass | null;
+    action: "modal" | "relation" | null;
+}
+
 export default function LecturerCourseClassContainer({parentLecturer = null, deselectLecturer}: LecturerCourseClassContainerProps) {
+    const dispatch = useAppDispatch();
     const [lecturerCourseClasses, setLecturerCourseClasses] = useState<PaginatedCourseClass | null>(null);
-    const [selectedCourseClass, setSelectedCourseClass] = useState<CourseClass | null>(null);
+    const [selectedCourseClass, setSelectedCourseClass] = useState<SelectedCourseClassProps>({payload: null, action: null});
     const [search, setSearch] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -38,6 +46,32 @@ export default function LecturerCourseClassContainer({parentLecturer = null, des
             setLoading(false);
         }
     };
+
+    const handleDetachCourseClass =  async (detachedCourse: CourseClass) => {
+        if (!parentLecturer) {
+            alert("Chọn một giảng viên trước khi thực hiện gỡ lớp học phần");
+        }
+
+        const detachPayload: LecturerClass = {lecturer_id: parentLecturer?.id, course_class_id: detachedCourse?.id}
+        if (window.confirm(`Bạn có chắc muốn gỡ lớp học phần "${detachedCourse.name}"?`)) {
+            try {
+                const res: any = await detachClass(detachPayload);
+
+                if (res.success) {
+                    setLecturerCourseClasses({
+                        ...lecturerCourseClasses,
+                        data: lecturerCourseClasses.data.filter((c) => c.id !== detachedCourse.id),
+                    });
+                }
+
+                dispatch(showMessage({message: res.message, success: res.success}));
+            } catch (error) {
+                console.error("Lỗi detach class", error);
+            }
+        }
+
+
+    }
 
     const handleSearch = async (page = 1) => {
         fetchCourseClasses(page, search);
@@ -80,14 +114,14 @@ export default function LecturerCourseClassContainer({parentLecturer = null, des
                                 <div className="flex flex-col h-full">
                                     {/* Phần danh sách CourseClassRow với thanh cuộn */}
                                     <div className="overflow-y-auto flex-grow" style={{ minHeight: 0 }}>
-                                        {lecturerCourseClasses.data.map((course) => (
-                                            <div key={course.id} className="py-1">
+                                        {lecturerCourseClasses.data.map((courseClass) => (
+                                            <div key={courseClass.id} className="py-1">
                                                 <CourseClassRow
-                                                    courseClass={course}
-                                                    selected={selectedCourseClass?.id === course.id}
-                                                    onSelect={() => setSelectedCourseClass(course)}
-                                                    onEdit={() => {}}
-                                                    onDelete={() => {}}
+                                                    courseClass={courseClass}
+                                                    selected={selectedCourseClass?.payload?.id === courseClass.id}
+                                                    onSelect={() => setSelectedCourseClass({payload: courseClass, action: "relation"})}
+                                                    onDetach={() => handleDetachCourseClass(courseClass)}
+                                                    hideButtons={["students", "delete"]}
                                                 />
                                             </div>
                                         ))}

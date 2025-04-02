@@ -1,8 +1,5 @@
 import api from "@/utils/AxiosInstance";
-import {PaginatedCourse} from "@/types/paginated/PaginatedCourse";
-import {CourseClass} from "@/types/CourseClass";
 import {PaginatedCourseClass} from "@/types/paginated/PaginatedCourseClass";
-import {Course} from "@/types/Course";
 import {PaginatedLecturer} from "@/types/paginated/PaginatedLecturer";
 import {Lecturer} from "@/types/Lecturer";
 

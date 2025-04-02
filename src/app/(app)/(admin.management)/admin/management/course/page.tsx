@@ -19,7 +19,6 @@ interface CourseModal {
     type: "create" | "update";
 }
 
-
 interface SelectedCourseProps {
     payload: Course | null;
     action: "modal" | "relation" | null;
@@ -28,7 +27,7 @@ interface SelectedCourseProps {
 export default function AdminManagementCoursePage() {
     const [courses, setCourses] = useState<PaginatedCourse | null>(null);
     const [courseModal, setCourseModal] = useState<CourseModal>({active: null, type: "create"});
-    const [createCourseClassModal, setCreateCourseClassModal] = useState<boolean | null>();
+    const [courseClassModal, setCourseClassModal] = useState<boolean | null>();
     const [search, setSearch] = useState<string | null>(null);
     const [selectedCourse, setSelectedCourse] = useState<SelectedCourseProps>({payload: null, action: null});
     const [loading, setLoading] = useState<boolean>(true);
@@ -120,7 +119,7 @@ export default function AdminManagementCoursePage() {
                                                 onDelete={handleCourseDeleted}
                                                 onAdd={() =>
                                                 {
-                                                    setCreateCourseClassModal(true);
+                                                    setCourseClassModal(true);
                                                     setSelectedCourse({payload: course, action: "modal"});
                                                 }}
                                                 onEdit={() =>
@@ -151,7 +150,7 @@ export default function AdminManagementCoursePage() {
 
             {/* Course Class List */}
             <div className={`bg-white p-2 rounded-lg shadow flex border flex-grow border-secondary ${isMobile ? "w-full" : "w-2/3"}`}>
-                <CourseClassContainer parentCourse={selectedCourse?.payload || null } deselectCourse={() => setSelectedCourse(null)}/>
+                <CourseClassContainer parentCourse={selectedCourse?.action === 'relation' ? selectedCourse?.payload : null } deselectCourse={() => setSelectedCourse(null)}/>
             </div>
 
             {/* Edit/Create Course Modal*/}
@@ -165,10 +164,10 @@ export default function AdminManagementCoursePage() {
                 />
             )}
 
-            {createCourseClassModal && (
+            {courseClassModal && (
                 <CourseClassModal
                     type={'create'}
-                    onClose={() => setCreateCourseClassModal(false)}
+                    onClose={() => setCourseClassModal(false)}
                     parentCourse={ selectedCourse?.action === "modal" ? selectedCourse.payload : null }
                 />
             )}

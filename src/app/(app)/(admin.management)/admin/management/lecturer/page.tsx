@@ -11,20 +11,25 @@ import { getLecturers } from "@/utils/service/crud/LecturerService";
 import CommonPagination from "@/components/Pagination/CommonPagination";
 import { SyncLoader } from "react-spinners";
 import LecturerCourseClassContainer from "@/components/Admin/Course/LecturerCourseClassContainer";
-// import LecturerCourseClassContainer from "@/components/Admin/Lecturer/LecturerCourseClassContainer";
-//
-// import {LecturerModal} from "@/components/Modal/LecturerModal";
+import {LecturerModal} from "@/components/Modal/LecturerModal";
+import {LecturerCourseClassModal} from "@/components/Modal/LecturerCourseClassModal";
 
 interface LecturerModal {
     active: boolean | null;
-    type: "create" | "edit";
+    type: "create" | "update";
+}
+
+interface SelectedLecturerProps {
+    payload: Lecturer;
+    action: "modal" | "relation";
 }
 
 export default function AdminManagementLecturerPage() {
     const [lecturers, setLecturers] = useState<PaginatedLecturer | null>(null);
     const [lecturerModal, setLecturerModal] = useState<LecturerModal>({active: null, type: "create"});
     const [search, setSearch] = useState<string | null>(null);
-    const [selectedLecturer, setSelectedLecturer] = useState<Lecturer | null>(null);
+    const [lecturerCourseClassModal, setLecturerCourseClassModal] = useState<boolean>(false);
+    const [selectedLecturer, setSelectedLecturer] = useState<SelectedLecturerProps>({payload: null, action: null});
     const [loading, setLoading] = useState<boolean>(true);
     const { isMobile } = useDevice();
 
@@ -38,10 +43,9 @@ export default function AdminManagementLecturerPage() {
 
     // Hàm tìm kiếm
     const handleSearch = () => {
-        fetchLecturers(1, search); // Reset về trang 1 khi tìm kiếm
+        fetchLecturers(1, search);
     };
 
-    // Khi xóa hết search input, tự động load lại danh sách không có query
     useEffect(() => {
         if (search === "") {
             fetchLecturers(1, null);
@@ -72,7 +76,6 @@ export default function AdminManagementLecturerPage() {
         }
     };
 
-    // Xử lý khi khóa học bị xóa từ con
     const handleLecturerDeleted = (lecturerId: number) => {
         if (lecturers && lecturers.data) {
             setLecturers({
@@ -93,9 +96,12 @@ export default function AdminManagementLecturerPage() {
                         onChange={(e) => setSearch(e.target.value)}
                         onSubmit={handleSearch}
                     />
-                    <CommonButton onClick={() => setLecturerModal({ active: true, type: "create" })}
+                    <CommonButton onClick={() => {
+                        setLecturerModal({ active: true, type: "create" });
+                        setSelectedLecturer(null);
+                    }}
                                   icon={Plus}
-                                  label="Thêm học phần"
+                                  label="Thêm giảng viên"
                     />
                 </div>
 
@@ -113,12 +119,17 @@ export default function AdminManagementLecturerPage() {
                                         <div key={lecturer.id} className="py-1">
                                             <LecturerRow
                                                 lecturer={lecturer}
-                                                selected={selectedLecturer?.id === lecturer.id}
-                                                onSelect={() => setSelectedLecturer(lecturer)}
+                                                selected={selectedLecturer?.payload?.id === lecturer.id}
+                                                onSelect={() => setSelectedLecturer({ payload: lecturer, action: "relation" })}
                                                 onDelete={handleLecturerDeleted}
                                                 onEdit={() => {
-                                                    setLecturerModal({active: true, type: "edit"});
-                                                    setSelectedLecturer(lecturer);
+                                                    setLecturerModal({active: true, type: "update"});
+                                                    setSelectedLecturer({ payload: lecturer, action: "modal" });
+                                                }}
+                                                onAdd={() =>
+                                                {
+                                                    setLecturerCourseClassModal(true);
+                                                    setSelectedLecturer({payload: lecturer, action: "modal" });
                                                 }}
                                             />
                                         </div>
@@ -143,18 +154,25 @@ export default function AdminManagementLecturerPage() {
 
             {/* Lecturer Class List */}
             <div className={`bg-white p-2 rounded-lg shadow flex border flex-grow border-secondary ${isMobile ? "w-full" : "w-2/3"}`}>
-                <LecturerCourseClassContainer parentLecturer={selectedLecturer} deselectLecturer={() => setSelectedLecturer(null)}/>
+                <LecturerCourseClassContainer parentLecturer={selectedLecturer?.action === 'relation' ? selectedLecturer?.payload : null} deselectLecturer={() => setSelectedLecturer(null)}/>
             </div>
 
-            {/*{lecturerModal.active && (*/}
-            {/*    <LecturerModal*/}
-            {/*        onClose={() => setLecturerModal({...lecturerModal, active: false})}*/}
-            {/*        type={lecturerModal.type}*/}
-            {/*        newLecturer={handleNewLecturer}*/}
-            {/*        updatedLecturer={handleLecturerUpdated}*/}
-            {/*        selectedLecturer={selectedLecturer}*/}
-            {/*    />*/}
-            {/*)}*/}
+            {lecturerModal.active && (
+                <LecturerModal
+                    onClose={() => setLecturerModal({...lecturerModal, active: false})}
+                    type={lecturerModal.type}
+                    newLecturer={handleNewLecturer}
+                    updatedLecturer={handleLecturerUpdated}
+                    selectedLecturer={selectedLecturer?.payload}
+                />
+            )}
+
+            {lecturerCourseClassModal && (
+                <LecturerCourseClassModal
+                    onClose={() => setLecturerCourseClassModal(false)}
+                    selectedLecturer={selectedLecturer?.payload}
+                />
+            )}
         </div>
     );
 }

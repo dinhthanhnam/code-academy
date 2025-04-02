@@ -12,6 +12,7 @@ import CommonPagination from "@/components/Pagination/CommonPagination";
 import SelectedItem from "@/components/List/SelectedItem";
 import {getCourseClasses} from "@/utils/service/crud/CourseClassService";
 import {CourseClassModal} from "@/components/Modal/CourseClassModal";
+import {StudentListModal} from "@/components/Modal/StudentListModal";
 
 
 
@@ -34,6 +35,7 @@ export default function CourseClassContainer({parentCourse = null, deselectCours
     const [courseClasses, setCourseClasses] = useState<PaginatedCourseClass | null>(null);
     const [selectedCourseClass, setSelectedCourseClass] = useState<SelectedCourseClassProps>({payload: null, action: 'modal'});
     const [courseClassModal, setCourseClassModal] = useState<CourseClassModal>({active: null, type: null, parentCourse: parentCourse});
+    const [courseStudentList, setCourseStudentList] = useState<boolean | null>(null);
     const [search, setSearch] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -137,6 +139,7 @@ export default function CourseClassContainer({parentCourse = null, deselectCours
                                                         setCourseClassModal({...courseClassModal, type: 'update', active: true});
                                                     }}
                                                     onDelete={handleCourseClassDeleted}
+                                                    openStudentList={() => setCourseStudentList(true)}
                                                 />
                                             </div>
                                         ))}
@@ -171,6 +174,13 @@ export default function CourseClassContainer({parentCourse = null, deselectCours
                     updatedCourseClass={handleCourseClassUpdated}
                     selectedCourseClass={selectedCourseClass.payload}
                     parentCourse={parentCourse}
+                />
+            )}
+
+            {courseStudentList && (
+                <StudentListModal
+                    onClose={() => setCourseStudentList(false)}
+                    selectedCourseClass={selectedCourseClass.payload}
                 />
             )}
         </div>
