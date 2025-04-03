@@ -2,14 +2,14 @@ import { useState } from 'react';
 import FormInput from "@/components/Form/FormInput";
 import { X } from "lucide-react";
 import CommonButton from "@/components/Common/CommonButton";
-import {Lecturer} from "@/types/Lecturer";
+import {User} from "@/types/User";
 import {createLecturer, updateLecturer} from "@/utils/service/crud/LecturerService";
 
 interface LecturerModalProps {
     onClose: () => void;
-    selectedLecturer?: Lecturer;
-    newLecturer?: (course: Lecturer) => void;
-    updatedLecturer?: (course: Lecturer) => void;
+    selectedLecturer?: User;
+    newLecturer?: (course: User) => void;
+    updatedLecturer?: (course: User) => void;
     type: "create" | "update";
 }
 
@@ -19,10 +19,10 @@ interface Message {
 }
 
 export function LecturerModal({ onClose, newLecturer, updatedLecturer, selectedLecturer, type = "create" } : LecturerModalProps) {
-    const [payload, setPayload] = useState<Lecturer>({
+    const [payload, setPayload] = useState<User>({
         email: selectedLecturer?.email || "",
         name: selectedLecturer?.name || "",
-        role: "",
+        role: "lecturer",
         },
     );
 
@@ -35,14 +35,14 @@ export function LecturerModal({ onClose, newLecturer, updatedLecturer, selectedL
         }
     };
 
-    const handleChange = (id: keyof Lecturer, value: string) => {
+    const handleChange = (id: keyof User, value: string) => {
         setPayload((prev) => ({
             ...prev,
             [id]: value
         }));
     };
 
-    const handleSubmit = async (payload: Lecturer) => {
+    const handleSubmit = async (payload: User) => {
         setIsSubmitting(true);
         try {
             let data;
@@ -114,13 +114,16 @@ export function LecturerModal({ onClose, newLecturer, updatedLecturer, selectedL
                         value={payload.email}
                         onChange={(e) => handleChange("email", e.target.value)}
                     />
-                    <FormInput
-                        type="text"
-                        name="password"
-                        label="Mật khẩu"
-                        value={payload.name}
-                        onChange={(e) => handleChange("name", e.target.value)}
-                    />
+                    {type === "create" && (
+                        <FormInput
+                            type="password"
+                            name="password"
+                            label="Mật khẩu"
+                            value={payload.password}
+                            onChange={(e) => handleChange("password", e.target.value)}
+                        />
+                    )}
+
                     <FormInput
                         type="text"
                         name="name"

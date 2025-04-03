@@ -56,6 +56,7 @@ export const config = {
         "/hall-of-fame/:path*",
         "/pending-exercises/:path*",
         "/archived-exercises/:path*",
-        "/admin/:path*"
+        "/admin/:path*",
+        "/lecturer/:path*"
     ],
 };

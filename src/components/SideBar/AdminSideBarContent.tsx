@@ -9,8 +9,7 @@ export default function AdminSideBarContent() {
             { id: "courses&course-class", name: "Lớp học phần", path: "/course" },
             { id: "exercise", name: "Bài tập", path: "/exercise" },
             { id: "lecturer", name: "Giảng viên", path: "/lecturer" },
-            { id: "student", name: "Sinh viên", path: "/student" },
-            { id: "admin", name: "Quản trị viên", path: "/administrator" },
+            { id: "user", name: "Người dùng", path: "/user" },
         ],
         database: [
             { id: "course", name: "Course", path: "/course" },

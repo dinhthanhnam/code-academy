@@ -1,7 +1,7 @@
-import {Lecturer} from "@/types/Lecturer";
+import {User} from "@/types/User";
 
-export interface PaginatedLecturer {
-    data: Lecturer[];
+export interface PaginatedUser {
+    data: User[];
     links: {
         first: string;
         last: string;

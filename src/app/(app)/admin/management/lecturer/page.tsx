@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import { useDevice } from "@/hooks/useDevice";
-import { Lecturer } from "@/types/Lecturer";
-import { PaginatedLecturer } from "@/types/paginated/PaginatedLecturer";
+import { User } from "@/types/User";
+import { PaginatedUser } from "@/types/paginated/PaginatedUser";
 import CommonButton from "@/components/Common/CommonButton";
 import LecturerRow from "@/components/Row/LecturerRow";
 import CommonSearch from "@/components/Common/CommonSearch";
@@ -20,12 +20,12 @@ interface LecturerModal {
 }
 
 interface SelectedLecturerProps {
-    payload: Lecturer;
+    payload: User;
     action: "modal" | "relation";
 }
 
 export default function AdminManagementLecturerPage() {
-    const [lecturers, setLecturers] = useState<PaginatedLecturer | null>(null);
+    const [lecturers, setLecturers] = useState<PaginatedUser | null>(null);
     const [lecturerModal, setLecturerModal] = useState<LecturerModal>({active: null, type: "create"});
     const [search, setSearch] = useState<string | null>(null);
     const [lecturerCourseClassModal, setLecturerCourseClassModal] = useState<boolean>(false);
@@ -56,7 +56,7 @@ export default function AdminManagementLecturerPage() {
         fetchLecturers();
     }, []);
 
-    const handleNewLecturer = (lecturer: Lecturer) => {
+    const handleNewLecturer = (lecturer: User) => {
         if (lecturers && lecturers.data) {
             setLecturers({
                 ...lecturers,
@@ -67,7 +67,7 @@ export default function AdminManagementLecturerPage() {
         }
     };
 
-    const handleLecturerUpdated = (updatedLecturer: Lecturer) => {
+    const handleLecturerUpdated = (updatedLecturer: User) => {
         if (lecturers && lecturers.data) {
             setLecturers({
                 ...lecturers,

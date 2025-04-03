@@ -1,4 +1,4 @@
-import { Lecturer } from "@/types/Lecturer";
+import { User } from "@/types/User";
 import { CourseClass } from "@/types/CourseClass";
 import CommonSearch from "@/components/Common/CommonSearch";
 import CommonButton from "@/components/Common/CommonButton";
@@ -16,7 +16,7 @@ import {showMessage} from "@/app/redux/slices/messageSlice";
 import {useAppDispatch} from "@/app/redux/hooks";
 
 interface LecturerCourseClassContainerProps {
-    parentLecturer?: Lecturer;
+    parentLecturer?: User;
     deselectLecturer?: () => void;
 }
 

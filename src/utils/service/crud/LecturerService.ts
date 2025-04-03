@@ -1,7 +1,7 @@
 import api from "@/utils/AxiosInstance";
 import {PaginatedCourseClass} from "@/types/paginated/PaginatedCourseClass";
-import {PaginatedLecturer} from "@/types/paginated/PaginatedLecturer";
-import {Lecturer} from "@/types/Lecturer";
+import {PaginatedUser} from "@/types/paginated/PaginatedUser";
+import {User} from "@/types/User";
 
 export const getLecturer = async (id: number) => {
     try {
@@ -14,7 +14,7 @@ export const getLecturer = async (id: number) => {
 
 export const getLecturers = async (page: number, search?: string) => {
     try {
-        const res = await api.get<PaginatedLecturer>("/admin/lecturer", {
+        const res = await api.get<PaginatedUser>("/admin/lecturer", {
             params: {
                 page,
                 ...(search ? { search } : {}), // Chỉ thêm search nếu có giá trị
@@ -26,7 +26,7 @@ export const getLecturers = async (page: number, search?: string) => {
     }
 };
 
-export const createLecturer = async (payload: Lecturer) => {
+export const createLecturer = async (payload: User) => {
     try {
         const res = await api.post("admin/lecturer", payload)
         return res.data;
@@ -35,7 +35,7 @@ export const createLecturer = async (payload: Lecturer) => {
     }
 }
 
-export const updateLecturer = async (id: number , payload: Lecturer) => {
+export const updateLecturer = async (id: number , payload: User) => {
     try {
         const res = await api.put(`admin/lecturer/${id}`, payload)
         return res.data;

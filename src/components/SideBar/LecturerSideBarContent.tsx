@@ -2,15 +2,11 @@ import SideBarSection from "@/components/SideBar/SideBarSection";
 import DropDownButton from "@/components/Button/DropDownButton";
 import {TbSocial} from "react-icons/tb";
 import {SiGoogleclassroom} from "react-icons/si";
+import {useLoadLecturerCourseClasses} from "@/hooks/useAuth";
 
 export default function LecturerSideBarContent() {
 
-    const staticOptionsData = {
-        classes: [
-            { id: "courses", name: "Học phần", path: "/course" },
-            { id: "course-classes", name: "Lớp học phần", path: "/course-class" },
-        ],
-    };
+    const { courses: lecturerCourseClasses } = useLoadLecturerCourseClasses();
 
     return (
         <>
@@ -21,8 +17,8 @@ export default function LecturerSideBarContent() {
                     icon={SiGoogleclassroom}
                     iconSize={20}
                     iconStrokeWidth={0.2}
-                    referencePath="/lecturer"
-                    defaultOptions={staticOptionsData.classes}
+                    activePath="/lecturer/class"
+                    options={lecturerCourseClasses}
                 />
             </SideBarSection>
         </>

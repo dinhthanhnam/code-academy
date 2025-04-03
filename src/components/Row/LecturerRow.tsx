@@ -1,9 +1,9 @@
-import {Lecturer} from "@/types/Lecturer";
+import {User} from "@/types/User";
 import {deleteLecturer} from "@/utils/service/crud/LecturerService";
 import {Edit, PlusCircle, Trash2} from "lucide-react";
 
 interface LecturerRowProps {
-    lecturer: Lecturer;
+    lecturer: User;
     onSelect: () => void;
     selected?: boolean;
     onAdd: () => void;

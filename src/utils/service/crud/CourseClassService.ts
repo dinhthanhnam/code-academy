@@ -52,3 +52,5 @@ export const deleteCourseClass = async (id: number ) => {
         console.error(error);
     }
 }
+
+

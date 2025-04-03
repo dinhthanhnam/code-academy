@@ -1,14 +1,16 @@
 import { useState } from 'react';
+import FormInput from "@/components/Form/FormInput";
 import { X } from "lucide-react";
 import CommonButton from "@/components/Common/CommonButton";
-import {assignClass, LecturerClass} from "@/utils/service/crud/LecturerCourseClassService";
 import {User} from "@/types/User";
+import {createUser, updateUser} from "@/utils/service/crud/UserService";
 import FormSelect from "@/components/Form/FormSelect";
-import {useFetchCourseClassOptions, useFetchLecturerOptions} from "@/hooks/useFetchOptions";
 
-interface LecturerCourseClassModalProps {
+interface UserModalProps {
     onClose: () => void;
-    selectedLecturer: User;
+    selectedUser?: User;
+    updatedUser?: (course: User) => void;
+    type: "create" | "update";
 }
 
 interface Message {
@@ -16,12 +18,11 @@ interface Message {
     success: boolean | null;
 }
 
-export function LecturerCourseClassModal({ selectedLecturer, onClose } : LecturerCourseClassModalProps) {
-    const { courseClassOptions } = useFetchCourseClassOptions();
-    const { lecturerOptions } = useFetchLecturerOptions();
-    const [payload, setPayload] = useState<LecturerClass>({
-            course_class_id: null,
-            lecturer_id: selectedLecturer.id
+export default function UserModal({ onClose, updatedUser, selectedUser, type = "create" } : UserModalProps) {
+    const [payload, setPayload] = useState<User>({
+            email: selectedUser?.email || "",
+            name: selectedUser?.name || "",
+            role: selectedUser?.role || "",
         },
     );
 
@@ -34,17 +35,26 @@ export function LecturerCourseClassModal({ selectedLecturer, onClose } : Lecture
         }
     };
 
-    const handleChange = (id: keyof LecturerClass, value: string) => {
+    const handleChange = (id: keyof User, value: string) => {
         setPayload((prev) => ({
             ...prev,
             [id]: value
         }));
     };
 
-    const handleSubmit = async (payload) => {
+    const handleSubmit = async (payload: User) => {
         setIsSubmitting(true);
         try {
-            const data: any = await assignClass(payload);
+            let data;
+            if (type === "create") {
+                data = await createUser(payload);
+            } else {
+                data = await updateUser(selectedUser!.id, payload);
+                if (data.success && updatedUser && data.data) {
+                    updatedUser(data.data);
+                }
+            }
+
             setMessage({message: data.message, success: data.success});
         } catch (error) {
             console.log(error);
@@ -52,14 +62,6 @@ export function LecturerCourseClassModal({ selectedLecturer, onClose } : Lecture
         } finally {
             setIsSubmitting(false);
         }
-    };
-
-    const renderOptions = (Options: any) => {
-        const options = Options?.map(option => ({
-            value: option.value,
-            label: option.label
-        })) || [];
-        return [{ value: 0, label: "-- Chọn --" }, ...options];
     };
 
     return (
@@ -79,8 +81,11 @@ export function LecturerCourseClassModal({ selectedLecturer, onClose } : Lecture
                 {/* Heading */}
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold text-gray-800">
-                        Giao lớp học phần
+                        Chỉnh sửa người ${selectedUser?.name}
                     </h2>
+                    <p className="text-sm text-gray-500 mt-1">
+                        Điền thông tin để {type === "create" ? "tạo" : "chỉnh sửa"} người dùng
+                    </p>
                 </div>
 
                 {message.message && (
@@ -97,20 +102,33 @@ export function LecturerCourseClassModal({ selectedLecturer, onClose } : Lecture
 
                 {/* Form content */}
                 <div className="grid grid-cols-2 gap-2">
-                    <FormSelect
-                        name="lecturer"
-                        label="Giảng viên"
-                        value={payload.lecturer_id?.toString() || ""}
-                        options={renderOptions(lecturerOptions)}
-                        onChange={(e) => handleChange("lecturer_id", e.target.value)}
-                        disable={!!selectedLecturer}
+                    <FormInput
+                        type="text"
+                        name="email"
+                        label="Email người dùng"
+                        placeholder="dtn@hvnh.edu.vn"
+                        value={payload.email}
+                        onChange={(e) => handleChange("email", e.target.value)}
                     />
+
+                    <FormInput
+                        type="text"
+                        name="name"
+                        label="Tên người dùng"
+                        value={payload.name}
+                        onChange={(e) => handleChange("name", e.target.value)}
+                    />
+
                     <FormSelect
-                        name="course_class_code"
-                        label="Mã học phần"
-                        value={payload.course_class_id?.toString() || ""}
-                        options={renderOptions(courseClassOptions)}
-                        onChange={(e) => handleChange("course_class_id", e.target.value)}
+                        name="role"
+                        label="Vai trò"
+                        options={[
+                            {value: "lecturer", label: "Giảng viên"},
+                            {value: "student", label: "Sinh viên"},
+                            {value: "admin", label: "Giảng viên"}
+                        ]}
+                        value={payload.role}
+                        onChange={(e) => handleChange("role", e.target.value)}
                     />
                 </div>
 

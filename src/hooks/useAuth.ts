@@ -49,7 +49,7 @@ export const useLoadLecturerCourseClasses = () => {
     const { courses } = useAppSelector((state) => state.lecturerCourseClasses);
 
     useEffect(() => {
-        const loadCourses = async () => {
+        const loadLecturerCourses = async () => {
             try {
                 const coursesData = await fetchLecturerCourseClasses();
                 dispatch(lecturerCourseClasses(coursesData));
@@ -60,7 +60,7 @@ export const useLoadLecturerCourseClasses = () => {
 
         // Chỉ load nếu chưa có dữ liệu và không có lỗi
         if (!courses.length) {
-            loadCourses();
+            loadLecturerCourses();
         }
     }, [dispatch, courses.length]);
 

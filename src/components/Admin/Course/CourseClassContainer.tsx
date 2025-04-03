@@ -140,6 +140,7 @@ export default function CourseClassContainer({parentCourse = null, deselectCours
                                                     }}
                                                     onDelete={handleCourseClassDeleted}
                                                     openStudentList={() => setCourseStudentList(true)}
+                                                    hideButtons={["detach"]}
                                                 />
                                             </div>
                                         ))}

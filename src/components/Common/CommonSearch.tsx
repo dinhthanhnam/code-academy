@@ -6,9 +6,10 @@ interface CommonSearchProps {
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onSubmit?: () => void;
     className?: string;
+    placeholder?: string;
 }
 
-export default function CommonSearch({ value, onSubmit, onChange, className }: CommonSearchProps) {
+export default function CommonSearch({ value, onSubmit, onChange, className, placeholder }: CommonSearchProps) {
     const [prevValue, setPrevValue] = useState(value);
 
     // Hàm xử lý sự kiện Enter
@@ -32,7 +33,7 @@ export default function CommonSearch({ value, onSubmit, onChange, className }: C
             <div className={`${className} relative flex-grow`}>
                 <input
                     type="text"
-                    placeholder="Tìm kiếm học phần..."
+                    placeholder={placeholder || "Tìm kiếm..."}
                     className="w-full p-2 pl-8 border rounded focus:ring ring-primary !outline-1 !outline-secondary text-sm"
                     value={value ?? ""}
                     onChange={onChange}
