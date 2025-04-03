@@ -1,18 +1,28 @@
-
-import { getCourseExercises } from "@/utils/service/api/getCourseExercises";
-import { notFound } from "next/navigation";
+import { notFound } from 'next/navigation';
+import {getCourseClass, getCourseClassExercises, getCourseClassStudents} from "@/utils/service/api/getCourseExercises";
 import LecturerClassDetail from "@/components/ClassDetail/LecturerClassDetail";
 
-export default async function LecturerClassDetailPage({ params }: { params: { slug: string } }) {
+export default async function LecturerClassDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     try {
-        const courseClass = await getCourseExercises(params.slug);
+        // Await params để lấy slug
+        const { slug } = await params;
 
-        if (!courseClass) {
+        // Sử dụng Promise.all để gọi đồng thời các API
+        const [exercises, course, students] = await Promise.all([
+            getCourseClassExercises(slug),
+            getCourseClass(slug),
+            getCourseClassStudents(slug),
+        ]);
+
+        // Kiểm tra dữ liệu trả về từ các API
+        if (!exercises?.data || !course || !students?.data) {
             notFound();
         }
 
-        return <LecturerClassDetail courseClass={courseClass} />;
+        // Trả về component với dữ liệu
+        return <LecturerClassDetail exercises={exercises} courseClass={course} students={students} />;
     } catch (error) {
+        console.error('Error fetching data:', error);
         notFound();
     }
 }

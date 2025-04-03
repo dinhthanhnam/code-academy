@@ -10,7 +10,7 @@ import CommonSearch from "@/components/Common/CommonSearch";
 import { getLecturers } from "@/utils/service/crud/LecturerService";
 import CommonPagination from "@/components/Pagination/CommonPagination";
 import { SyncLoader } from "react-spinners";
-import LecturerCourseClassContainer from "@/components/Admin/Course/LecturerCourseClassContainer";
+import LecturerCourseClassContainer from "@/components/Admin/Lecturer/LecturerCourseClassContainer";
 import {LecturerModal} from "@/components/Modal/LecturerModal";
 import {LecturerCourseClassModal} from "@/components/Modal/LecturerCourseClassModal";
 
