@@ -1,12 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import Exercise from "@/types/Exercise";
+import Exercise, { ExerciseListProps } from "@/types/Exercise";
 import ExerciseRow from "../Row/ExerciseRow";
-
-interface ExerciseListProps {
-    exercises: Exercise[];
-    onSelectExercise?: (exercise: Exercise | null) => void; // Thêm callback để thông báo bài tập được chọn
-}
 
 export default function ExerciseList({ exercises, onSelectExercise }: ExerciseListProps) {
     const [selected, setSelected] = useState<number | string | null>(null);
