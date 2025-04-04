@@ -1,4 +1,5 @@
 export default interface Exercise {
+    id?: number;
     title?: string;
     description?: string;
     level?: string;

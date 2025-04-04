@@ -18,9 +18,9 @@ export default function CourseContainer({ courseClass, referencePath }: CourseCo
             <h3 className="text-lg font-bold text-primary">{courseClass.name}</h3>
             <p className="text-sm text-gray-500">Mã học phần: {courseClass.course_class_code}</p>
             <img
-                src="https://placehold.co/600x400"
+                src="https://placehold.co/600x200"
                 alt="Course Placeholder"
-                className="w-full h-40 object-cover rounded-md my-2"
+                className="w-full max-h-40 object-cover rounded-md my-2"
             />
             <p className="text-sm text-gray-500">Mô tả: {courseClass.description}</p>
             <p className="text-xs text-gray-400">Trạng thái:
