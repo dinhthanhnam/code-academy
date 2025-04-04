@@ -6,8 +6,8 @@ import {CourseClass} from "@/types/CourseClass";
 
 export const getCourseClass = async (slug: string) => {
     try {
-        const res = await api.get<CourseClass>(`/api/course-class/${slug}/detail`);
-        return res.data;
+        const res = await api.get<{ data: CourseClass }>(`/api/course-class/${slug}/detail`);
+        return res.data.data;
     } catch (error) {
         console.error("Error fetching course class:", error);
         throw error;

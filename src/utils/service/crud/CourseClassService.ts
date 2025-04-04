@@ -12,6 +12,20 @@ export const getCourse = async (id: number) => {
     }
 };
 
+export const getCourseClassesForLecturer = async (page: number, search?: string) => {
+    try {
+        const res = await api.get<PaginatedCourseClass>("/api/lecturer/course-classes", {
+            params: {
+                page,
+                ...(search ? { search } : {}),
+            },
+        })
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const getCourseClasses = async (page: number, search?: string) => {
     try {
         const res = await api.get<PaginatedCourseClass>("/admin/course-class", {

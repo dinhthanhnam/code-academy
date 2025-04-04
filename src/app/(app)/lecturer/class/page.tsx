@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import CommonPagination from "@/components/Pagination/CommonPagination";
 import { SyncLoader } from "react-spinners";
 import { useRouter } from "next/navigation";
-import { getCourseClasses } from "@/utils/service/crud/CourseClassService";
+import {getCourseClasses, getCourseClassesForLecturer} from "@/utils/service/crud/CourseClassService";
 import { PaginatedCourseClass } from "@/types/paginated/PaginatedCourseClass";
 import CourseContainer from "@/components/Common/CourseContainer";
 
@@ -18,7 +18,7 @@ export default function LecturerClassPage() {
 
     const fetchCourseClasses = async (page = 1, query?: string | null) => {
         setLoading(true);
-        const data = await getCourseClasses(page, query);
+        const data = await getCourseClassesForLecturer(page, query);
         setCourseClasses(data);
         setLoading(false);
     };
@@ -57,7 +57,7 @@ export default function LecturerClassPage() {
                     <div className="flex flex-col flex-grow">
                         <div className="grid grid-cols-4 gap-6 w-full p-4">
                             {coursesClasses.data.map((course) => (
-                                <CourseContainer key={course.id} courseClass={course} referencePath={'lecturer/class'} />
+                                <CourseContainer key={course.id} courseClass={course} referencePath={'/lecturer/class'} />
                             ))}
                         </div>
                         <div className="mt-auto p-4 flex justify-center">
