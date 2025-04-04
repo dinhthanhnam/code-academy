@@ -8,13 +8,19 @@ export default interface Exercise {
     is_free?: boolean;
     time_limit?: number;
     memory_limit?: number;
+    topics?: string[];
     pivot?: {
         course_id?: number| null;
         week_number?: number;
-        deadline?: number;
-        is_hard_deadline?: boolean;
-        is_active?: boolean;
+        deadline?: string| null;
+        is_hard_deadline?: number;
+        is_active?: number;
     } | null;
+}
+
+export interface ExerciseListProps {
+    exercises: Exercise[];
+    onSelectExercise?: (exercise: Exercise | null) => void;
 }
 
 export interface TestCase {
