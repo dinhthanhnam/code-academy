@@ -11,7 +11,7 @@ const ExerciseRow = ({ exercise, isSelected, onClick }) => {
         }`}
         onClick={onClick}
       >
-        <div className="w-1/12 text-lg text-center">{exercise.status}</div>
+        <div className="w-1/12 text-sm text-center">{exercise.status}</div>
         <div className="w-4/12 font-medium text-blue-600 hover:underline text-center">
           {exercise.title}
         </div>

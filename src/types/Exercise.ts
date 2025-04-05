@@ -24,6 +24,13 @@ export interface ExerciseListProps {
     onSelectExercise?: (exercise: Exercise | null) => void;
 }
 
+export interface PendingExerciseRowProps {
+    exercise: Exercise;
+    isSelected: boolean;
+    onExerciseClick: (exercise: Exercise) => void;
+    onStartExercise: (courseId?: number | null, weekNumber?: number) => void;
+  }
+
 export interface TestCase {
 
 }

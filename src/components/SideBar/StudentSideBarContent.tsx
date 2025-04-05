@@ -48,7 +48,7 @@ export default function StudentSideBarContent() {
                     title="Bài tập"
                     icon={HiOutlineClipboardDocument}
                     iconSize={22}
-                    activePath="/exercises"
+                    referencePath="/exercises"
                     iconStrokeWidth={1.5}
                     defaultOptions={staticOptionsData1.exercise}
                     options={personalCourseClasses} // Dùng dữ liệu động từ Redux
@@ -60,26 +60,17 @@ export default function StudentSideBarContent() {
                     iconSize={20}
                     activePath="/hall-of-fame"
                     iconStrokeWidth={0.7}
-                    defaultOptions={staticOptionsData1.hall_of_fame}
                 />
             </SideBarSection>
 
             <SideBarSection sectionName="Cá nhân">
                 <DropDownButton
                     id="pendingexercises"
-                    title="Bài tập đang chờ"
+                    title="Bài tập cần làm"
                     icon={HiOutlineClipboardDocumentList}
                     iconSize={22}
                     iconStrokeWidth={1.5}
                     activePath="/pending-exercises"
-                />
-                <DropDownButton
-                    id="archivedexercises"
-                    title="Bài tập đã lưu"
-                    icon={HiOutlineClipboardDocumentCheck}
-                    iconSize={22}
-                    iconStrokeWidth={1.5}
-                    activePath="/archived-exercises"
                 />
             </SideBarSection>
         </>

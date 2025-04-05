@@ -1,76 +1,83 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { BiChevronRight } from "react-icons/bi";
+import PendingExerciseRow from "@/components/Row/PendingExerciseRow";
+import Exercise, { ExerciseListProps } from "@/types/Exercise";
 
-const exercises = [
-    { id: 1, title: "Two Sum", difficulty: "Easy", tags: ["Array", "HashMap"], status: "✅" },
-    { id: 2, title: "Add Two Numbers", difficulty: "Medium", tags: ["Linked List", "Math"], status: "🔲" },
-    { id: 3, title: "Longest Substring Without Repeating Characters", difficulty: "Medium", tags: ["String", "Sliding Window"], status: "🔲" },
-    { id: 4, title: "Median of Two Sorted Arrays", difficulty: "Hard", tags: ["Binary Search", "Array"], status: "🔲" },
-    { id: 5, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
-    { id: 6, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
-    { id: 7, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
-    { id: 8, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
-    { id: 9, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
-    { id: 10, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
-    { id: 11, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
-    { id: 12, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
-    { id: 13, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
-    { id: 14, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
-    { id: 15, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
-    { id: 16, title: "Merge K Sorted Lists", difficulty: "Hard", tags: ["Linked List", "Heap"], status: "🔲" },
-];
+export default function PendingExerciseList({ exercises = [], onSelectExercise }: ExerciseListProps) {
+  const router = useRouter();
+  const [selected, setSelected] = useState<number | null>(null);
 
+  const pendingExercises = exercises
+    .filter((exercise) => exercise.pivot?.is_active === 1) // Kiểm tra pivot có tồn tại
+    .sort((a, b) => {
+      const dateA = a.pivot?.deadline ? new Date(a.pivot.deadline).getTime() : Infinity;
+      const dateB = b.pivot?.deadline ? new Date(b.pivot.deadline).getTime() : Infinity;
+      return dateA - dateB;
+    });
+  const pendingCount = pendingExercises.length;
 
+  const handleExerciseClick = (exercise: Exercise) => {
+    const exerciseId = exercise.pivot?.course_id ?? null; // Dùng course_id làm id tạm thời
+    if (selected === exerciseId) {
+      setSelected(null);
+      if (onSelectExercise) onSelectExercise(null);
+    } else {
+      setSelected(exerciseId);
+      if (onSelectExercise) onSelectExercise(exercise);
+    }
+  };
 
-export default function PendingExerciseList() {
-    const [selected, setSelected] = useState(null);
-    const router = useRouter();
-    
-      const handleClick = () => {
-        router.push('/pending-exercises');
-      };
+  const handleStartExercise = (courseId?: number | null, weekNumber?: number) => {
+    if (courseId && weekNumber) {
+      router.push(`http://localhost:3000/exercises/${courseId}/${weekNumber}`);
+    } else {
+      router.push(`http://localhost:3000/exercises`);
+    }
+  };
 
-    return (
-        <div className="exercise-container p-6 flex-grow overflow-auto">
-            <h2 className="flex items-center text-lg font-semibold text-gray-800 mb-4 cursor-pointer" onClick={handleClick}>
-                Bài tập chưa hoàn thành 
-            </h2>
-            <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                    <thead>
-                    <tr className="exercise-header">
-                        <th className="exercise-cell text-left">Status</th>
-                        <th className="exercise-cell text-left">Title</th>
-                        <th className="exercise-cell text-left">Difficulty</th>
-                        <th className="exercise-cell text-left">Tags</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {exercises.map((exercise) => (
-                        <tr
-                            key={exercise.id}
-                            className={`exercise-row ${selected === exercise.id ? "bg-primary2" : "hover:bg-gray-50"}`}
-                            onClick={() => setSelected(exercise.id)}
-                        >
-                            <td className="exercise-cell text-lg">{exercise.status}</td>
-                            <td className="exercise-cell font-medium text-blue-600 hover:underline">{exercise.title}</td>
-                            <td className={`exercise-cell ${exercise.difficulty === "Easy" ? "text-green-600" : exercise.difficulty === "Medium" ? "text-yellow-600" : "text-red-600"}`}>
-                                {exercise.difficulty}
-                            </td>
-                            <td className="exercise-cell">
-                                {exercise.tags.map((tag, index) => (
-                                    <span key={index} className="inline-block bg-gray-200 text-xs px-2 py-1 rounded-full mr-1">
-                      {tag}
-                    </span>
-                                ))}
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>
+  return (
+    <div className="bg-white rounded-lg shadow-lg p-6 flex-grow overflow-auto border-t-2 border-l-2 border-primary shadow-secondary">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+          Bài tập chưa hoàn thành
+          <span className="bg-primary text-white text-sm font-semibold px-3 py-1 rounded-full">
+            {pendingCount}
+          </span>
+        </h2>
+      </div>
+
+      {pendingCount === 0 ? (
+        <div className="text-center py-10">
+          <p className="text-gray-500 text-lg italic">Bạn đã hoàn thành tất cả bài tập! 🎉</p>
         </div>
-    );
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-100 text-gray-700 text-base font-bold">
+                <th className="py-3 px-4 text-left">Trạng thái</th>
+                <th className="py-3 px-4 text-left">Tên bài tập</th>
+                <th className="py-3 px-4 text-left">Độ khó</th>
+                <th className="py-3 px-4 text-left">Chủ đề</th>
+                <th className="py-3 px-4 text-left">Khóa học</th>
+                <th className="py-3 px-4 text-left">Hạn nộp</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pendingExercises.map((exercise, index) => (
+                <PendingExerciseRow
+                  key={index} // Tạm dùng index, nên thay bằng key duy nhất nếu có
+                  exercise={exercise}
+                  isSelected={selected === exercise.pivot?.course_id}
+                  onExerciseClick={handleExerciseClick}
+                  onStartExercise={handleStartExercise}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
 }
