@@ -4,63 +4,35 @@ import Exercise from "@/types/Exercise";
 import { FaTasks } from "react-icons/fa";
 
 const sampleExercises: Exercise[] = [
-  {
-    title: "Two Sum",
-    level: "Easy",
-    topics: ["Array", "HashMap"],
-    pivot: {
-      course_id: 1,
-      week_number: 1,
-      deadline: "2025-04-10",
-      is_active: 1,
-      is_hard_deadline: 0,
-    },
-  },
-  {
-    title: "Add Two Numbers",
-    level: "Medium",
-    topics: ["Linked List", "Math"],
-    pivot: {
-      course_id: 2,
-      week_number: 2,
-      deadline: "2025-04-06",
-      is_active: 1,
-      is_hard_deadline: 0,
-    },
-  },
-  {
-    title: "Longest Substring",
-    level: "Medium",
-    topics: ["String", "Sliding Window"],
-    pivot: {
-      course_id: 3,
-      week_number: 3,
-      deadline: "2025-04-05",
-      is_active: 0,
-      is_hard_deadline: 0,
-    },
-  },
-  {
-    title: "Final Exam",
-    level: "Exam",
-    topics: ["Comprehensive"],
-    pivot: {
-      course_id: 4,
-      week_number: 4,
-      deadline: "2025-04-07",
-      is_active: 1,
-      is_hard_deadline: 1,
-    },
-  },
+  { id: 1, title: "Chia lấy nguyên", level: "Cơ bản", topics: ["Math"], pivot: { course_id: 1, week_number: 1, deadline: "2025-04-13", is_active: 1, is_hard_deadline: 0 } },
+  { id: 2, title: "Kiểm tra số âm", level: "Cơ bản", topics: ["Math", "Conditionals"], pivot: { course_id: 2, week_number: 1, deadline: "2025-04-07", is_active: 1, is_hard_deadline: 0 } },
+  { id: 3, title: "Tổng các chữ số", level: "Cơ bản", topics: ["Math", "String"], pivot: { course_id: 3, week_number: 2, deadline: "2025-04-14", is_active: 1, is_hard_deadline: 0 } },
+  { id: 4, title: "Tính giai thừa", level: "Trung cấp", topics: ["Math", "Recursion"], pivot: { course_id: 4, week_number: 2, deadline: "2025-04-16", is_active: 1, is_hard_deadline: 0 } },
+  { id: 5, title: "Tổng dãy số", level: "Trung cấp", topics: ["Array", "Math"], pivot: { course_id: 5, week_number: 3, deadline: "2025-04-10", is_active: 0, is_hard_deadline: 0 } },
+  { id: 6, title: "Ước chung lớn nhất", level: "Trung cấp", topics: ["Math", "Algorithms"], pivot: { course_id: 6, week_number: 3, deadline: "2025-04-18", is_active: 1, is_hard_deadline: 1 } },
+  { id: 7, title: "Tổng mảng con", level: "Trung cấp", topics: ["Array", "Sliding Window"], pivot: { course_id: 7, week_number: 4, deadline: "2025-04-19", is_active: 1, is_hard_deadline: 0 } },
+  { id: 8, title: "Tìm số xuất hiện nhiều nhất", level: "Trung cấp", topics: ["Array", "HashMap"], pivot: { course_id: 1, week_number: 4, deadline: "2025-04-17", is_active: 1, is_hard_deadline: 0 } },
+  { id: 9, title: "Số cách di chuyển", level: "Nâng cao", topics: ["Dynamic Programming", "Math"], pivot: { course_id: 2, week_number: 5, deadline: "2025-04-22", is_active: 1, is_hard_deadline: 1 } },
+  { id: 10, title: "Tổng lớn nhất không liền kề", level: "Nâng cao", topics: ["Array", "Dynamic Programming"], pivot: { course_id: 3, week_number: 5, deadline: "2025-04-25", is_active: 1, is_hard_deadline: 1 } },
+  { id: 11, title: "Đếm số chữ số", level: "Cơ bản", topics: ["Math", "String"], pivot: { course_id: 4, week_number: 1, deadline: "2025-04-15", is_active: 1, is_hard_deadline: 0 } },
+  { id: 12, title: "Tìm số nhỏ nhất", level: "Cơ bản", topics: ["Math", "Comparison"], pivot: { course_id: 5, week_number: 1, deadline: "2025-04-08", is_active: 1, is_hard_deadline: 0 } },
+  { id: 13, title: "Kiểm tra tam giác", level: "Trung cấp", topics: ["Math", "Geometry"], pivot: { course_id: 6, week_number: 2, deadline: "2025-04-20", is_active: 1, is_hard_deadline: 0 } },
+  { id: 14, title: "Tổng bình phương", level: "Trung cấp", topics: ["Math", "Loops"], pivot: { course_id: 7, week_number: 2, deadline: "2025-04-21", is_active: 1, is_hard_deadline: 0 } },
+  { id: 15, title: "Số đối xứng", level: "Trung cấp", topics: ["String", "Math"], pivot: { course_id: 1, week_number: 3, deadline: "2025-04-12", is_active: 0, is_hard_deadline: 0 } },
+  { id: 16, title: "Bội chung nhỏ nhất", level: "Trung cấp", topics: ["Math", "Algorithms"], pivot: { course_id: 2, week_number: 3, deadline: "2025-04-23", is_active: 1, is_hard_deadline: 1 } },
+  { id: 17, title: "Đảo ngược mảng", level: "Trung cấp", topics: ["Array"], pivot: { course_id: 3, week_number: 4, deadline: "2025-04-24", is_active: 1, is_hard_deadline: 0 } },
+  { id: 18, title: "Số hoàn hảo", level: "Trung cấp", topics: ["Math", "Number Theory"], pivot: { course_id: 4, week_number: 4, deadline: "2025-04-26", is_active: 1, is_hard_deadline: 0 } },
+  { id: 19, title: "Dãy số tăng dài nhất", level: "Nâng cao", topics: ["Array", "Dynamic Programming"], pivot: { course_id: 5, week_number: 5, deadline: "2025-04-27", is_active: 1, is_hard_deadline: 1 } },
+  { id: 20, title: "Tổng các số nguyên tố", level: "Nâng cao", topics: ["Math", "Prime Numbers"], pivot: { course_id: 6, week_number: 5, deadline: "2025-04-28", is_active: 1, is_hard_deadline: 1 } },
 ];
 
 export default function PendingExercisesPage({ params }) {
   const pendingExercises = sampleExercises.filter(ex => ex.pivot.is_active === 1);
 
   // Thống kê theo độ khó
-  const easyCount = pendingExercises.filter(ex => ex.level === "Easy").length;
-  const mediumCount = pendingExercises.filter(ex => ex.level === "Medium").length;
-  const advancedCount = pendingExercises.filter(ex => ex.level === "Advanced").length;
+  const easyCount = pendingExercises.filter(ex => ex.level === "Cơ bản").length;
+  const mediumCount = pendingExercises.filter(ex => ex.level === "Trung cấp").length;
+  const advancedCount = pendingExercises.filter(ex => ex.level === "Nâng cao").length;
   const examCount = pendingExercises.filter(ex => ex.level === "Exam").length;
 
   // Tìm bài có hạn gần nhất

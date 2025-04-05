@@ -1,5 +1,16 @@
 import { BiChevronRight } from "react-icons/bi";
-import Exercise, {PendingExerciseRowProps} from "@/types/Exercise"; // Giả sử các interface được định nghĩa trong file types.ts
+import Exercise, { PendingExerciseRowProps } from "@/types/Exercise";
+
+// Ánh xạ giữa course_id và tên lớp
+const courseIdToNameMapping: { [key: number]: string } = {
+  1: "K24HTTTB - IS52A",
+  2: "K24HTTTB - IS57A",
+  3: "K24HTTTB - IS22A",
+  4: "K24HTTTB - IS28A",
+  5: "K24HTTTB - IS29A",
+  6: "K24CNTTA - IS22A",
+  7: "K24CNTTA - IS28A",
+};
 
 export default function PendingExerciseRow({
   exercise,
@@ -7,6 +18,11 @@ export default function PendingExerciseRow({
   onExerciseClick,
   onStartExercise,
 }: PendingExerciseRowProps) {
+  // Hàm để lấy tên lớp từ course_id
+  const getCourseName = (courseId: number): string => {
+    return courseIdToNameMapping[courseId] || `Khóa học ${courseId}`;
+  };
+
   return (
     <>
       <tr
@@ -21,11 +37,11 @@ export default function PendingExerciseRow({
         </td>
         <td
           className={`py-3 px-4 ${
-            exercise.level === "Easy"
+            exercise.level === "Cơ bản"
               ? "text-green-600"
-              : exercise.level === "Medium"
+              : exercise.level === "Trung cấp"
               ? "text-yellow-600"
-              : exercise.level === "Hard"
+              : exercise.level === "Nâng cao"
               ? "text-red-600"
               : "text-gray-600"
           }`}
@@ -43,7 +59,9 @@ export default function PendingExerciseRow({
           )) || "Không có chủ đề"}
         </td>
         <td className="py-3 px-4 text-gray-600 flex items-center">
-          {exercise.pivot?.course_id || "Không có khóa học"}
+          {exercise.pivot?.course_id
+            ? getCourseName(exercise.pivot.course_id)
+            : "Không có khóa học"}
           <BiChevronRight className="ml-1 text-gray-400" />
         </td>
         <td className="py-3 px-4 text-gray-600">
@@ -65,11 +83,11 @@ export default function PendingExerciseRow({
                   <p className="text-sm text-gray-500 uppercase tracking-wide">Độ khó</p>
                   <p
                     className={`text-lg font-semibold ${
-                      exercise.level === "Easy"
+                      exercise.level === "Cơ bản"
                         ? "text-green-600"
-                        : exercise.level === "Medium"
+                        : exercise.level === "Trung cấp"
                         ? "text-yellow-600"
-                        : exercise.level === "Hard"
+                        : exercise.level === "Nâng cao"
                         ? "text-red-600"
                         : "text-gray-600"
                     }`}
@@ -80,7 +98,9 @@ export default function PendingExerciseRow({
                 <div>
                   <p className="text-sm text-gray-500 uppercase tracking-wide">Khóa học</p>
                   <p className="text-lg font-semibold text-gray-700">
-                    {exercise.pivot?.course_id || "Không có khóa học"}
+                    {exercise.pivot?.course_id
+                      ? getCourseName(exercise.pivot.course_id)
+                      : "Không có khóa học"}
                   </p>
                 </div>
                 <div>

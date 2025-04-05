@@ -8,26 +8,29 @@ export default function PendingExerciseList({ exercises = [], onSelectExercise }
   const router = useRouter();
   const [selected, setSelected] = useState<number | null>(null);
 
+  // Lọc và sắp xếp bài tập chưa hoàn thành
   const pendingExercises = exercises
-    .filter((exercise) => exercise.pivot?.is_active === 1) // Kiểm tra pivot có tồn tại
+    .filter((exercise) => exercise.pivot?.is_active === 1) // Chỉ lấy bài tập đang hoạt động
     .sort((a, b) => {
       const dateA = a.pivot?.deadline ? new Date(a.pivot.deadline).getTime() : Infinity;
       const dateB = b.pivot?.deadline ? new Date(b.pivot.deadline).getTime() : Infinity;
-      return dateA - dateB;
+      return dateA - dateB; // Sắp xếp theo hạn nộp tăng dần
     });
   const pendingCount = pendingExercises.length;
 
+  // Xử lý khi nhấp vào bài tập
   const handleExerciseClick = (exercise: Exercise) => {
-    const exerciseId = exercise.pivot?.course_id ?? null; // Dùng course_id làm id tạm thời
+    const exerciseId = exercise.id; // Sử dụng id duy nhất của bài tập
     if (selected === exerciseId) {
-      setSelected(null);
+      setSelected(null); // Bỏ chọn nếu đã chọn
       if (onSelectExercise) onSelectExercise(null);
     } else {
-      setSelected(exerciseId);
+      setSelected(exerciseId); // Chọn bài tập mới
       if (onSelectExercise) onSelectExercise(exercise);
     }
   };
 
+  // Xử lý khi bắt đầu làm bài tập
   const handleStartExercise = (courseId?: number | null, weekNumber?: number) => {
     if (courseId && weekNumber) {
       router.push(`http://localhost:3000/exercises/${courseId}/${weekNumber}`);
@@ -65,11 +68,11 @@ export default function PendingExerciseList({ exercises = [], onSelectExercise }
               </tr>
             </thead>
             <tbody>
-              {pendingExercises.map((exercise, index) => (
+              {pendingExercises.map((exercise) => (
                 <PendingExerciseRow
-                  key={index} // Tạm dùng index, nên thay bằng key duy nhất nếu có
+                  key={exercise.id} // Sử dụng id duy nhất thay vì index
                   exercise={exercise}
-                  isSelected={selected === exercise.pivot?.course_id}
+                  isSelected={selected === exercise.id} // So sánh với id
                   onExerciseClick={handleExerciseClick}
                   onStartExercise={handleStartExercise}
                 />
