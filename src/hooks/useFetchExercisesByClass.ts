@@ -1,10 +1,11 @@
 // hooks/useCourseClassExercises.ts
 import { useEffect, useState } from "react";
 import Exercise from "@/types/Exercise";
-import { getCourseClassExercises } from "@/utils/service/api/getCourseExercises";
+import {getCourseClass, getCourseClassExercises} from "@/utils/service/api/getCourseExercises";
 
 export function useCourseClassExercises(slug: string) {
     const [exercises, setExercises] = useState<Exercise[]>([]);
+    const [courseClassId, setCourseClassId] = useState<number | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
 
@@ -13,19 +14,34 @@ export function useCourseClassExercises(slug: string) {
             setLoading(true);
             try {
                 const res = await getCourseClassExercises(slug);
-                console.log("API Response:", res); // Kiểm tra dữ liệu trả về
-                setExercises(res.data || []); // Đảm bảo luôn là mảng, kể cả khi không có data
+                console.log("API Response:", res);
+                setExercises(res.data || []);
             } catch (err) {
-                console.error("Fetch error:", err); // Log lỗi nếu có
+                console.error("Fetch error:", err);
                 setError(err);
-                setExercises([]); // Đặt về mảng rỗng nếu lỗi
+                setExercises([]);
             } finally {
                 setLoading(false);
             }
         };
-
-        if (slug) fetchExercises();
+        const fetchCourseClass = async () => {
+            setLoading(true);
+            try {
+                const res = await getCourseClass(slug);
+                console.log("API Response:", res);
+                setCourseClassId(res.id);
+            } catch (err) {
+            console.error("Fetch error:", err);
+            setError(err);
+        } finally {
+            setLoading(false);
+        }
+        }
+        if (slug) {
+            fetchExercises()
+            fetchCourseClass()
+        };
     }, [slug]);
 
-    return { exercises, loading, error };
+    return { exercises, courseClassId, loading, error };
 }

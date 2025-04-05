@@ -10,6 +10,7 @@ export default interface Exercise {
     time_limit?: number;
     memory_limit?: number;
     topics?: string[];
+    language?: string;
     pivot?: {
         course_id?: number| null;
         week_number?: number;

@@ -8,7 +8,7 @@ import Exercise from "@/types/Exercise";
 
 export default function ExercisesPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = use(params);
-    const { exercises, loading, error } = useCourseClassExercises(slug);
+    const { courseClassId, exercises, loading, error } = useCourseClassExercises(slug);
     const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
 
     if (loading) {
@@ -26,7 +26,7 @@ export default function ExercisesPage({ params }: { params: Promise<{ slug: stri
                 onSelectExercise={setSelectedExercise}
             />
             <CustomAceEditor
-                language="java"
+                courseClassId={courseClassId ? courseClassId : null}
                 selectedExercise={selectedExercise}
             />
         </>
