@@ -1,19 +1,28 @@
 "use client";
 import { useState } from "react";
 import { BiPlus } from "react-icons/bi";
+import { joinClassByCode } from "@/utils/service/StudentService";
 
 const JoinClass: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [classCode, setClassCode] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   // Xử lý tham gia lớp
-  const handleJoinClass = (e: React.FormEvent) => {
+  const handleJoinClass = async (e: React.FormEvent) => {
     e.preventDefault();
     if (classCode.trim()) {
-      console.log("Tham gia lớp với mã:", classCode);
-      // Thêm logic để gọi API hoặc xử lý mã lớp tại đây
-      setClassCode("");
-      setIsOpen(false);
+      try {
+        const message = await joinClassByCode(classCode); // Gọi API để tham gia lớp
+        setSuccess(message); // Hiển thị thông báo thành công
+        setError(null); // Xóa lỗi nếu có
+        setClassCode(""); // Reset mã lớp
+        // Không đóng modal ở đây nữa
+      } catch (err: any) {
+        setError(err.message); // Hiển thị thông báo lỗi
+        setSuccess(null); // Xóa thông báo thành công nếu có
+      }
     }
   };
 
@@ -41,17 +50,29 @@ const JoinClass: React.FC = () => {
                 placeholder="Nhập mã lớp"
                 className="w-full p-2 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
+              {/* Hiển thị thông báo lỗi nếu có */}
+              {error && (
+                <p className="text-red-500 text-sm mb-4">{error}</p>
+              )}
+              {/* Hiển thị thông báo thành công nếu có */}
+              {success && (
+                <p className="text-green-500 text-sm mb-4">{success}</p>
+              )}
               <div className="flex justify-end space-x-2">
                 <button
                   type="button"
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => {
+                    setIsOpen(false); // Đóng modal khi nhấn Hủy
+                    setError(null); // Xóa thông báo lỗi
+                    setSuccess(null); // Xóa thông báo thành công
+                  }}
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-orange-400 text-white rounded-md hover:bg-orange-500"
+                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-orange-500"
                 >
                   Tham gia
                 </button>
