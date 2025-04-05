@@ -8,12 +8,12 @@ export default function IcedTeaUponTheAcademy() {
   const [posts, setPosts] = useState([
     {
       id: 1,
-      user: "Tú Sena",
+      user: "Thành Nam",
       content: "Hôm nay trời đẹp quá, uống trà đá thì tuyệt!",
       time: "10:30",
       reactions: { like: 5, love: 2, haha: 0 },
       comments: [
-        { id: 1, user: "Anh Độ", content: "Trà đá là chân ái!", time: "10:32" },
+        { id: 1, user: "Duy Hưng", content: "Trà đá là chân ái!", time: "10:32" },
       ],
     },
   ]);

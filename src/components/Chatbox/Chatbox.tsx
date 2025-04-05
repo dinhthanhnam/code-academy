@@ -12,7 +12,7 @@ export default function Chatbox() {
       time: "10:30",
       messages: [
         { id: 1, user: "Hưng", content: "Mai kiểm tra", time: "10:30" },
-        { id: 2, user: "Me", content: "M sợ à", time: "10:31" },
+        { id: 2, user: "Me", content: "Phải học bài thôi", time: "10:31" },
       ],
     },
     {
