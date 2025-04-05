@@ -16,7 +16,7 @@ export default function RankingBoard() {
   ];
 
   return (
-    <div className="p-6 flex-grow overflow-auto bg-gradient-to-t from-[#F4C430] to-gray-100 rounded-lg">
+    <div className="p-6 flex-grow overflow-auto bg-gradient-to-t from-yellow-200 to-white rounded-lg">
       <h2 className="flex items-center text-lg font-semibold text-gray-800 mb-4 cursor-pointer" onClick={handleClick}>
       </h2>
       

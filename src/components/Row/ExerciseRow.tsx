@@ -17,11 +17,11 @@ const ExerciseRow = ({ exercise, isSelected, onClick }) => {
         </div>
         <div
           className={`w-2/12 text-center ${
-            exercise.difficulty === "Easy"
+            exercise.difficulty === "Cơ bản"
               ? "text-green-600"
-              : exercise.difficulty === "Medium"
+              : exercise.difficulty === "Trung cấp"
               ? "text-yellow-600"
-              : exercise.difficulty === "Exam"
+              : exercise.difficulty === "Bài kiểm tra"
               ? "text-orange-600"
               : "text-red-600"
           }`}

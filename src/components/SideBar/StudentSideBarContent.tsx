@@ -14,7 +14,6 @@ export default function StudentSideBarContent() {
     const { courses: personalCourseClasses } = useLoadPersonalCourseClasses();
     const staticOptionsData1 = {
         social: [
-            { id: "chatbotai", name: "Chatbox AI", path: "/chatbot" },
             { id: "icedteaupontheacademy", name: "Trà đá học viện", path: "/iced-tea-upon-the-academy" },
         ],
         exercise: [
@@ -39,7 +38,7 @@ export default function StudentSideBarContent() {
                     icon={TbSocial}
                     iconSize={22}
                     iconStrokeWidth={1.4}
-                    activePath="/social"
+                    referencePath="/social"
                     defaultOptions={staticOptionsData1.social}
                     options={staticOptionsData2.social}
                 />
