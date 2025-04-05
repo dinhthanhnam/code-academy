@@ -84,7 +84,7 @@ export default function Home() {
             <div className="bg-white rounded-lg shadow-lg overflow-hidden border-t-2 border-l-2 border-primary shadow-secondary">
               <div className="p-4 border-b bg-gray-50 flex items-center gap-2">
                 <FaBook className="text-green-600" />
-                <h2 className="text-lg font-semibold text-gray-800">Lớp của tôi</h2>
+                <h2 className="text-lg font-semibold text-gray-800">Lớp học của tôi</h2>
               </div>
               <div className="overflow-auto">
                 <CourseList />
