@@ -44,7 +44,7 @@ export default function RankingList() {
     ];
 
     return (
-        <div className="exercise-container p-6 flex-grow overflow-auto">
+        <div className="flex-grow overflow-auto">
             <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                     <thead>

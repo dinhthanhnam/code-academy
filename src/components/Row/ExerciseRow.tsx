@@ -11,17 +11,17 @@ const ExerciseRow = ({ exercise, isSelected, onClick }) => {
         }`}
         onClick={onClick}
       >
-        <div className="w-1/12 text-lg text-center">{exercise.status}</div>
+        <div className="w-1/12 text-sm text-center">{exercise.status}</div>
         <div className="w-4/12 font-medium text-blue-600 hover:underline text-center">
           {exercise.title}
         </div>
         <div
           className={`w-2/12 text-center ${
-            exercise.difficulty === "Easy"
+            exercise.difficulty === "Cơ bản"
               ? "text-green-600"
-              : exercise.difficulty === "Medium"
+              : exercise.difficulty === "Trung cấp"
               ? "text-yellow-600"
-              : exercise.difficulty === "Exam"
+              : exercise.difficulty === "Bài kiểm tra"
               ? "text-orange-600"
               : "text-red-600"
           }`}

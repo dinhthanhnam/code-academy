@@ -1,5 +1,4 @@
 export default interface Exercise {
-    language?: string;
     id?: number;
     title?: string;
     description?: string;
@@ -24,3 +23,10 @@ export interface ExerciseListProps {
     exercises: Exercise[];
     onSelectExercise?: (exercise: Exercise | null) => void;
 }
+
+export interface PendingExerciseRowProps {
+    exercise: Exercise;
+    isSelected: boolean;
+    onExerciseClick: (exercise: Exercise) => void;
+    onStartExercise: (courseId?: number | null, weekNumber?: number) => void;
+  }

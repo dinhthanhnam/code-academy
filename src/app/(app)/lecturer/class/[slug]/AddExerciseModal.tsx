@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import CommonButton from "@/components/Common/CommonButton";
+import CustomDatePicker from "@/components/Form/CustomDatePicker";
 
 interface AddExerciseModalProps {
     onClose: () => void;
@@ -238,6 +239,10 @@ export default function AddExerciseModal({ onClose }: AddExerciseModalProps) {
                                 onChange={handleInputChange}
                                 className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                             />
+                            {/*<CustomDatePicker*/}
+                            {/*    selected={formData.deadline}*/}
+                            {/*    onChange={handleInputChange}*/}
+                            {/*/>*/}
                         </div>
                     </div>
 

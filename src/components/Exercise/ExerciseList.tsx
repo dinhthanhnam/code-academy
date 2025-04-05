@@ -95,6 +95,8 @@ export default function ExerciseList({ exercises, onSelectExercise }: ExerciseLi
                                         ? "Trung cấp"
                                         : exercise.level === "advanced"
                                         ? "Nâng cao"
+                                        : exercise.level === "exam"
+                                        ? "Bài kiểm tra"
                                         : "Không xác định",
                                 tags: exercise.topics || [],
                                 status: "🔲",
