@@ -1,4 +1,5 @@
 export interface User {
+    identity_code?: string;
     id?: number;
     email: string;
     name: string;

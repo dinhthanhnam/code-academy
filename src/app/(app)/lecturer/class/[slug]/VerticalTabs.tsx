@@ -2,6 +2,7 @@
 
 import { useClassContext } from "./ClassContext";
 import { Code, Upload, Users, BarChart2 } from "lucide-react";
+import {BiDetail} from "react-icons/bi";
 
 export default function VerticalTabs() {
     const { activeTab, setActiveTab } = useClassContext();
@@ -10,47 +11,36 @@ export default function VerticalTabs() {
         <div className="w-16 bg-gray-50 flex flex-col items-center py-4 gap-3 border-r border-secondary m-1">
             <button
                 className={`w-10 h-10 flex items-center justify-center rounded-md group relative ${
-                    activeTab === "editor"
-                        ? "bg-blue-600 text-white"
-                        : "bg-white text-gray-800 hover:bg-gray-100"
+                    activeTab === "detail"
+                        ? "bg-primary text-white"
+                        : "bg-white text-gray-800 hover:bg-primary2"
                 }`}
-                onClick={() => setActiveTab("editor")}
+                onClick={() => setActiveTab("detail")}
             >
-                <Code size={20} />
-                <span className="tooltip z-10">Mở Code Editor</span>
+                <BiDetail size={20} />
+                <span className="tooltip z-50">Chi tiết</span>
             </button>
             <button
                 className={`w-10 h-10 flex items-center justify-center rounded-md group relative ${
                     activeTab === "submissions"
-                        ? "bg-blue-600 text-white"
-                        : "bg-white text-gray-600 hover:bg-gray-100"
+                        ? "bg-primary text-white"
+                        : "bg-white text-gray-800 hover:bg-primary2"
                 }`}
                 onClick={() => setActiveTab("submissions")}
             >
                 <Upload size={20} />
-                <span className="tooltip z-10">Xem nội dung nộp bài</span>
+                <span className="tooltip z-50">Xem nội dung nộp bài</span>
             </button>
             <button
                 className={`w-10 h-10 flex items-center justify-center rounded-md group relative ${
                     activeTab === "students"
-                        ? "bg-blue-600 text-white"
-                        : "bg-white text-gray-600 hover:bg-gray-100"
+                        ? "bg-primary text-white"
+                        : "bg-white text-gray-800 hover:bg-primary2"
                 }`}
                 onClick={() => setActiveTab("students")}
             >
                 <Users size={20} />
-                <span className="tooltip z-10">Xem danh sách sinh viên</span>
-            </button>
-            <button
-                className={`w-10 h-10 flex items-center justify-center rounded-md group relative ${
-                    activeTab === "exerciseStudents"
-                        ? "bg-blue-600 text-white"
-                        : "bg-white text-gray-600 hover:bg-gray-100"
-                }`}
-                onClick={() => setActiveTab("exerciseStudents")}
-            >
-                <BarChart2 size={20} />
-                <span className="tooltip z-10">Xem sinh viên nộp bài này</span>
+                <span className="tooltip z-50">Xem danh sách sinh viên</span>
             </button>
         </div>
     );

@@ -1,11 +1,12 @@
 export default interface Exercise {
+    language?: string;
     id?: number;
     title?: string;
     description?: string;
     level?: string;
     example_output?: string;
     example_input?: string;
-    test_cases?: TestCase;
+    test_cases?: string;
     is_free?: boolean;
     time_limit?: number;
     memory_limit?: number;
@@ -22,8 +23,4 @@ export default interface Exercise {
 export interface ExerciseListProps {
     exercises: Exercise[];
     onSelectExercise?: (exercise: Exercise | null) => void;
-}
-
-export interface TestCase {
-
 }
