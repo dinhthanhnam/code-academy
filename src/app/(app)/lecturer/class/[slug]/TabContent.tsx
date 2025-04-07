@@ -3,9 +3,10 @@
 import { useClassContext } from "./ClassContext";
 import ExerciseDetail from "./ExerciseDetail";
 import StudentList from "@/app/(app)/lecturer/class/[slug]/StudentList";
+import SubmissionList from "@/app/(app)/lecturer/class/[slug]/SubmissionList";
 
 export default function TabContent() {
-    const { students, activeTab, selectedExercise } = useClassContext();
+    const { course ,students, activeTab, selectedExercise } = useClassContext();
 
     const renderContent = () => {
         switch (activeTab) {
@@ -15,9 +16,17 @@ export default function TabContent() {
                 return (
                     <div>
                         <h2 className="text-lg font-semibold text-gray-800 mb-3">Nội dung nộp bài</h2>
-                        <p className="text-gray-600">
-                            {selectedExercise ? "Bài nộp cho: " + selectedExercise.title : "Chọn bài tập để xem bài nộp"}
-                        </p>
+                        {selectedExercise ? (
+                            <>
+                                <p className="text-gray-600 mb-2">Bài nộp cho: {selectedExercise.title}</p>
+                                <SubmissionList
+                                    exerciseId={selectedExercise.id}
+                                    courseClassId={course.id}
+                                />
+                            </>
+                        ) : (
+                            <p className="text-gray-600">Chọn bài tập để xem bài nộp</p>
+                        )}
                     </div>
                 );
             case "students":

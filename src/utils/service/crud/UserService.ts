@@ -4,7 +4,7 @@ import {User} from "@/types/User";
 
 export const getUser = async (id: number) => {
     try {
-        const res = await api.get(`/admin/user/${id}`);
+        const res = await api.get<User>(`/admin/user/${id}`);
         return res.data;
     } catch (error) {
         console.error(error);
