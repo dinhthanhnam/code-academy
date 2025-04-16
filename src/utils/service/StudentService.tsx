@@ -24,6 +24,28 @@ interface JoinClassResponse {
     message: string;
 }
 
+interface Message {
+    id: string;
+    user_id: string;
+    conversation_id: string;
+    content: string;
+    created_at: string;
+    updated_at: string;
+    user_name?: string; // Thêm nếu backend trả về tên người dùng
+}
+
+interface MessagesResponse {
+    success: boolean;
+    message: string;
+    messages: Message[];
+}
+
+interface SendMessageResponse {
+    success: boolean;
+    message: string;
+    data: Message;
+}
+
 export const fetchPersonalCourseClasses = async (): Promise<CourseClass[]> => {
     const res = await api.get<PersonalCourseClassesResponse>("/api/personal_course_classes");
     if (res.data.success) {
@@ -55,4 +77,30 @@ export const joinClassByCode = async (classCode: string): Promise<string> => {
             throw new Error("Có lỗi xảy ra. Vui lòng thử lại.");
         }
     }
+};
+
+export const fetchPersonalConversation = async (): Promise<CourseClass[]> => {
+    const res = await api.get<PersonalCourseClassesResponse>("/api/personal_conversations");
+    if (res.data.success) {
+        return res.data.personal_course_classes;
+    }
+    throw new Error(res.data.message || "Failed to fetch personal course classes");
+};
+export const fetchMessagesByConversation = async (conversationId: string): Promise<Message[]> => {
+    const res = await api.get<MessagesResponse>(`/api/conversations/${conversationId}/messages`);
+    if (res.data.success) {
+        return res.data.messages;
+    }
+    throw new Error(res.data.message || "Failed to fetch messages");
+};
+
+// Gửi tin nhắn mới
+export const sendMessage = async (conversationId: string, content: string): Promise<Message> => {
+    const res = await api.post<SendMessageResponse>(`/api/conversations/${conversationId}/messages`, {
+        content,
+    });
+    if (res.data.success) {
+        return res.data.data;
+    }
+    throw new Error(res.data.message || "Failed to send message");
 };
