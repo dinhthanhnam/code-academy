@@ -20,6 +20,17 @@ interface AuthResponse {
     success: boolean;
 }
 
+interface UserResponse {
+    success: boolean;
+    message: string;
+    user: {
+        id: string;
+        name: string;
+        email: string;
+        role: string;
+    };
+}
+
 // Hàm khởi tạo CSRF token
 export const initializeCsrfToken = async (): Promise<void> => {
     await api.get("/sanctum/csrf-cookie");
@@ -43,4 +54,20 @@ export const RegisterUser = async (payload: RegisterPayload): Promise<AuthRespon
 export const LogoutUser = async (): Promise<AuthResponse> => {
     const res = await api.post<AuthResponse>("/logout");
     return res.data;
+};
+
+export const getCurrentUserId = async (): Promise<string> => {
+    try {
+        // Lấy CSRF token
+        await api.get("/sanctum/csrf-cookie");
+        // Gọi API personal_role
+        const res = await api.get<UserResponse>("/api/personal_info");
+        if (res.data.success) {
+            return res.data.user.id;
+        }
+        throw new Error(res.data.message || "Failed to fetch user ID");
+    } catch (error) {
+        console.error("Error fetching user ID:", error);
+        throw error;
+    }
 };
