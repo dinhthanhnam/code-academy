@@ -30,17 +30,17 @@ export default function AdminSideBarContent() {
                 />
             </SideBarSection>
 
-            <SideBarSection sectionName="Cơ sở dữ liệu">
-                <DropDownButton
-                    id="database"
-                    title="Quản lý chung"
-                    icon={TbSocial}
-                    iconSize={22}
-                    iconStrokeWidth={1.4}
-                    referencePath="/admin/database"
-                    defaultOptions={staticOptionsData.database}
-                />
-            </SideBarSection>
+            {/*<SideBarSection sectionName="Cơ sở dữ liệu">*/}
+            {/*    <DropDownButton*/}
+            {/*        id="database"*/}
+            {/*        title="Quản lý chung"*/}
+            {/*        icon={TbSocial}*/}
+            {/*        iconSize={22}*/}
+            {/*        iconStrokeWidth={1.4}*/}
+            {/*        referencePath="/admin/database"*/}
+            {/*        defaultOptions={staticOptionsData.database}*/}
+            {/*    />*/}
+            {/*</SideBarSection>*/}
         </>
 
     );

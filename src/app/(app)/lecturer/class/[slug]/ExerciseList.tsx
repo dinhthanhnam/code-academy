@@ -5,9 +5,11 @@ import { useClassContext } from "./ClassContext";
 import CommonButton from "@/components/Common/CommonButton";
 import AddExerciseModal from "./AddExerciseModal";
 import ExerciseRow from "./ExerciseRow";
+import CommonPagination from "@/components/Pagination/CommonPagination";
+import  Exercise from "@/types/Exercise";
 
 export default function ExerciseList() {
-    const { exercises } = useClassContext();
+    const { exercises, fetchExercises } = useClassContext();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleOpenModal = () => setIsModalOpen(true);
@@ -30,17 +32,15 @@ export default function ExerciseList() {
                 </div>
 
                 <div className="flex-1 overflow-auto">
-                    {exercises?.data?.map((exercise: any) => (
-                        <ExerciseRow
-                            key={exercise.id}
-                            exercise={exercise}
-                        />
+                    {exercises?.data?.map((exercise: Exercise) => (
+                        <ExerciseRow key={exercise.id} exercise={exercise} />
                     ))}
                 </div>
             </div>
 
             {/* Modal */}
             {isModalOpen && <AddExerciseModal onClose={handleCloseModal} />}
+            <CommonPagination meta={exercises?.meta} onPageChange={fetchExercises} />
         </div>
     );
 }

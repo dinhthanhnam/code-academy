@@ -6,7 +6,7 @@ import StudentList from "@/app/(app)/lecturer/class/[slug]/StudentList";
 import SubmissionList from "@/app/(app)/lecturer/class/[slug]/SubmissionList";
 
 export default function TabContent() {
-    const { course ,students, activeTab, selectedExercise } = useClassContext();
+    const { courseClass ,students, activeTab, selectedExercise } = useClassContext();
 
     const renderContent = () => {
         switch (activeTab) {
@@ -21,7 +21,7 @@ export default function TabContent() {
                                 <p className="text-gray-600 mb-2">Bài nộp cho: {selectedExercise.title}</p>
                                 <SubmissionList
                                     exerciseId={selectedExercise.id}
-                                    courseClassId={course.id}
+                                    courseClassId={courseClass.id}
                                 />
                             </>
                         ) : (

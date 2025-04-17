@@ -14,9 +14,13 @@ export const getCourseClass = async (slug: string) => {
     }
 };
 
-export const getCourseClassExercises = async (slug: string) => {
+export const getCourseClassExercises = async (slug: string, page = 1) => {
     try {
-        const res = await api.get<PaginatedExercise>(`/api/course-class/${slug}/exercises`);
+        const res = await api.get<PaginatedExercise>(`/api/course-class/${slug}/exercises`, {
+            params: {
+                page,
+            }
+        });
         return res.data;
     } catch (error) {
         console.error("Error fetching exercises:", error);

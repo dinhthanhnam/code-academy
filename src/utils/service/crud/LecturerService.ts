@@ -68,3 +68,12 @@ export const getCourseClassesByLecturer = async  (page: number, lecturer_id?: nu
     }
 }
 
+export const lecturerCreateCourseClassExercise = async  (payload: any) => {
+    try {
+        const res = await api.post("/lecturer/create-exercise", payload);
+        return res.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+

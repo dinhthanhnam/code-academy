@@ -3,44 +3,94 @@
 import React, { useState } from "react";
 import CommonButton from "@/components/Common/CommonButton";
 import CustomDatePicker from "@/components/Form/CustomDatePicker";
+import { format, parseISO } from "date-fns";
+import {useClassContext} from "@/app/(app)/lecturer/class/[slug]/ClassContext";
+import {lecturerCreateCourseClassExercise} from "@/utils/service/crud/LecturerService";
 
 interface AddExerciseModalProps {
     onClose: () => void;
 }
 
+interface TestCase {
+    stdin: string;
+    expected_output: string;
+}
+
+interface CreateCourseClassExerciseForm {
+    title: string;
+    description: string;
+    level: "basic" | "intermediate" | "advanced";
+    example_input: string;
+    example_output: string;
+    test_cases: TestCase[];
+    time_limit: number;
+    memory_limit: number;
+    topics: string[];
+    language: "c_cpp" | "java" | "python";
+    week_number: number;
+    deadline: string | null;
+    is_active: boolean;
+    is_test: boolean;
+    course_class_id: number;
+}
+
 export default function AddExerciseModal({ onClose }: AddExerciseModalProps) {
-    const [formData, setFormData] = useState({
+    const [message, setMessage] = useState<{message: string | null, success: boolean | null}>({message: null, success: null});
+    const {courseClass} = useClassContext();
+    const courseClassId = courseClass.id;
+    const [formData, setFormData] = useState<CreateCourseClassExerciseForm>({
         title: "",
         description: "",
-        level: "easy",
+        level: "basic",
         example_input: "",
         example_output: "",
         test_cases: [{ stdin: "", expected_output: "" }],
         time_limit: 1,
         memory_limit: 256,
-        topics: [] as string[],
+        topics: [],
         language: "c_cpp",
         week_number: 1,
-        deadline: "",
+        deadline: null,
         is_active: true,
+        is_test: false,
+        course_class_id: courseClassId,
     });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleDateChange = (date: Date | null) => {
+        setFormData((prev) => ({
+            ...prev,
+            deadline: date ? format(date, "yyyy-MM-dd'T'HH:mm:ssxxx") : null,
+        }));
+    };
+
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: name === "time_limit" || name === "memory_limit" || name === "week_number" ? parseInt(value) : value,
+            [name]:
+                name === "time_limit" || name === "memory_limit" || name === "week_number"
+                    ? parseInt(value) || 1
+                    : value,
         }));
     };
 
     const handleTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const topics = e.target.value.split(",").map((t) => t.trim());
+        const topics = e.target.value
+            .split(",")
+            .map((t) => t.trim())
+            .filter((t) => t !== "");
         setFormData((prev) => ({ ...prev, topics }));
     };
 
-    const handleTestCaseChange = (index: number, field: "stdin" | "expected_output", value: string) => {
+    const handleTestCaseChange = (
+        index: number,
+        field: "stdin" | "expected_output",
+        value: string
+    ) => {
         const newTestCases = [...formData.test_cases];
-        newTestCases[index][field] = value;
+        newTestCases[index] = { ...newTestCases[index], [field]: value };
         setFormData((prev) => ({ ...prev, test_cases: newTestCases }));
     };
 
@@ -51,24 +101,34 @@ export default function AddExerciseModal({ onClose }: AddExerciseModalProps) {
         }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         const payload = {
             ...formData,
             test_cases: JSON.stringify(formData.test_cases),
-            is_free: 0, // Giá trị mặc định
-            is_hard_deadline: 0, // Giá trị mặc định
+            is_free: false,
+            is_hard_deadline: formData.is_test,
         };
-        console.log("Payload:", payload); // Thay bằng API call thực tế
-        // Ví dụ: await fetch("/api/exercises", { method: "POST", body: JSON.stringify(payload) });
-        onClose();
+        console.log("Payload:", payload); // Replace with actual API call
+        const res:any = await lecturerCreateCourseClassExercise(payload);
+        setMessage({message: res.message, success: res.success})
     };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-auto">
                 <h2 className="text-xl font-bold text-gray-800 mb-4">Thêm bài tập mới</h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                {message.message && (
+                    <div className="p-2">
+                        <div
+                            className={`p-2 rounded border text-sm ${
+                                message.success ? "bg-green-100 text-green-700 border-green-500" : "bg-red-100 text-red-700 border-red-500"
+                            }`}
+                        >
+                            {message.message}
+                        </div>
+                    </div>
+                )}
+                <div className="space-y-4">
                     {/* Title */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Tiêu đề</label>
@@ -104,9 +164,9 @@ export default function AddExerciseModal({ onClose }: AddExerciseModalProps) {
                             onChange={handleInputChange}
                             className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                         >
-                            <option value="easy">Dễ</option>
+                            <option value="basic">Dễ</option>
                             <option value="intermediate">Trung bình</option>
-                            <option value="hard">Khó</option>
+                            <option value="advanced">Khó</option>
                         </select>
                     </div>
 
@@ -192,7 +252,9 @@ export default function AddExerciseModal({ onClose }: AddExerciseModalProps) {
 
                     {/* Topics */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Chủ đề (phân cách bằng dấu phẩy)</label>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Chủ đề (phân cách bằng dấu phẩy)
+                        </label>
                         <input
                             type="text"
                             name="topics"
@@ -232,17 +294,11 @@ export default function AddExerciseModal({ onClose }: AddExerciseModalProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Hạn nộp</label>
-                            <input
-                                type="datetime-local"
-                                name="deadline"
-                                value={formData.deadline}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                            <CustomDatePicker
+                                selected={formData.deadline ? parseISO(formData.deadline) : null}
+                                onChange={handleDateChange}
+                                name="date-picker"
                             />
-                            {/*<CustomDatePicker*/}
-                            {/*    selected={formData.deadline}*/}
-                            {/*    onChange={handleInputChange}*/}
-                            {/*/>*/}
                         </div>
                     </div>
 
@@ -253,7 +309,9 @@ export default function AddExerciseModal({ onClose }: AddExerciseModalProps) {
                                 type="checkbox"
                                 name="is_active"
                                 checked={formData.is_active}
-                                onChange={(e) => setFormData((prev) => ({ ...prev, is_active: e.target.checked }))}
+                                onChange={(e) =>
+                                    setFormData((prev) => ({ ...prev, is_active: e.target.checked }))
+                                }
                                 className="mr-2"
                             />
                             Hoạt động
@@ -263,9 +321,9 @@ export default function AddExerciseModal({ onClose }: AddExerciseModalProps) {
                     {/* Buttons */}
                     <div className="flex justify-end gap-3 mt-6">
                         <CommonButton label="Hủy" onClick={onClose} />
-                        <CommonButton label="Tạo" onClick={onClose} />
+                        <CommonButton label="Tạo" onClick={handleSubmit} />
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );

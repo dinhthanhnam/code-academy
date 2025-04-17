@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import FormInput from "@/components/Form/FormInput";
+import { useState, useEffect } from 'react';
 import { X } from "lucide-react";
-import {CourseClass} from "@/types/CourseClass";
+import { CourseClass } from "@/types/CourseClass";
+import { PaginatedUser } from "@/types/paginated/PaginatedUser";
+import StudentList from "@/app/(app)/admin/management/course/StudentList";
+import { getCourseClassStudents } from "@/utils/service/api/getCourseExercises";
 
 interface StudentListModalProps {
     onClose: () => void;
@@ -13,18 +15,40 @@ interface Message {
     success: boolean | null;
 }
 
-export function StudentListModal({ onClose, selectedCourseClass} : StudentListModalProps) {
-    // const [payload, setPayload] = useState<Lecturer>({
-    //         email: selectedLecturer?.email || "",
-    //         name: selectedLecturer?.name || "",
-    //         role: "",
-    //     },
-    // );
-
+export function StudentListModal({ onClose, selectedCourseClass }: StudentListModalProps) {
     const [message, setMessage] = useState<Message>({ message: null, success: null });
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [students, setStudents] = useState<PaginatedUser | null>();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleOverlayClick = (e) => {
+    // Fetch students based on selectedCourseClass.slug
+    const fetchCourseClassStudents = async (slug: string) => {
+        try {
+            setLoading(true);
+            setError(null);
+            const response = await getCourseClassStudents(slug);
+            setStudents(response);
+        } catch (err) {
+            console.error("Error fetching students:", err);
+            setError("Không thể tải danh sách sinh viên");
+            setMessage({ message: "Không thể tải danh sách sinh viên", success: false });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Fetch students when selectedCourseClass changes
+    useEffect(() => {
+        if (selectedCourseClass?.slug) {
+            fetchCourseClassStudents(selectedCourseClass.slug);
+        } else {
+            setStudents(null);
+            setError("Không có lớp học phần được chọn");
+            setMessage({ message: "Không có lớp học phần được chọn", success: false });
+        }
+    }, [selectedCourseClass]);
+
+    const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) {
             onClose();
         }
@@ -47,24 +71,39 @@ export function StudentListModal({ onClose, selectedCourseClass} : StudentListMo
                 {/* Heading */}
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold text-gray-800">
-                        Danh sách sinh viên lớp học phần {selectedCourseClass.name}
+                        Danh sách sinh viên lớp học phần {selectedCourseClass?.name || "Không xác định"}
                     </h2>
                 </div>
 
+                {/* Message Display */}
                 {message.message && (
-                    <div className={`p-2`}>
+                    <div className="p-2">
                         <div
                             className={`p-2 rounded border text-sm ${
-                                message.success ? "bg-green-100 text-green-700 border-green-500" : "bg-red-100 text-red-700 border-red-500"
+                                message.success
+                                    ? "bg-green-100 text-green-700 border-green-500"
+                                    : "bg-red-100 text-red-700 border-red-500"
                             }`}
                         >
                             {message.message}
                         </div>
                     </div>
                 )}
-                <div className="grid grid-cols-2 gap-2">
 
-                </div>
+                {/* Loading State */}
+                {loading && (
+                    <div className="p-4 text-center text-gray-600">Đang tải danh sách sinh viên...</div>
+                )}
+
+                {/* Error State */}
+                {!loading && error && !students.data.length && (
+                    <div className="p-4 text-center text-red-600">{error}</div>
+                )}
+
+                {/* Student List */}
+                {!loading && !error && (
+                    <StudentList students={students} />
+                )}
             </div>
         </div>
     );

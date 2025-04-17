@@ -5,20 +5,21 @@ import { useParams } from "next/navigation";
 import { getCourseClass, getCourseClassExercises, getCourseClassStudents } from "@/utils/service/api/getCourseExercises";
 import { PaginatedExercise } from "@/types/paginated/PaginatedExercise";
 import Exercise from "@/types/Exercise";
-import {Course} from "@/types/Course";
-import {PaginatedUser} from "@/types/paginated/PaginatedUser";
+import { PaginatedUser } from "@/types/paginated/PaginatedUser";
+import { CourseClass } from "@/types/CourseClass";
 
 // Define types
 interface ClassContextType {
     exercises: PaginatedExercise;
-    course: Course;
+    courseClass: CourseClass | null;
     students: PaginatedUser;
     loading: boolean;
     error: string | null;
-    selectedExercise: Exercise;
+    selectedExercise: Exercise | null;
     activeTab: string;
-    setSelectedExercise: (exercise: any) => void;
+    setSelectedExercise: (exercise: Exercise | null) => void;
     setActiveTab: (tab: string) => void;
+    fetchExercises: (page: number) => Promise<void>;
 }
 
 interface ClassProviderProps {
@@ -33,16 +34,29 @@ export default function ClassProvider({ children }: ClassProviderProps) {
     const params = useParams();
     const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
 
-    const [exercises, setExercises] = useState<any>(null);
-    const [course, setCourse] = useState<any>(null);
-    const [students, setStudents] = useState<any>(null);
+    const [exercises, setExercises] = useState<PaginatedExercise>();
+    const [courseClass, setCourseClass] = useState<CourseClass | null>(null);
+    const [students, setStudents] = useState<PaginatedUser>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [selectedExercise, setSelectedExercise] = useState<Exercise | undefined>(undefined);
+    const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
     const [activeTab, setActiveTab] = useState<string>("details");
 
+    // Fetch exercises for a specific page
+    const fetchExercises = async (page: number) => {
+        if (!slug) return;
+        try {
+            const exercisesRes = await getCourseClassExercises(slug, page);
+            setExercises(exercisesRes);
+        } catch (err) {
+            setError("Failed to fetch exercises");
+            console.error("Error fetching exercises:", err);
+        }
+    };
+
+    // Initial fetch for exercises
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchExercisesData = async () => {
             if (!slug) {
                 setError("No class slug provided");
                 setLoading(false);
@@ -50,29 +64,47 @@ export default function ClassProvider({ children }: ClassProviderProps) {
             }
 
             try {
-                const [exercisesRes, courseRes, studentsRes] = await Promise.all([
-                    getCourseClassExercises(slug),
-                    getCourseClass(slug),
-                    getCourseClassStudents(slug),
-                ]);
-
+                const exercisesRes = await getCourseClassExercises(slug, 1); // Initial page
                 setExercises(exercisesRes);
-                setCourse(courseRes);
-                setStudents(studentsRes);
             } catch (err) {
-                setError("Failed to fetch class data");
-                console.error("Error fetching data:", err);
+                setError("Failed to fetch exercises");
+                console.error("Error fetching exercises:", err);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchData();
+        fetchExercisesData();
+    }, [slug]);
+
+    // Fetch courseClass and students only once
+    useEffect(() => {
+        const fetchOtherData = async () => {
+            if (!slug) {
+                setError("No class slug provided");
+                return;
+            }
+
+            try {
+                const [courseClassRes, studentsRes] = await Promise.all([
+                    getCourseClass(slug),
+                    getCourseClassStudents(slug),
+                ]);
+
+                setCourseClass(courseClassRes);
+                setStudents(studentsRes);
+            } catch (err) {
+                setError("Failed to fetch course class or students");
+                console.error("Error fetching data:", err);
+            }
+        };
+
+        fetchOtherData();
     }, [slug]);
 
     const value = {
         exercises,
-        course,
+        courseClass,
         students,
         loading,
         error,
@@ -80,6 +112,7 @@ export default function ClassProvider({ children }: ClassProviderProps) {
         activeTab,
         setSelectedExercise,
         setActiveTab,
+        fetchExercises,
     };
 
     return <ClassContext.Provider value={value}>{children}</ClassContext.Provider>;
