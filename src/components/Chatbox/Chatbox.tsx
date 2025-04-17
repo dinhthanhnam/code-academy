@@ -1,13 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-    getInitial,
-    formatTime,
-    initializeChat,
-    handleSendMessage,
-    refreshMessages,
-} from "@/utils/service/ChatService";
+import { useState, useEffect, useRef } from "react";
+import { getInitial, formatTime, initializeChat, sendChatMessage } from "@/utils/service/ChatService";
+import echo from "@/utils/Echo";
+
+interface Message {
+    id: string;
+    user_id: string;
+    user_name: string;
+    content: string;
+    conversation_id: string;
+    created_at: string;
+    updated_at: string;
+}
+
+interface Conversation {
+    id: string;
+    name: string;
+    lastMessage?: string;
+    time?: string;
+    messages: Message[];
+}
 
 export default function Chatbox() {
     const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -16,6 +29,7 @@ export default function Chatbox() {
     const [loading, setLoading] = useState(true);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // Khởi tạo chat
     useEffect(() => {
@@ -27,6 +41,174 @@ export default function Chatbox() {
             setLoading
         );
     }, []);
+
+    // Tự động scroll đến tin nhắn mới
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [selectedConversation?.messages]);
+
+    // WebSocket: Nhận tin nhắn real-time
+    useEffect(() => {
+        if (!echo || !selectedConversation) return;
+
+        // Đăng ký kênh WebSocket
+        const channelName = `conversation.${selectedConversation.id}`;
+        console.log(`Subscribing to private-${channelName}`);
+
+        const channel = echo.private(channelName);
+
+        // Đăng ký sự kiện MessageSent
+        channel.listen('MessageSent', (data) => {
+            console.log('Raw WebSocket data:', data);
+
+            // Phân tích dữ liệu nhận được
+            let newMessage;
+            try {
+                // Kiểm tra nếu data là string (JSON) thì parse nó
+                if (typeof data === 'string') {
+                    newMessage = JSON.parse(data);
+                }
+                // Kiểm tra nếu data có thuộc tính message
+                else if (data && data.message) {
+                    newMessage = data.message;
+                }
+                // Nếu data đã là object và không có thuộc tính message, thì nó có thể là message
+                else if (data && data.id && data.conversation_id) {
+                    newMessage = data;
+                }
+                // Nếu data.data tồn tại và là string
+                else if (data && data.data && typeof data.data === 'string') {
+                    newMessage = JSON.parse(data.data);
+                }
+                // Nếu không đúng định dạng nào thì ném lỗi
+                else {
+                    throw new Error('Unknown message format');
+                }
+            } catch (error) {
+                console.error('Error parsing WebSocket message:', error);
+                console.error('Raw data:', data);
+                return;
+            }
+
+            if (!newMessage || !newMessage.id) {
+                console.error('Invalid message format:', newMessage);
+                return;
+            }
+
+            console.log('Processed message:', newMessage);
+
+            // Chuyển đổi conversation_id thành string nếu cần
+            if (newMessage.conversation_id && typeof newMessage.conversation_id !== 'string') {
+                newMessage.conversation_id = String(newMessage.conversation_id);
+            }
+
+            // Cập nhật conversations
+            setConversations((prevConversations) => {
+                return prevConversations.map((conv) => {
+                    if (conv.id === newMessage.conversation_id) {
+                        const existingMsgIndex = conv.messages.findIndex(m => m.id === newMessage.id);
+
+                        const updatedMessages = [...conv.messages];
+                        if (existingMsgIndex >= 0) {
+                            updatedMessages[existingMsgIndex] = newMessage;
+                        } else {
+                            updatedMessages.push(newMessage);
+                        }
+
+                        return {
+                            ...conv,
+                            messages: updatedMessages,
+                            lastMessage: newMessage.content,
+                            time: newMessage.created_at,
+                        };
+                    }
+                    return conv;
+                });
+            });
+
+            // Cập nhật selectedConversation
+            setSelectedConversation((prevSelected) => {
+                if (prevSelected && prevSelected.id === newMessage.conversation_id) {
+                    const existingMsgIndex = prevSelected.messages.findIndex(m => m.id === newMessage.id);
+
+                    const updatedMessages = [...prevSelected.messages];
+                    if (existingMsgIndex >= 0) {
+                        updatedMessages[existingMsgIndex] = newMessage;
+                    } else {
+                        updatedMessages.push(newMessage);
+                    }
+
+                    return {
+                        ...prevSelected,
+                        messages: updatedMessages,
+                        lastMessage: newMessage.content,
+                        time: newMessage.created_at,
+                    };
+                }
+                return prevSelected;
+            });
+        });
+
+        // Xử lý các lỗi kết nối WebSocket
+        channel.error((error) => {
+            console.error(`WebSocket connection error for channel ${channelName}:`, error);
+            setError(`Lỗi kết nối: ${error.message || 'Không thể kết nối đến server'}`);
+        });
+
+        // Cleanup function
+        return () => {
+            console.log(`Unsubscribing from private-${channelName}`);
+            channel.stopListening('MessageSent');
+            echo.leave(`private-${channelName}`);
+        };
+    }, [selectedConversation?.id]);
+
+    // Gửi tin nhắn
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newMessage.trim() || !selectedConversation || !currentUserId) {
+            setError("Vui lòng nhập tin nhắn và chọn hội thoại.");
+            return;
+        }
+
+        try {
+            const messageContent = newMessage.trim();
+            setNewMessage(""); // Xóa input ngay lập tức để UX tốt hơn
+
+            // Tạo optimistic update để UI phản hồi ngay
+            const optimisticMessage: Message = {
+                id: `temp-${Date.now()}`, // ID tạm thời, sẽ được thay thế khi nhận phản hồi từ server
+                user_id: currentUserId,
+                user_name: "You", // Hoặc lấy tên người dùng từ nơi khác nếu có
+                content: messageContent,
+                conversation_id: selectedConversation.id,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
+
+            // Cập nhật UI với tin nhắn optimistic
+            setSelectedConversation(prev => {
+                if (!prev) return null;
+                return {
+                    ...prev,
+                    messages: [...prev.messages, optimisticMessage],
+                    lastMessage: optimisticMessage.content,
+                    time: optimisticMessage.created_at
+                };
+            });
+
+            // Gửi tin nhắn lên server
+            await sendChatMessage(selectedConversation.id, messageContent);
+            // Không cần cập nhật state ở đây vì WebSocket sẽ cập nhật tin nhắn với dữ liệu thực từ server
+
+        } catch (err) {
+            console.error("Error sending message:", err);
+            setError(err.message || "Không thể gửi tin nhắn. Vui lòng thử lại.");
+
+            // Khôi phục tin nhắn vào input nếu gửi thất bại
+            setNewMessage(newMessage);
+        }
+    };
 
     if (error) {
         return <div className="text-center text-red-600">{error}</div>;
@@ -70,7 +252,7 @@ export default function Chatbox() {
                                     </span>
                                 </div>
                                 <p className="text-sm text-gray-500 line-clamp-1">
-                                    {conversation.lastMessage}
+                                    {conversation.lastMessage || "Chưa có tin nhắn"}
                                 </p>
                             </div>
                         </div>
@@ -94,12 +276,6 @@ export default function Chatbox() {
                                 <p className="text-sm text-orange-600 font-medium">Đang hoạt động</p>
                             </div>
                         </div>
-                        <button
-                            onClick={() => refreshMessages(selectedConversation, setSelectedConversation, setConversations, setError)}
-                            className="px-4 py-2 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-all duration-200"
-                        >
-                            Làm mới
-                        </button>
                     </div>
 
                     {/* Tin nhắn */}
@@ -126,24 +302,11 @@ export default function Chatbox() {
                                 </div>
                             </div>
                         ))}
+                        <div ref={messagesEndRef} />
                     </div>
 
                     {/* Input */}
-                    <form
-                        onSubmit={(e) =>
-                            handleSendMessage(
-                                e,
-                                newMessage,
-                                selectedConversation,
-                                currentUserId,
-                                setNewMessage,
-                                setSelectedConversation,
-                                setConversations,
-                                setError
-                            )
-                        }
-                        className="p-6 border-t border-orange-300"
-                    >
+                    <form onSubmit={handleSubmit} className="p-6 border-t border-orange-300">
                         <div className="flex gap-4">
                             <input
                                 value={newMessage}

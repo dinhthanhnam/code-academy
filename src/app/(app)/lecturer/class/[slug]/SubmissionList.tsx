@@ -19,13 +19,13 @@ interface Submission {
 }
 
 export default function SubmissionList() {
-    const { course, selectedExercise } = useClassContext();
+    const { courseClass, selectedExercise } = useClassContext();
     const [submissions, setSubmissions] = useState<Submission[]>([]);
     const [expanded, setExpanded] = useState<{ [key: number]: boolean }>({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!selectedExercise?.id || !course?.id) return;
+        if (!selectedExercise?.id || !courseClass?.id) return;
 
         const fetchSubmissions = async () => {
             setLoading(true);
@@ -33,7 +33,7 @@ export default function SubmissionList() {
                 const res: any = await api.get("/admin/submission", {
                     params: {
                         exercise_id: selectedExercise.id,
-                        course_class_id: course.id,
+                        course_class_id: courseClass.id,
                     },
                 });
                 setSubmissions(res.data.submissions || []);
@@ -45,7 +45,7 @@ export default function SubmissionList() {
         };
 
         fetchSubmissions();
-    }, [selectedExercise?.id, course?.id]);
+    }, [selectedExercise?.id, courseClass?.id]);
 
     const toggleExpand = (id: number) => {
         setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));

@@ -18,7 +18,9 @@ interface Message {
     user_id: string;
     user_name?: string;
     content: string;
+    conversation_id: string;
     created_at: string;
+    updated_at: string;
 }
 
 // Lấy ký tự đầu tiên của tên
@@ -48,18 +50,11 @@ export const initializeChat = async (
     try {
         setLoading(true);
 
-        // Bước 1: Lấy ID người dùng
-        try {
-            const userId = await getCurrentUserId();
-            console.log("Current User ID:", userId); // Debug
-            setCurrentUserId(userId);
-        } catch (err) {
-            console.error("Error fetching user ID:", err);
-            setError("Không thể lấy thông tin người dùng. Vui lòng đăng nhập lại.");
-            return;
-        }
+        // Lấy ID người dùng
+        const userId = await getCurrentUserId();
+        setCurrentUserId(userId);
 
-        // Bước 2: Lấy danh sách các cuộc hội thoại
+        // Lấy danh sách cuộc hội thoại
         const courseClasses = await fetchPersonalConversation();
         const convs: Conversation[] = courseClasses.map((course) => ({
             id: course.id,
@@ -67,7 +62,7 @@ export const initializeChat = async (
             messages: [],
         }));
 
-        // Bước 3: Lấy tin nhắn cho từng cuộc hội thoại
+        // Lấy tin nhắn cho từng cuộc hội thoại
         const updatedConvs = await Promise.all(
             convs.map(async (conv) => {
                 try {
@@ -90,7 +85,6 @@ export const initializeChat = async (
             })
         );
 
-        // Bước 4: Cập nhật state
         setConversations(updatedConvs);
         if (updatedConvs.length > 0) {
             setSelectedConversation(updatedConvs[0]);
@@ -104,74 +98,15 @@ export const initializeChat = async (
 };
 
 // Gửi tin nhắn
-export const handleSendMessage = async (
-    e: React.FormEvent,
-    newMessage: string,
-    selectedConversation: Conversation | null,
-    currentUserId: string | null,
-    setNewMessage: React.Dispatch<React.SetStateAction<string>>,
-    setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation | null>>,
-    setConversations: React.Dispatch<React.SetStateAction<Conversation[]>>,
-    setError: React.Dispatch<React.SetStateAction<string | null>>
-): Promise<void> => {
-    e.preventDefault();
-    if (!newMessage.trim() || !selectedConversation || !currentUserId) {
-        setError("Vui lòng chọn cuộc hội thoại và đảm bảo đã đăng nhập.");
-        return;
-    }
-
+export const sendChatMessage = async (
+    conversationId: string,
+    content: string
+): Promise<Message> => {
     try {
-        const sentMessage = await sendMessage(selectedConversation.id, newMessage);
-        console.log("Sent message with user_id:", sentMessage.user_id); // Debug
-        const updatedMessages = [...selectedConversation.messages, sentMessage];
-        const updatedConversation = {
-            ...selectedConversation,
-            messages: updatedMessages,
-            lastMessage: sentMessage.content,
-            time: sentMessage.created_at,
-        };
-
-        // Cập nhật selectedConversation
-        setSelectedConversation(updatedConversation);
-
-        // Cập nhật conversations
-        setConversations((prev) =>
-            prev.map((conv) =>
-                conv.id === selectedConversation.id ? updatedConversation : conv
-            )
-        );
-
-        setNewMessage("");
+        const message = await sendMessage(conversationId, content);
+        return message;
     } catch (error) {
         console.error("Error sending message:", error);
-        setError("Không thể gửi tin nhắn. Vui lòng thử lại.");
-    }
-};
-
-// Làm mới tin nhắn
-export const refreshMessages = async (
-    selectedConversation: Conversation | null,
-    setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation | null>>,
-    setConversations: React.Dispatch<React.SetStateAction<Conversation[]>>,
-    setError: React.Dispatch<React.SetStateAction<string | null>>
-): Promise<void> => {
-    if (!selectedConversation) return;
-    try {
-        const messages = await fetchMessagesByConversation(selectedConversation.id);
-        const updatedConversation = {
-            ...selectedConversation,
-            messages,
-            lastMessage: messages[messages.length - 1]?.content || "Chưa có tin nhắn",
-            time: messages[messages.length - 1]?.created_at || "",
-        };
-        setSelectedConversation(updatedConversation);
-        setConversations((prev) =>
-            prev.map((conv) =>
-                conv.id === selectedConversation.id ? updatedConversation : conv
-            )
-        );
-    } catch (error) {
-        console.error("Error refreshing messages:", error);
-        setError("Không thể làm mới tin nhắn. Vui lòng thử lại.");
+        throw new Error("Không thể gửi tin nhắn.");
     }
 };
