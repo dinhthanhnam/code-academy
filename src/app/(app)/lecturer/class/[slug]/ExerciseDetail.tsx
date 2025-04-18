@@ -12,7 +12,7 @@ export default function ExerciseDetail({ exercise }: ExerciseDetailProps) {
     }
 
     // Parse test_cases từ chuỗi JSON
-    const testCases = JSON.parse(exercise.test_cases || "[]");
+    const testCases = exercise.test_cases;
 
     return (
         <div className="space-y-6 overflow-y-auto">

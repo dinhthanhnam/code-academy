@@ -111,9 +111,9 @@ export default function AuthenticationForm({ type }: AuthenticationFormProps) {
     return (
         <div>
             <FormContainer>
-        <span className="mx-auto font-black text-2xl p-2">
-          {type === "login" ? "Đăng nhập" : "Đăng ký"}
-        </span>
+                <span className="mx-auto font-black text-2xl p-2">
+                  {type === "login" ? "Đăng nhập" : "Đăng ký"}
+                </span>
 
                 {/* Hiển thị thông báo */}
                 {message.message && (

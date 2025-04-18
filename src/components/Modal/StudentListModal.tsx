@@ -96,7 +96,7 @@ export function StudentListModal({ onClose, selectedCourseClass }: StudentListMo
                 )}
 
                 {/* Error State */}
-                {!loading && error && !students.data.length && (
+                {!loading && error && !students?.data?.length && (
                     <div className="p-4 text-center text-red-600">{error}</div>
                 )}
 

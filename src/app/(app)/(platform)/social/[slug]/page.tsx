@@ -1,5 +1,6 @@
-import Chatbox from "@/components/Chatbox/Chatbox";
+import Chatbox from "./Chatbox";
 import IcedTeaUponTheAcademy from "@/components/Iced-tea-upon-the-academy/Iced-tea-upon-the-academy";
+import Chatbox2 from "@/app/(app)/(platform)/social/[slug]/Chatbox2";
 
 export default async function SocialPage({ params }) {
     const { slug } = await params; // ⬅️ Phải await params
@@ -19,3 +20,16 @@ export default async function SocialPage({ params }) {
         </div>
     );
 }
+// 'use client';
+//
+// import {ChatProvider, useChatContext} from './ChatContext';
+// import ChatLayout from "@/app/(app)/(platform)/social/[slug]/ChatLayout";
+//
+//
+// export default function SocialPage() {
+//     return (
+//         <ChatProvider>
+//             <ChatLayout />
+//         </ChatProvider>
+//     );
+// }

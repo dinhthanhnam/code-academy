@@ -134,7 +134,6 @@ export default function AdminManagementUserPage() {
                     selectedUser={selectedUser.payload}
                     type={userModal.type}
                     updatedUser={handleUserUpdated}
-                    // selectedUser={}
                 />
             )}
         </div>

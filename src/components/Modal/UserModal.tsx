@@ -125,7 +125,7 @@ export default function UserModal({ onClose, updatedUser, selectedUser, type = "
                         options={[
                             {value: "lecturer", label: "Giảng viên"},
                             {value: "student", label: "Sinh viên"},
-                            {value: "admin", label: "Giảng viên"}
+                            {value: "admin", label: "Admin"}
                         ]}
                         value={payload.role}
                         onChange={(e) => handleChange("role", e.target.value)}

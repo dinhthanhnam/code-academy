@@ -5,7 +5,7 @@ export default interface Exercise {
     level?: string;
     example_output?: string;
     example_input?: string;
-    test_cases?: string;
+    test_cases?: [];
     is_free?: boolean;
     time_limit?: number;
     memory_limit?: number;

@@ -133,7 +133,7 @@ export function CourseClassModal({
                             ? selectedCourseClass
                                 ? `Chỉnh sửa lớp học phần ${selectedCourseClass.name}`
                                 : `Tạo lớp học phần mới cho học phần ${parentCourse.name}`
-                            : `Tạo lớp học phần mới`
+                            : `Chỉnh sửa lớp học phần`
                         }
                     </h2>
                     <p className="text-sm text-gray-500 mt-1">
@@ -155,14 +155,24 @@ export function CourseClassModal({
 
                 <div className="grid grid-cols-3 gap-2">
                     {type !== "update" && (
-                        <FormSelect
-                            name="course_code"
-                            label="Mã học phần"
-                            options={renderOptions(courseOptions)}
-                            value={payload.course_id?.toString() || ""}
-                            onChange={(e) => handleChange("course_id", e.target.value)}
-                            disable={!!parentCourse}
-                        />
+                        <>
+                            <FormSelect
+                                name="course_code"
+                                label="Mã học phần"
+                                options={renderOptions(courseOptions)}
+                                value={payload.course_id?.toString() || ""}
+                                onChange={(e) => handleChange("course_id", e.target.value)}
+                                disable={!!parentCourse}
+                            />
+                            <FormInput
+                                type="text"
+                                name="course_code"
+                                label="Mã lớp học phần có dạng"
+                                value={parentCourse ? parentCourse.course_code + '01' : "IS57A01"}
+                                onChange={(e) => handleChange("course_class_code", e.target.value)}
+                                disable={true}
+                            />
+                        </>
                     )}
 
                     {type === 'update' && (

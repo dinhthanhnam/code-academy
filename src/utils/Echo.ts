@@ -1,20 +1,32 @@
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
-import axios from "axios";
+import axios from 'axios';
 
-// Chỉ khởi tạo Echo ở client-side
-// @ts-ignore
-let echo: Echo | null = null;
+// Create a singleton instance that will be lazily initialized
+let echoInstance: Echo<any> | null = null;
 
-if (typeof window !== 'undefined') {
+// Function to initialize Echo only on client-side
+const initEcho = (): Echo<any> | null => {
+    // Check if we're running on the client side
+    if (typeof window === 'undefined') {
+        return null;
+    }
+
+    // Only initialize once
+    if (echoInstance) {
+        return echoInstance;
+    }
+
+    // Assign Pusher to window object
     window.Pusher = Pusher;
-    echo = new Echo({
+
+    // Create new Echo instance
+    echoInstance = new Echo({
         broadcaster: 'reverb',
         key: process.env.NEXT_PUBLIC_REVERB_APP_KEY,
         wsHost: process.env.NEXT_PUBLIC_REVERB_HOST,
         wsPort: process.env.NEXT_PUBLIC_REVERB_PORT,
         wssPort: process.env.NEXT_PUBLIC_REVERB_PORT,
-        // scheme: process.env.NEXT_PUBLIC_REVERB_SCHEME,
         scheme: 'http',
         enabledTransports: ['ws'],
         forceTLS: false,
@@ -31,21 +43,28 @@ if (typeof window !== 'undefined') {
                             channel_name: channel.name
                         },
                         {
-                            withCredentials: true, // gửi cookie laravel_session
+                            withCredentials: true, // Send laravel_session cookie
                             headers: {
                                 'Content-Type': 'application/json',
                             }
                         }
-                    ).then(response => {
-                        callback(false, response.data);
-                    }).catch(error => {
-                        console.error('[Broadcasting Auth Error]', error);
-                        callback(true, error);
-                    });
+                    )
+                        .then(response => {
+                            callback(false, response.data);
+                        })
+                        .catch(error => {
+                            console.error('[Broadcasting Auth Error]', error);
+                            callback(true, error);
+                        });
                 }
             };
         }
     });
-}
 
-export default echo;
+    return echoInstance;
+};
+
+// Export a function that returns the Echo instance
+export default function getEcho(): Echo<any> | null {
+    return initEcho();
+}

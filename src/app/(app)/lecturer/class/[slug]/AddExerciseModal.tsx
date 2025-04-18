@@ -104,7 +104,7 @@ export default function AddExerciseModal({ onClose }: AddExerciseModalProps) {
     const handleSubmit = async () => {
         const payload = {
             ...formData,
-            test_cases: JSON.stringify(formData.test_cases),
+            test_cases: formData.test_cases,
             is_free: false,
             is_hard_deadline: formData.is_test,
         };
@@ -157,7 +157,7 @@ export default function AddExerciseModal({ onClose }: AddExerciseModalProps) {
 
                     {/* Level */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Độ khó</label>
+                        <label className="block text-sm font-medium text-gray-700">Dạng bài tập</label>
                         <select
                             name="level"
                             value={formData.level}
@@ -167,6 +167,7 @@ export default function AddExerciseModal({ onClose }: AddExerciseModalProps) {
                             <option value="basic">Dễ</option>
                             <option value="intermediate">Trung bình</option>
                             <option value="advanced">Khó</option>
+                            <option value="exam">Bài kiểm tra</option>
                         </select>
                     </div>
 

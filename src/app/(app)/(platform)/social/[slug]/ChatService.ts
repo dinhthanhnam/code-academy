@@ -41,11 +41,11 @@ export const formatTime = (dateString?: string): string => {
 
 // Khởi tạo chat
 export const initializeChat = async (
-    setConversations: React.Dispatch<React.SetStateAction<Conversation[]>>,
-    setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation | null>>,
-    setCurrentUserId: React.Dispatch<React.SetStateAction<string | null>>,
-    setError: React.Dispatch<React.SetStateAction<string | null>>,
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+    setConversations:any,
+    setSelectedConversation:any,
+    setCurrentUserId:any,
+    setError:any,
+    setLoading:any
 ): Promise<void> => {
     try {
         setLoading(true);
