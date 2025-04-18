@@ -3,6 +3,7 @@ import {User} from "@/types/User";
 import {PaginatedUser} from "@/types/paginated/PaginatedUser";
 import {PaginatedExercise} from "@/types/paginated/PaginatedExercise";
 import {CourseClass} from "@/types/CourseClass";
+import Exercise from "@/types/Exercise";
 
 export const getCourseClass = async (slug: string) => {
     try {
@@ -27,6 +28,7 @@ export const getCourseClassExercises = async (slug: string, page = 1) => {
         throw error;
     }
 };
+
 
 export const getCourseClassStudents = async (slug: string) => {
     try {
