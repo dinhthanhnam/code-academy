@@ -1,3 +1,8 @@
+interface TestCase {
+    stdin: string;
+    expected_output: string;
+}
+
 export default interface Exercise {
     id?: number;
     title?: string;
@@ -5,7 +10,7 @@ export default interface Exercise {
     level?: string;
     example_output?: string;
     example_input?: string;
-    test_cases?: [];
+    test_cases?: TestCase[];
     is_free?: boolean;
     time_limit?: number;
     memory_limit?: number;
