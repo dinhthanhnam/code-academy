@@ -37,10 +37,27 @@ export function useCourseClassExercises(slug: string) {
             setLoading(false);
         }
         }
+
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                if (slug === "irregular") {
+                    await fetchExercises();
+                    setCourseClassId(null);
+                } else {
+                    await Promise.all([fetchExercises(), fetchCourseClass()]);
+                }
+            } finally {
+                setLoading(false);
+            }
+        }; 
+
         if (slug) {
-            fetchExercises()
-            fetchCourseClass()
-        };
+            fetchData();
+        } else {
+            setLoading(false);
+            setError("Slug không hợp lệ");
+        }
     }, [slug]);
 
     return { exercises, courseClassId, loading, error };

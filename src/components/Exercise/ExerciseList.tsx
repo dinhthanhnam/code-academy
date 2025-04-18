@@ -2,14 +2,23 @@
 import React, { useState } from "react";
 import Exercise, { ExerciseListProps } from "@/types/Exercise";
 import ExerciseRow from "../Row/ExerciseRow";
+import { useParams } from "next/navigation"; // Import useParams để lấy slug
 
 export default function ExerciseList({ exercises, onSelectExercise }: ExerciseListProps) {
     const [selected, setSelected] = useState<number | string | null>(null);
     const [filter, setFilter] = useState<string>("All");
+    const params = useParams(); // Lấy params từ Next.js
+    const slug = params?.slug as string; // Lấy slug từ params
 
+    // Logic lọc bài tập
     const filteredExercises = exercises && Array.isArray(exercises)
         ? exercises
-              .filter((exercise) => exercise.pivot?.is_active === 1)
+              .filter((exercise) => {
+                  if (slug === "irregular") {
+                      return true;
+                  }
+                  return exercise.pivot?.is_active === 1;
+              })
               .filter((exercise) =>
                   filter === "All" ? true : exercise.level === filter
               )
