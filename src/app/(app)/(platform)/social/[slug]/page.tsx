@@ -20,16 +20,3 @@ export default async function SocialPage({ params }) {
         </div>
     );
 }
-// 'use client';
-//
-// import {ChatProvider, useChatContext} from './ChatContext';
-// import ChatLayout from "@/app/(app)/(platform)/social/[slug]/ChatLayout";
-//
-//
-// export default function SocialPage() {
-//     return (
-//         <ChatProvider>
-//             <ChatLayout />
-//         </ChatProvider>
-//     );
-// }

@@ -40,9 +40,9 @@ export default function PendingExerciseList({ exercises = [], onSelectExercise }
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 flex-grow overflow-auto border-t-2 border-l-2 border-primary shadow-secondary">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+    <div className="bg-white rounded-lg shadow-lg p-2 flex-grow overflow-auto border-t-2 border-l-2 border-primary shadow-secondary">
+      <div className="flex items-center justify-between m-2">
+        <h2 className="text-md font-bold text-gray-800 flex items-center gap-2">
           Bài tập chưa hoàn thành
           <span className="bg-primary text-white text-sm font-semibold px-3 py-1 rounded-full">
             {pendingCount}
@@ -52,19 +52,19 @@ export default function PendingExerciseList({ exercises = [], onSelectExercise }
 
       {pendingCount === 0 ? (
         <div className="text-center py-10">
-          <p className="text-gray-500 text-lg italic">Bạn đã hoàn thành tất cả bài tập! 🎉</p>
+          <p className="text-gray-500 text-md italic">Bạn đã hoàn thành tất cả bài tập! 🎉</p>
         </div>
       ) : (
-        <div className="overflow-x-auto">
+        <div className="overflow-y-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-gray-100 text-gray-700 text-base font-bold">
-                <th className="py-3 px-4 text-left">Trạng thái</th>
-                <th className="py-3 px-4 text-left">Tên bài tập</th>
-                <th className="py-3 px-4 text-left">Độ khó</th>
-                <th className="py-3 px-4 text-left">Chủ đề</th>
-                <th className="py-3 px-4 text-left">Khóa học</th>
-                <th className="py-3 px-4 text-left">Hạn nộp</th>
+              <tr className="bg-gray-100 text-gray-700 text-sm font-bold rounded-t rounded-md">
+                <th className="p-2 text-center">Trạng thái</th>
+                <th className="p-2 text-center">Tên bài tập</th>
+                <th className="p-2 text-center">Độ khó</th>
+                <th className="p-2 text-center">Chủ đề</th>
+                <th className="p-2 text-center">Khóa học</th>
+                <th className="p-2 text-center">Hạn nộp</th>
               </tr>
             </thead>
             <tbody>

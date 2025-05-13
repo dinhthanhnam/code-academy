@@ -59,6 +59,7 @@ export default function StudentSideBarContent() {
                     iconSize={20}
                     activePath="/hall-of-fame"
                     iconStrokeWidth={0.7}
+                    chevron={false}
                 />
             </SideBarSection>
 
@@ -70,6 +71,7 @@ export default function StudentSideBarContent() {
                     iconSize={22}
                     iconStrokeWidth={1.5}
                     activePath="/pending-exercises"
+                    chevron={false}
                 />
             </SideBarSection>
         </>

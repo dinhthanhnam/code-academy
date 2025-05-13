@@ -7,14 +7,14 @@ const getCookie = (name) => {
 };
 
 const api = axios.create({
-	baseURL: process.env.NEXT_PUBLIC_API_URL, // ví dụ: http://localhost:8000
+	baseURL: process.env.NEXT_PUBLIC_API_URL,
 	withCredentials: true,
 	headers: {
 		"Content-Type": "application/json",
 		"Accept": 'application/json',
 	},
 	validateStatus: (status: number) => {
-		return status >= 200 && status < 500; // Chấp nhận mọi mã trạng thái từ 200 đến dưới 500
+		return status >= 200 && status < 500;
 	},
 });
 

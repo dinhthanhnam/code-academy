@@ -12,7 +12,7 @@ interface StudentListProps {
 export default function StudentList({ students }: StudentListProps) {
     const [currentPage, setCurrentPage] = useState(1);
 
-    if (!students || !students.data.length) {
+    if (!students || !students?.data?.length) {
         return <p className="text-gray-600">Không có sinh viên nào trong lớp</p>;
     }
 

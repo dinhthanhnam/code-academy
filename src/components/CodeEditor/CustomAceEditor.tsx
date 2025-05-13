@@ -36,7 +36,7 @@ export default function CustomAceEditor({
                                         }: AceEditorProps) {
     const [code, setCode] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [selectedLanguage, setSelectedLanguage] = useState<string>("java");
+    const [selectedLanguage, setSelectedLanguage] = useState<string>("c_cpp");
     const [submissionResult, setSubmissionResult] = useState<SubmissionResponse | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [showResults, setShowResults] = useState<boolean>(true);
