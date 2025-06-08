@@ -32,12 +32,12 @@ const initEcho = (): Echo<any> | null => {
         forceTLS: false,
         disableStats: true,
         path: '',
-        authEndpoint: 'http://localhost:8000/broadcasting/auth',
+        authEndpoint: `${process.env.NEXT_PUBLIC_API_URL}/broadcasting/auth`,
         authorizer: (channel, options) => {
             return {
                 authorize: (socketId, callback) => {
                     axios.post(
-                        'http://localhost:8000/broadcasting/auth',
+                        `${process.env.NEXT_PUBLIC_API_URL}/broadcasting/auth`,
                         {
                             socket_id: socketId,
                             channel_name: channel.name
