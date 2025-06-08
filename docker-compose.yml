@@ -1,0 +1,18 @@
+services:
+  code-academy:
+    build:
+      context: .
+      target: dev
+    container_name: code-academy
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - shared-net
+
+networks:
+  shared-net:
+    external: true
