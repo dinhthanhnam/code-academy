@@ -1,15 +1,17 @@
-FROM node:22 as dev
+FROM node:22
 # Chạy với user node có sẵn (UID 1000)
 USER node
 
 WORKDIR /var/www
 
-# COPY --chown=node:node package.json ./
+COPY --chown=node:node package.json ./
 
-# RUN npm install --loglevel verbose
+RUN npm install
 
 COPY --chown=node:node . .
 
+RUN npm run build
+
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]
